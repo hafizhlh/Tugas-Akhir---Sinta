@@ -1,0 +1,37 @@
+image: lorisleiva/laravel-docker:7.4
+# Add a `.` in front of a job to make it hidden.
+# Add a `&reference` to make it a reusable template.
+# Note that we don't have dashes anymore.
+.init_ssh: &init_ssh |
+  eval $(ssh-agent -s)
+  echo "$SSH_PRIVATE_KEYS" | tr -d '\r' | ssh-add - > /dev/null
+  mkdir -p ~/.ssh
+  chmod 700 ~/.ssh
+  [[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
+
+  # Replace the last line with the following lines if you'd rather
+# leave StrictHostKeyChecking enabled (replace yourdomain.com):
+#
+#  ssh-keyscan yourdomain.com >> ~/.ssh/known_hosts
+#  chmod 644 ~/.ssh/known_hosts
+
+.change_file_permissions: &change_file_permissions |
+  find . -type f -not -path "./vendor/*" -exec chmod 664 {} \;
+  find . -type d -not -path "./vendor/*" -exec chmod 775 {} \;
+
+
+dev-continuous:
+    stage: deploy
+    script:
+        - *init_ssh
+        #- *change_file_permissions
+        #- php artisan deploy 139.255.88.90 -s pull -vvv
+        #- echo "sinergi18" | sudo -S -k composer update
+        #- echo "sinergi18" | sudo -S -k find . -type f -not -path "./vendor/*" -exec chmod 664 {} \;
+        #- echo "sinergi18" | sudo -S -k find . -type d -not -path "./vendor/*" -exec chmod 775 {} \;
+        - php artisan db:seed --class=RoutesTableSeeder
+    environment:
+        name: deploy-branch
+        url: http://139.255.88.90:3168/
+    only:
+        - dev-qa-2021

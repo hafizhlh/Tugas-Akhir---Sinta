@@ -1,0 +1,438 @@
+<wsdl:definitions name="SI_Get_Consolidation" targetNamespace="urn:PIHC_WEB_RECON_BW_Get_Consolidation" xmlns:rfc="urn:sap-com:document:sap:rfc:functions" xmlns:p1="urn:PIHC_WEB_RECON_BW_Get_Consolidation" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+   <wsdl:documentation/>
+   <wsp:UsingPolicy wsdl:required="true"/>
+   <wsp:Policy wsu:Id="OP_SI_Get_Consolidation"/>
+   <wsdl:types>
+      <xsd:schema targetNamespace="urn:sap-com:document:sap:rfc:functions" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="urn:sap-com:document:sap:rfc:functions">
+         <xsd:element name="ZFM_BPC_GET_CONSOLIDATION">
+            <xsd:complexType>
+               <xsd:all>
+                  <xsd:element name="R_PERIOD" type="ZST_RANGE_PERIOD">
+                     <xsd:annotation>
+                        <xsd:documentation>Structure Table for Period</xsd:documentation>
+                     </xsd:annotation>
+                  </xsd:element>
+                  <xsd:element name="T_DATA" minOccurs="0">
+                     <xsd:annotation>
+                        <xsd:documentation>Structure Table for Output CUBE Consolidation</xsd:documentation>
+                     </xsd:annotation>
+                     <xsd:complexType>
+                        <xsd:sequence>
+                           <xsd:element name="item" type="ZST_CONSOL_OUT" minOccurs="0" maxOccurs="unbounded"/>
+                        </xsd:sequence>
+                     </xsd:complexType>
+                  </xsd:element>
+               </xsd:all>
+            </xsd:complexType>
+         </xsd:element>
+         <xsd:element name="ZFM_BPC_GET_CONSOLIDATION.Response">
+            <xsd:complexType>
+               <xsd:all>
+                  <xsd:element name="T_DATA" minOccurs="0">
+                     <xsd:annotation>
+                        <xsd:documentation>Structure Table for Output CUBE Consolidation</xsd:documentation>
+                     </xsd:annotation>
+                     <xsd:complexType>
+                        <xsd:sequence>
+                           <xsd:element name="item" type="ZST_CONSOL_OUT" minOccurs="0" maxOccurs="unbounded"/>
+                        </xsd:sequence>
+                     </xsd:complexType>
+                  </xsd:element>
+               </xsd:all>
+            </xsd:complexType>
+         </xsd:element>
+         <xsd:complexType name="ZST_RANGE_PERIOD">
+            <xsd:annotation>
+               <xsd:documentation>Structure Table for Period</xsd:documentation>
+            </xsd:annotation>
+            <xsd:sequence>
+               <xsd:element name="SIGN" minOccurs="0">
+                  <xsd:annotation>
+                     <xsd:documentation>Inclusion/exclusion criterion SIGN for range tables</xsd:documentation>
+                  </xsd:annotation>
+                  <xsd:simpleType>
+                     <xsd:restriction base="xsd:string">
+                        <xsd:maxLength value="1"/>
+                     </xsd:restriction>
+                  </xsd:simpleType>
+               </xsd:element>
+               <xsd:element name="OPTION" minOccurs="0">
+                  <xsd:annotation>
+                     <xsd:documentation>Selection operator OPTION for range tables</xsd:documentation>
+                  </xsd:annotation>
+                  <xsd:simpleType>
+                     <xsd:restriction base="xsd:string">
+                        <xsd:maxLength value="2"/>
+                     </xsd:restriction>
+                  </xsd:simpleType>
+               </xsd:element>
+               <xsd:element name="LOW" minOccurs="0">
+                  <xsd:annotation>
+                     <xsd:documentation>TIME</xsd:documentation>
+                  </xsd:annotation>
+                  <xsd:simpleType>
+                     <xsd:restriction base="xsd:string">
+                        <xsd:maxLength value="32"/>
+                     </xsd:restriction>
+                  </xsd:simpleType>
+               </xsd:element>
+               <xsd:element name="HIGH" minOccurs="0">
+                  <xsd:annotation>
+                     <xsd:documentation>TIME</xsd:documentation>
+                  </xsd:annotation>
+                  <xsd:simpleType>
+                     <xsd:restriction base="xsd:string">
+                        <xsd:maxLength value="32"/>
+                     </xsd:restriction>
+                  </xsd:simpleType>
+               </xsd:element>
+            </xsd:sequence>
+         </xsd:complexType>
+         <xsd:complexType name="ZST_CONSOL_OUT">
+            <xsd:annotation>
+               <xsd:documentation>Structure Table for Output CUBE Consolidation</xsd:documentation>
+            </xsd:annotation>
+            <xsd:sequence>
+               <xsd:element name="TUPLE" minOccurs="0">
+                  <xsd:annotation>
+                     <xsd:documentation>Record number in the query output</xsd:documentation>
+                  </xsd:annotation>
+                  <xsd:simpleType>
+                     <xsd:restriction base="xsd:string">
+                        <xsd:maxLength value="6"/>
+                        <xsd:pattern value="\d+"/>
+                     </xsd:restriction>
+                  </xsd:simpleType>
+               </xsd:element>
+               <xsd:element name="ID_ACCOUNT" minOccurs="0">
+                  <xsd:annotation>
+                     <xsd:documentation>ACCOUNT</xsd:documentation>
+                  </xsd:annotation>
+                  <xsd:simpleType>
+                     <xsd:restriction base="xsd:string">
+                        <xsd:maxLength value="32"/>
+                     </xsd:restriction>
+                  </xsd:simpleType>
+               </xsd:element>
+               <xsd:element name="DESC_ACCOUNT" minOccurs="0">
+                  <xsd:annotation>
+                     <xsd:documentation>Long description</xsd:documentation>
+                  </xsd:annotation>
+                  <xsd:simpleType>
+                     <xsd:restriction base="xsd:string">
+                        <xsd:maxLength value="60"/>
+                     </xsd:restriction>
+                  </xsd:simpleType>
+               </xsd:element>
+               <xsd:element name="ID_AUDITTRAIL" minOccurs="0">
+                  <xsd:annotation>
+                     <xsd:documentation>AUDITTRAIL</xsd:documentation>
+                  </xsd:annotation>
+                  <xsd:simpleType>
+                     <xsd:restriction base="xsd:string">
+                        <xsd:maxLength value="32"/>
+                     </xsd:restriction>
+                  </xsd:simpleType>
+               </xsd:element>
+               <xsd:element name="DESC_AUDITTRAIL" minOccurs="0">
+                  <xsd:annotation>
+                     <xsd:documentation>Long description</xsd:documentation>
+                  </xsd:annotation>
+                  <xsd:simpleType>
+                     <xsd:restriction base="xsd:string">
+                        <xsd:maxLength value="60"/>
+                     </xsd:restriction>
+                  </xsd:simpleType>
+               </xsd:element>
+               <xsd:element name="ID_BUSINESSAREA" minOccurs="0">
+                  <xsd:annotation>
+                     <xsd:documentation>BUSINESS_AREA</xsd:documentation>
+                  </xsd:annotation>
+                  <xsd:simpleType>
+                     <xsd:restriction base="xsd:string">
+                        <xsd:maxLength value="32"/>
+                     </xsd:restriction>
+                  </xsd:simpleType>
+               </xsd:element>
+               <xsd:element name="DESC_BUSINESSAREA" minOccurs="0">
+                  <xsd:annotation>
+                     <xsd:documentation>Long description</xsd:documentation>
+                  </xsd:annotation>
+                  <xsd:simpleType>
+                     <xsd:restriction base="xsd:string">
+                        <xsd:maxLength value="60"/>
+                     </xsd:restriction>
+                  </xsd:simpleType>
+               </xsd:element>
+               <xsd:element name="ID_BUSINESSPARTNER" minOccurs="0">
+                  <xsd:annotation>
+                     <xsd:documentation>BUSINESS_PARTNER</xsd:documentation>
+                  </xsd:annotation>
+                  <xsd:simpleType>
+                     <xsd:restriction base="xsd:string">
+                        <xsd:maxLength value="32"/>
+                     </xsd:restriction>
+                  </xsd:simpleType>
+               </xsd:element>
+               <xsd:element name="DESC_BUSINESSPARTNER" minOccurs="0">
+                  <xsd:annotation>
+                     <xsd:documentation>Long description</xsd:documentation>
+                  </xsd:annotation>
+                  <xsd:simpleType>
+                     <xsd:restriction base="xsd:string">
+                        <xsd:maxLength value="60"/>
+                     </xsd:restriction>
+                  </xsd:simpleType>
+               </xsd:element>
+               <xsd:element name="ID_CATEGORY" minOccurs="0">
+                  <xsd:annotation>
+                     <xsd:documentation>CATEGORY</xsd:documentation>
+                  </xsd:annotation>
+                  <xsd:simpleType>
+                     <xsd:restriction base="xsd:string">
+                        <xsd:maxLength value="32"/>
+                     </xsd:restriction>
+                  </xsd:simpleType>
+               </xsd:element>
+               <xsd:element name="DESC_CATEGORY" minOccurs="0">
+                  <xsd:annotation>
+                     <xsd:documentation>Long description</xsd:documentation>
+                  </xsd:annotation>
+                  <xsd:simpleType>
+                     <xsd:restriction base="xsd:string">
+                        <xsd:maxLength value="60"/>
+                     </xsd:restriction>
+                  </xsd:simpleType>
+               </xsd:element>
+               <xsd:element name="ID_ENTITY" minOccurs="0">
+                  <xsd:annotation>
+                     <xsd:documentation>ENTITY</xsd:documentation>
+                  </xsd:annotation>
+                  <xsd:simpleType>
+                     <xsd:restriction base="xsd:string">
+                        <xsd:maxLength value="32"/>
+                     </xsd:restriction>
+                  </xsd:simpleType>
+               </xsd:element>
+               <xsd:element name="DESC_ENTITY" minOccurs="0">
+                  <xsd:annotation>
+                     <xsd:documentation>Long description</xsd:documentation>
+                  </xsd:annotation>
+                  <xsd:simpleType>
+                     <xsd:restriction base="xsd:string">
+                        <xsd:maxLength value="60"/>
+                     </xsd:restriction>
+                  </xsd:simpleType>
+               </xsd:element>
+               <xsd:element name="ID_FLOW" minOccurs="0">
+                  <xsd:annotation>
+                     <xsd:documentation>FLOW</xsd:documentation>
+                  </xsd:annotation>
+                  <xsd:simpleType>
+                     <xsd:restriction base="xsd:string">
+                        <xsd:maxLength value="32"/>
+                     </xsd:restriction>
+                  </xsd:simpleType>
+               </xsd:element>
+               <xsd:element name="DESC_FLOW" minOccurs="0">
+                  <xsd:annotation>
+                     <xsd:documentation>Long description</xsd:documentation>
+                  </xsd:annotation>
+                  <xsd:simpleType>
+                     <xsd:restriction base="xsd:string">
+                        <xsd:maxLength value="60"/>
+                     </xsd:restriction>
+                  </xsd:simpleType>
+               </xsd:element>
+               <xsd:element name="ID_FUNCTIONALAREA" minOccurs="0">
+                  <xsd:annotation>
+                     <xsd:documentation>FUNCTIONAL_AREA</xsd:documentation>
+                  </xsd:annotation>
+                  <xsd:simpleType>
+                     <xsd:restriction base="xsd:string">
+                        <xsd:maxLength value="32"/>
+                     </xsd:restriction>
+                  </xsd:simpleType>
+               </xsd:element>
+               <xsd:element name="DESC_FUNCTIONALAREA" minOccurs="0">
+                  <xsd:annotation>
+                     <xsd:documentation>Long description</xsd:documentation>
+                  </xsd:annotation>
+                  <xsd:simpleType>
+                     <xsd:restriction base="xsd:string">
+                        <xsd:maxLength value="60"/>
+                     </xsd:restriction>
+                  </xsd:simpleType>
+               </xsd:element>
+               <xsd:element name="ID_INTERCO" minOccurs="0">
+                  <xsd:annotation>
+                     <xsd:documentation>INTERCO</xsd:documentation>
+                  </xsd:annotation>
+                  <xsd:simpleType>
+                     <xsd:restriction base="xsd:string">
+                        <xsd:maxLength value="32"/>
+                     </xsd:restriction>
+                  </xsd:simpleType>
+               </xsd:element>
+               <xsd:element name="DESC_INTERCO" minOccurs="0">
+                  <xsd:annotation>
+                     <xsd:documentation>Long description</xsd:documentation>
+                  </xsd:annotation>
+                  <xsd:simpleType>
+                     <xsd:restriction base="xsd:string">
+                        <xsd:maxLength value="60"/>
+                     </xsd:restriction>
+                  </xsd:simpleType>
+               </xsd:element>
+               <xsd:element name="ID_RPTCURRENCY" minOccurs="0">
+                  <xsd:annotation>
+                     <xsd:documentation>RPTCURRENCY</xsd:documentation>
+                  </xsd:annotation>
+                  <xsd:simpleType>
+                     <xsd:restriction base="xsd:string">
+                        <xsd:maxLength value="32"/>
+                     </xsd:restriction>
+                  </xsd:simpleType>
+               </xsd:element>
+               <xsd:element name="DESC_RPTCURRENCY" minOccurs="0">
+                  <xsd:annotation>
+                     <xsd:documentation>Long description</xsd:documentation>
+                  </xsd:annotation>
+                  <xsd:simpleType>
+                     <xsd:restriction base="xsd:string">
+                        <xsd:maxLength value="60"/>
+                     </xsd:restriction>
+                  </xsd:simpleType>
+               </xsd:element>
+               <xsd:element name="ID_SCOPE" minOccurs="0">
+                  <xsd:annotation>
+                     <xsd:documentation>SCOPE</xsd:documentation>
+                  </xsd:annotation>
+                  <xsd:simpleType>
+                     <xsd:restriction base="xsd:string">
+                        <xsd:maxLength value="32"/>
+                     </xsd:restriction>
+                  </xsd:simpleType>
+               </xsd:element>
+               <xsd:element name="DESC_SCOPE" minOccurs="0">
+                  <xsd:annotation>
+                     <xsd:documentation>Long description</xsd:documentation>
+                  </xsd:annotation>
+                  <xsd:simpleType>
+                     <xsd:restriction base="xsd:string">
+                        <xsd:maxLength value="60"/>
+                     </xsd:restriction>
+                  </xsd:simpleType>
+               </xsd:element>
+               <xsd:element name="ID_SEQUENCE" minOccurs="0">
+                  <xsd:annotation>
+                     <xsd:documentation>SEQUENCE</xsd:documentation>
+                  </xsd:annotation>
+                  <xsd:simpleType>
+                     <xsd:restriction base="xsd:string">
+                        <xsd:maxLength value="32"/>
+                     </xsd:restriction>
+                  </xsd:simpleType>
+               </xsd:element>
+               <xsd:element name="DESC_SEQUENCE" minOccurs="0">
+                  <xsd:annotation>
+                     <xsd:documentation>Long description</xsd:documentation>
+                  </xsd:annotation>
+                  <xsd:simpleType>
+                     <xsd:restriction base="xsd:string">
+                        <xsd:maxLength value="60"/>
+                     </xsd:restriction>
+                  </xsd:simpleType>
+               </xsd:element>
+               <xsd:element name="ID_TIME" minOccurs="0">
+                  <xsd:annotation>
+                     <xsd:documentation>TIME</xsd:documentation>
+                  </xsd:annotation>
+                  <xsd:simpleType>
+                     <xsd:restriction base="xsd:string">
+                        <xsd:maxLength value="32"/>
+                     </xsd:restriction>
+                  </xsd:simpleType>
+               </xsd:element>
+               <xsd:element name="DESC_TIME" minOccurs="0">
+                  <xsd:annotation>
+                     <xsd:documentation>Long description</xsd:documentation>
+                  </xsd:annotation>
+                  <xsd:simpleType>
+                     <xsd:restriction base="xsd:string">
+                        <xsd:maxLength value="60"/>
+                     </xsd:restriction>
+                  </xsd:simpleType>
+               </xsd:element>
+               <xsd:element name="ID_SRCCURRENCY" minOccurs="0">
+                  <xsd:annotation>
+                     <xsd:documentation>SRC_CURRENCY</xsd:documentation>
+                  </xsd:annotation>
+                  <xsd:simpleType>
+                     <xsd:restriction base="xsd:string">
+                        <xsd:maxLength value="32"/>
+                     </xsd:restriction>
+                  </xsd:simpleType>
+               </xsd:element>
+               <xsd:element name="DESC_SRCCURRENCY" minOccurs="0">
+                  <xsd:annotation>
+                     <xsd:documentation>Long description</xsd:documentation>
+                  </xsd:annotation>
+                  <xsd:simpleType>
+                     <xsd:restriction base="xsd:string">
+                        <xsd:maxLength value="60"/>
+                     </xsd:restriction>
+                  </xsd:simpleType>
+               </xsd:element>
+               <xsd:element name="AMOUNT" minOccurs="0">
+                  <xsd:annotation>
+                     <xsd:documentation>BPC: keyfigure</xsd:documentation>
+                  </xsd:annotation>
+                  <xsd:simpleType>
+                     <xsd:restriction base="xsd:decimal">
+                        <xsd:totalDigits value="31"/>
+                        <xsd:fractionDigits value="7"/>
+                     </xsd:restriction>
+                  </xsd:simpleType>
+               </xsd:element>
+            </xsd:sequence>
+         </xsd:complexType>
+      </xsd:schema>
+   </wsdl:types>
+   <wsdl:message name="rfc.ZFM_BPC_GET_CONSOLIDATION.Input">
+      <wsdl:documentation/>
+      <wsdl:part name="parameters" element="rfc:ZFM_BPC_GET_CONSOLIDATION"/>
+   </wsdl:message>
+   <wsdl:message name="rfc.ZFM_BPC_GET_CONSOLIDATION.Output">
+      <wsdl:documentation/>
+      <wsdl:part name="parameters" element="rfc:ZFM_BPC_GET_CONSOLIDATION.Response"/>
+   </wsdl:message>
+   <wsdl:portType name="SI_Get_Consolidation">
+      <wsdl:documentation/>
+      <wsdl:operation name="SI_Get_Consolidation">
+         <wsdl:documentation/>
+         <wsp:Policy>
+            <wsp:PolicyReference URI="#OP_SI_Get_Consolidation"/>
+         </wsp:Policy>
+         <wsdl:input message="p1:rfc.ZFM_BPC_GET_CONSOLIDATION.Input"/>
+         <wsdl:output message="p1:rfc.ZFM_BPC_GET_CONSOLIDATION.Output"/>
+      </wsdl:operation>
+   </wsdl:portType>
+   <wsdl:binding name="SI_Get_ConsolidationBinding" type="p1:SI_Get_Consolidation">
+      <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"/>
+      <wsdl:operation name="SI_Get_Consolidation">
+         <soap:operation soapAction="http://sap.com/xi/WebService/soap1.1" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"/>
+         <wsdl:input>
+            <soap:body use="literal" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"/>
+         </wsdl:input>
+         <wsdl:output>
+            <soap:body use="literal" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"/>
+         </wsdl:output>
+      </wsdl:operation>
+   </wsdl:binding>
+   <wsdl:service name="SI_Get_ConsolidationService">
+      <wsdl:port name="HTTP_Port" binding="p1:SI_Get_ConsolidationBinding">
+         <soap:address location="http://sap-pi-prd.pupuk-indonesia.com:58300/XISOAPAdapter/MessageServlet?senderParty=&amp;senderService=WEB_RECON_BWApplication_BC&amp;receiverParty=&amp;receiverService=&amp;interface=SI_Get_Consolidation&amp;interfaceNamespace=urn%3APIHC_WEB_RECON_BW_Get_Consolidation" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"/>
+      </wsdl:port>
+   </wsdl:service>
+</wsdl:definitions>
