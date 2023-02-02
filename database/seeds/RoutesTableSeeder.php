@@ -17,7 +17,7 @@ class RoutesTableSeeder extends Seeder
         
         $data = [
             /*Login*/
-            ['permission' => '', 'middleware' => 'lang', 'type' => 'view', 'method' => 'GET', 'url' => '/', 'route' => 'LoginController@index', 'guard' => 'web'],
+            ['permission' => '', 'middleware' => 'lang', 'type' => 'view', 'method' => 'GET', 'url' => '/', 'route' => 'Landing\LandingPageController@index', 'guard' => 'web'],
             ['permission' => '', 'middleware' => 'lang', 'type' => 'view', 'method' => 'GET', 'url' => '/login', 'route' => 'LoginController@index', 'guard' => 'web'],
             ['permission' => '', 'middleware' => 'lang', 'type' => 'view', 'method' => 'POST', 'url' => '/login/store', 'route' => 'LoginController@store', 'guard' => 'web'],
             ['permission' => '', 'middleware' => 'lang,authz', 'type' => 'data', 'method' => 'GET', 'url' => '/logout', 'route' => 'LoginController@destroy', 'guard' => 'web'],
@@ -82,7 +82,7 @@ class RoutesTableSeeder extends Seeder
 
             ['permission'=>'','middleware'=> 'lang,authz','type'=>'data','method'=>'POST','url'=>'/changepassword','route'=>'WEBSETTING\UserController@changePassword','guard'=>'web'],
             //master Data
-            // COMPANY
+            // COMPANY0
             // ['permission'=>'company-R','middleware'=> 'lang,authz','type'=>'view','method'=>'GET','url'=>'/company','route'=>'CompanyController@index','guard'=>'web'],
             // ['permission'=>'company-R','middleware'=> 'lang,authz','type'=>'data','method'=>'GET','url'=>'/company/list','route'=>'CompanyController@datatables','guard'=>'web'],
             // ['permission'=>'company-C','middleware'=> 'lang,authz','type'=>'data','method'=>'POST','url'=>'/company','route'=>'CompanyController@store','guard'=>'web'],
@@ -95,6 +95,12 @@ class RoutesTableSeeder extends Seeder
             // Kikik Add Simulate User
             ['permission'=>'usersetting-A','middleware'=> 'lang,authz','type'=>'data','method'=>'GET','url'=>'/usersetting/simulate/{id}','route'=>'WEBSETTING\UserController@simulate','guard'=>'web'],
             ['permission'=>'usersetting-A','middleware'=> 'lang,authz','type'=>'data','method'=>'GET','url'=>'/usersetting/leaveSimulate','route'=>'WEBSETTING\UserController@leaveSimulate','guard'=>'web'],
+
+            // Landing Page
+            ['middleware'=> 'lang','type'=>'view','method'=>'GET','url'=>'/tentang-TI','route'=>'Landing\TentangTIController@index','guard'=>'web'],
+            ['middleware'=> 'lang','type'=>'view','method'=>'GET','url'=>'/security-awareness','route'=>'Landing\SecurityAwarenessController@index','guard'=>'web'],
+            ['middleware'=> 'lang','type'=>'view','method'=>'GET','url'=>'/tautan','route'=>'Landing\TautanController@index','guard'=>'web'],
+
 
         ];
 
