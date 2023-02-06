@@ -100,6 +100,8 @@ class RoutesTableSeeder extends Seeder
             ['middleware'=> 'lang','type'=>'view','method'=>'GET','url'=>'/tentang-TI','route'=>'Landing\TentangTIController@index','guard'=>'web'],
             ['middleware'=> 'lang','type'=>'view','method'=>'GET','url'=>'/security-awareness','route'=>'Landing\SecurityAwarenessController@index','guard'=>'web'],
             ['middleware'=> 'lang','type'=>'view','method'=>'GET','url'=>'/tautan','route'=>'Landing\TautanController@index','guard'=>'web'],
+            ['middleware'=> 'lang','type'=>'view','method'=>'GET','url'=>'/it-agent','route'=>'Landing\ITAgentController@index','guard'=>'web'],
+
 
 
         ];
