@@ -171,6 +171,7 @@ h6,
     transform: rotate(45deg);
     opacity: 1;
     transition: .5s;
+    color: #1b9920;
 }
 
 .service-item.bg-white::after {
@@ -183,6 +184,7 @@ h6,
 
 .service-item:hover::after {
     opacity: 0;
+    color: #F8C600;
 }
 
 
@@ -198,7 +200,7 @@ h6,
     width: 100%;
     top: 20px;
     left: 0;
-    border-top: 2px dashed var(--secondary);
+    border-top: 2px dashed #1b9920;
 }
 
 .roadmap-carousel .roadmap-item .roadmap-point {
@@ -209,7 +211,7 @@ h6,
     left: 50%;
     margin-left: -15px;
     background: #FFFFFF;
-    border: 2px solid var(--primary);
+    border: 2px solid #1b9920;
     transform: rotate(45deg);
     display: flex;
     align-items: center;
@@ -220,7 +222,7 @@ h6,
     display: block;
     width: 18px;
     height: 18px;
-    background: var(--primary);
+    background: #1b9920;
 }
 
 .roadmap-carousel .roadmap-item {
@@ -237,7 +239,7 @@ h6,
     top: 0;
     left: 50%;
     transform: translateX(-50%);
-    border-right: 2px dashed var(--secondary);
+    border-right: 2px dashed #F8C600;
 }
 
 .roadmap-carousel .roadmap-item::after {
@@ -249,7 +251,7 @@ h6,
     left: 50%;
     margin-left: -7px;
     transform: rotate(45deg);
-    background: var(--primary);
+    background: #1b9920;
 }
 
 .roadmap-carousel .owl-nav {
@@ -269,14 +271,14 @@ h6,
     border-radius: 50px;
     font-size: 22px;
     color: var(--light);
-    background: var(--primary);
+    background: #146e17;
     transition: .5s;
 }
 
 .roadmap-carousel .owl-nav .owl-prev:hover,
 .roadmap-carousel .owl-nav .owl-next:hover {
-    color: var(--primary);
-    background: var(--dark);
+    color: #FFFFFF;
+    background: #1b9920;
 }
 
 
@@ -292,8 +294,8 @@ h6,
 }
 
 .accordion .accordion-button:not(.collapsed) {
-    color: #FFFFFF;
-    background: var(--primary);
+    color:  #FFDE59; 
+    background:  #1b9920;
     box-shadow: none;
 }
 

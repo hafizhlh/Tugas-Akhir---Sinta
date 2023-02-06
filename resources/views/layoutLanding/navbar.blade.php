@@ -56,7 +56,7 @@
                 <a class="nav-link dropdown-toggle nav-parent" href="#" data-bs-toggle="dropdown" id="ITAgent">IT Agent</a>
                 <div class="dropdown-menu dropdown-xlarge p-4 shadow-sm">
                     <ul class="list-unstyled">
-                        <li><a href="#" class="nav-item">Tugas dan Tanggung Jawab IT Agent</a></li><hr>
+                        <li><a href="/it-agent" class="nav-item">Tugas dan Tanggung Jawab IT Agent</a></li><hr>
                         <li><a href="#" class="nav-item">Anggota IT Agent</a></li>
                     </ul>
                 </div> <!-- dropdown-large.// -->
