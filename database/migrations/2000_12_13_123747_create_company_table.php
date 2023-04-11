@@ -16,7 +16,7 @@ class CreateCompanyTable extends Migration
     {
         Schema::create('company', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->uuid('uuid')->nullable();
+            $table->uuid('uuid')->default(DB::raw('uuid_generate_v4()'));
             $table->char('company_code', 7)->unique();
             $table->text('company_name');
             $table->string('create_by', 100)->nullable();

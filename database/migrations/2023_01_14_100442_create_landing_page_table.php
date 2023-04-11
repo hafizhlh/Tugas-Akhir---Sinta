@@ -16,7 +16,7 @@ class CreateLandingPageTable extends Migration
     {
         Schema::create('landing_page', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->uuid('uuid');
+            $table->uuid('uuid')->default(DB::raw('uuid_generate_v4()'));
             $table->integer('urutan');
             $table->string('judul');
             $table->string('gambar');

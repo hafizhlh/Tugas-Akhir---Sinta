@@ -16,7 +16,7 @@ class CreateMenusTable extends Migration
     {
         Schema::create('menu', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->uuid('uuid')->nullable();
+            $table->uuid('uuid')->default(DB::raw('uuid_generate_v4()'));
             $table->string('name');
             $table->string('permission')->nullable();
             $table->string('url')->default('#');

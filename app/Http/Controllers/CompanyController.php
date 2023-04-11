@@ -8,8 +8,9 @@ use DataTables;
 use Illuminate\Http\Request;
 use App\Models\Menu;
 use App\Models\Routes;
+use Exception;
 use Illuminate\Support\Facades\DB;
-
+use Yajra\DataTables\DataTables as DataTablesDataTables;
 
 class CompanyController extends Controller
 {
@@ -102,8 +103,10 @@ class CompanyController extends Controller
                   'company_name' => $request->company_name,
                   'company_code' => $request->company_code,
                   'parent_company_code' => $request->parent_company_code,
-                  'is_sap' => ($request->is_sap == null) ? '0' : $request->is_sap, 
-              ]);
+                  'is_sap' => ($request->is_sap == null) ? '0' : $request->is_sap,
+                  //
+                  
+            ]);
               DB::commit();
               $response = responseSuccess(trans("messages.update-success"), $data);
               return response()->json($response, 200, [], JSON_PRETTY_PRINT);
