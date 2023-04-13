@@ -18,10 +18,14 @@ class BarangKeluarController extends Controller
         $data['menu']  = Menu::select('id', 'name')->get();
         return view('BarangKeluar', $data);
     }
+    
 
     public function datatables()
     {
-        $data = BarangKeluar::orderBy('tgl_pengambilan', 'asc')->where('delete_mark', 0)->get();
+        $data = BarangKeluar::orderBy('tgl_pengambilan', 'asc')->where('delete_mark', 0)
+        ->join('detail_barang_keluars', 'detail_barang_keluars.barang_keluar_id', '=', 'barang_keluars.barang_keluar_id')
+        ->get();
+
         return datatables()->of($data)
             ->addIndexColumn()
             ->addColumn('action', function ($row) {
@@ -29,6 +33,7 @@ class BarangKeluarController extends Controller
                 $btn = $btn . ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->barang_keluar_id . '" data-original-title="Delete" class="btn btn-danger btn-sm deleteLandingPage">Delete</a>';
                 return $btn;
             })
+            
             ->rawColumns(['action'])
             ->make(true);
     }
