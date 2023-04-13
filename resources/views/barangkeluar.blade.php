@@ -67,7 +67,7 @@
                 <div class="card card-custom gutter-b">
                     <div class="card-header flex-wrap py-3">
                         <div class="card-title">
-                            <h3 class="card-label">Data Barang
+                            <h3 class="card-label">Data Barang Keluar
                                 <span class="d-block text-muted pt-2 font-size-sm"></span></h3>
                         </div>
                         <div class="card-toolbar">
@@ -132,6 +132,7 @@
                     </button>
                 </div>
                 <!--begin:Form-->
+                <script src="script.js"></script>
                 <form role="form" class="form" name="formmenus" id="formmenus" enctype="multipart/formdata" method="">
                     <div class="modal-body" style="height: 500px;">
                         <div class="mb-7">
@@ -143,26 +144,61 @@
                                     <span class="form-text text-muted">Masukkan id user anda</span>
                                 </div>
                             </div>
+
                             <div class="form-group row">
-                                <label class="col-lg-3 col-form-label">ID Barang:</label>
+                                <label class="col-lg-3 col-form-label">NomorDOF/ E-Ticket:</label>
                                 <div class="col-lg-9">
-                                    <input type="text" class="form-control" id="barang_code" name="barang_code"
-                                           placeholder="e.g:TOTOLINK N200RE Mini Wireless N Router 300Mbps - v.4"/>
-                                    <span class="form-text text-muted">masukan barang yang akan keluar</span>
+                                    <input type="text" class="form-control" id="nodofetiket_code" name="nodofetiket_code"
+                                           placeholder="e.g:10451 /GS-10571"/>
+                                    <span class="form-text text-muted">masukan DOF(Deep Of Field)/ E-Ticket(</span>
                                 </div>
                             </div>
-                            <div class="form-group row">
-                                <label class="col-lg-3 col-form-label">Jenis Barang:</label>
-                                <div class="col-lg-9">
-                                    <input type="text" class="form-control" id="jenis_code" name="jenis_code"
-                                           placeholder="e.g:Persediaan atau Asset"/>
-                                    <span class="form-text text-muted">Masukkan Jenis Barang</span>
-                                </div>
-                            </div>
+                            <!--  -->
+                <div class="form-group row">
+                <label class="col-lg-3 col-form-label">Jenis Barang:</label>
+                <div class="col-lg-9">
+                    <select class="form-control" id="jenis_code" name="jenis_code">
+                        <option value="">Pilih jenis barang</option>
+                        <option value="persediaan">Persediaan</option>
+                        <option value="asset">Asset</option>
+                    </select>
+                    <span class="form-text text-muted">Pilih jenis barang untuk menampilkan opsi barang</span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-lg-3 col-form-label">Barang:</label>
+                <div class="col-lg-9">
+                    <select class="form-control" id="barang_code" name="barang_code">
+                        <option value="">Pilih barang</option>
+                    </select>
+                    <span class="form-text text-muted">Pilih barang yang akan dikeluarkan</span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-lg-3 col-form-label">Jenis Barang Baru:</label>
+                <div class="col-lg-9">
+                    <input type="text" class="form-control" id="jenis_code_baru" name="jenis_code_baru" />
+                    <span class="form-text text-muted">Masukkan jenis barang baru jika tidak ada di opsi di atas</span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-lg-3 col-form-label">Barang Baru:</label>
+                <div class="col-lg-9">
+                    <input type="text" class="form-control" id="barang_code_baru" name="barang_code_baru" />
+                    <span class="form-text text-muted">Masukkan nama barang baru jika tidak ada di opsi di atas</span>
+                </div>
+            </div>
+                
+                
+                
+                           
+
+
+<!--  -->
                             <div class="form-group row">
                                 <label class="col-lg-3 col-form-label">Jumlah Barang:</label>
                                 <div class="col-lg-9">
-                                    <input type="number" class="form-control" id="jumlah_code" name="jumlah_code"
+                                    <input type="number" class="form-control" id="jumlah" name="jumlah"
                                            placeholder="e.g:100"/>
                                     <span class="form-text text-muted">Masukkan Jumlah Barang</span>
                                 </div>
@@ -213,7 +249,7 @@
 
             var datatable = $('#kt_datatable_menu');
 
-            @can('barang-R')
+            @can('barangkeluar-R')
 
             datatable.KTDatatable({
                 // datasource definition
@@ -222,7 +258,7 @@
                     source: {
                         read: {
                             method: 'GET',
-                            url: './barang/list'
+                            url: './barangkeluar/list'
                         }
                     },
                     pageSize: 10,
@@ -242,12 +278,37 @@
                 // columns definition
                 columns: [
                     {
-                        field: 'nama_barang',
-                        title: 'nama barang',
-                    }, {
+                        field: 'tanggal_keluar',
+                        title: 'tanggal keluar',
+                        
+                    },
+                    {
+                        field: 'nodofeticket_code',
+                        title: 'nodof/eticket',
+
+                    },
+                    {
+                        field:'user_name',
+                        title:'nama user'
+                    },
+                    { field:'jenis_code_barang', 
+                      title:'jenis barang'
+                    },
+                    
+                    {
+                        field: 'barang_code',
+                        title: 'barang',
+                    },
+                    {
                         field: 'jumlah_barang',
                         title: 'jumlah barang',
-                    }, {
+                    },
+                    {
+                        field: 'keterangan_code',
+                        title: 'keterangan barang',
+
+                    },
+                     {
                         field: 'Actions',
                         title: 'Actions',
                         sortable: false,
@@ -256,11 +317,11 @@
                         overflow: 'visible',
                         template: function (row) {
                             return "<center>" +
-                                    @can('barang-U')
-                                        "<button type='button' class='edits btn btn-sm btn-icon btn-outline-warning ' title='Edit' data-toggle='tooltip' data-id=" + row.barang_id + " ><i class='fa fa-edit'></i> </button>  " +
+                                    @can('barangkeluar-U')
+                                        "<button type='button' class='edits btn btn-sm btn-icon btn-outline-warning ' title='Edit' data-toggle='tooltip' data-id=" + row.barang_keluar_id + " ><i class='fa fa-edit'></i> </button>  " +
                                     @endcan
-                                            @can('barang-D')
-                                        "<button type='button' class='deletes btn-sm btn btn-icon btn-outline-danger' title='Delete' data-toggle='tooltip' alt='' data-id=" + row.barang_id+ " ><i class='fa fa-trash'></i></button>  " +
+                                            @can('barangkeluar-D')
+                                        "<button type='button' class='deletes btn-sm btn btn-icon btn-outline-danger' title='Delete' data-toggle='tooltip' alt='' data-id=" + row.barang_keluar_id+ " ><i class='fa fa-trash'></i></button>  " +
                                     @endcan
                                         "</center>";
                         },
@@ -271,7 +332,7 @@
             });
             @endcan
 
-            @can('barang-C')
+            @can('barangkeluar-C')
             $(document).on('click', '#addMenu', function () {
                 $("#saveMenu").data("id", "");
                 $('#modalMenuTitle').text('Create barnag'
@@ -286,11 +347,11 @@
 
             @endcan
 
-            @can('barang-U')
+            @can('barangkeluar-U')
             $(document).on('click', '.edits', function () {
                 $.ajax({
                     type: 'GET', // define the type of HTTP verb we want to use (POST for our form)
-                    url: './barang/' + $(this).data('id'), // the url where we want to POST
+                    url: './barangkeluar/' + $(this).data('id'), // the url where we want to POST
                     beforeSend: function () {
                         let form = document.forms.formmenus; // <form name="formmenus"> element
                         form.reset();
@@ -303,7 +364,9 @@
                     if (res.success) {
                         showtoastr('success', res.message);
                         $('#user_code').val(res.data.user_id);
-                        $('#barang_name').val(res.data.nama_barang);
+                        $('#tanggal_code').val(res.data.tanggal_keluar);
+                        $('#nodofeticket_code').val(res.data.nodofeticket_code);
+                        $('#barang_code').val(res.data.barang_id);                        
                         $('#jenis_code').val(res.data.jenis_barang);
                         $('#jumlah_code').val(res.data.jumlah_barang);                        
                         $('#keterangan_code').val(res.data.keterangan_barang);
@@ -322,7 +385,7 @@
 
             @endcan
 
-            @can(['barang-C', 'barang-U'])
+            @can(['barangkeluar-C', 'barangkeluar-U'])
             $('#formmenus').submit(function (e) {
                 e.preventDefault();
                 var formData = new FormData($("#formmenus")[0]);
@@ -331,9 +394,9 @@
                 let menuID = $("#saveMenu").data("id");
                 
                 if (typeof menuID == "undefined" || menuID == "") {
-                    var url = `./barang`;
+                    var url = `./barangkeluar`;
                 } else {
-                    var url = `./barang/${menuID}/update`;
+                    var url = `./barangkeluar/${menuID}/update`;
                 }
                 //var url = (menuID != "" || menuID != undefined) ? `./company/${menuID}/update` : `./company`;
 
@@ -373,7 +436,7 @@
             });
             @endcan
 
-            @can('barang-D')
+            @can('barangkeluar-D')
             $(document).on('click', '.deletes', function () {
                 Swal.fire({
                     title: 'Are you sure?',
@@ -390,7 +453,7 @@
                 {
                     $.ajax({
                         type: 'DELETE', // define the type of HTTP verb we want to use (POST for our form)
-                        url: './barang/' + $(this).data('id'), // the url where we want to POST
+                        url: './barangkeluar/' + $(this).data('id'), // the url where we want to POST
                     })
                         .done(function (data) {
                             showtoastr('success', data.message);

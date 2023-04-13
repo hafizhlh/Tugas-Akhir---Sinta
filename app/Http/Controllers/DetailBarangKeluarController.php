@@ -34,6 +34,7 @@ class DetailBarangKeluarController extends Controller
     public function store(Request $request)
     {
         $attributes = $request->only([
+            'detail_barang_keluar_code',
             'barang_keluar_code',
             'barang_code',  
             'jumlah',
@@ -42,6 +43,7 @@ class DetailBarangKeluarController extends Controller
 
         ]);
         $roles = [
+            'detail_barang_keluar_code' => 'required | exists:detail_barang_keluars,detail_barang_keluar_id',
             'barang_keluar_code' => 'required | exists:barang_keluar,barang_keluar_id',
             'barang_code' => 'required | exists:barang,barang_id',
             'jumlah' => 'required',
@@ -146,6 +148,7 @@ class DetailBarangKeluarController extends Controller
         try {
         $data->update([ 
            
+            'detail_barang_keluar_id' => $request->detail_barang_keluar_code,
             'barang_keluar_id' => $request->barang_keluar_code,
             'barang_id' => $request->barang_code,
             'jumlah' => $request->jumlah,

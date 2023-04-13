@@ -64,7 +64,7 @@ class BarangKeluarController extends Controller
             $data = BarangKeluar::create([
                 'user_id' => $request->user_code,
                 'tgl_pengambilan' => $request->tanggal,
-                'no_dof_etiket' => $request->jenis_code,
+                'no_dof_etiket' => $request->nodofetiket_code,
                 'keterangan' => $request->keterangan_code,             
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -72,7 +72,7 @@ class BarangKeluarController extends Controller
             // $data = DB::table('barangkeluar')->insert([
             // 'user_id' => $request->user_code,
             // 'tgl_pengambilan' => $request->tanggal,
-            // 'no_dof_etiket' => $request->jenis_code,
+            // 'no_dof_etiket' => $request->nodofetiket_code,
             // 'keterangan' => $request->keterangan_code, 
             //     'created_at' => now(),
             //     'updated_at' => now(),
@@ -147,7 +147,7 @@ class BarangKeluarController extends Controller
            
             'user_id' => $request->user_code,
             'tgl_pengambilan' => $request->tanggal,
-            'no_dof_etiket' => $request->jenis_code,
+            'no_dof_etiket' => $request->nodofetiket_code,
             'keterangan' => $request->keterangan_code,       
             'updated_at' => now(),
         ]);
