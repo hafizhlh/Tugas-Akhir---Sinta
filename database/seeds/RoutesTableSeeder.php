@@ -70,7 +70,37 @@ class RoutesTableSeeder extends Seeder
             ['permission' => 'permission-D', 'middleware' => 'lang,authz', 'type' => 'data', 'method' => 'DELETE', 'url' => '/permissionsetting/destroy/{uuid}', 'route' => 'WEBSETTING\PermissionController@destroy', 'guard' => 'web'],
             ['permission' => 'permission-C', 'middleware' => 'lang,authz', 'type' => 'data', 'method' => 'POST', 'url' => '/permissionsetting', 'route' => 'WEBSETTING\PermissionController@store', 'guard' => 'web'],
             ['permission' => 'permission-U', 'middleware' => 'lang,authz', 'type' => 'data', 'method' => 'POST', 'url' => '/permissionsetting/{uuid}', 'route' => 'WEBSETTING\PermissionController@update', 'guard' => 'web'],
+            // Barang Setting
+            ['permission'=>'barang-R','middleware'=> 'lang,authz','type'=>'view','method'=>'GET','url'=>'/barang','route'=>'BarangController@index','guard'=>'web'],
+            ['permission'=>'barang-R','middleware'=> 'lang,authz','type'=>'data','method'=>'GET','url'=>'/barang/list','route'=>'BarangController@datatables','guard'=>'web'],
+            ['permission'=>'barang-C','middleware'=> 'lang,authz','type'=>'data','method'=>'POST','url'=>'/barang','route'=>'BarangController@store','guard'=>'web'],
+            ['permission'=>'barang-U','middleware'=> 'lang,authz','type'=>'data','method'=>'GET','url'=>'/barang/{id}','route'=>'BarangController@show','guard'=>'web'],
+            ['permission'=>'barang-U','middleware'=> 'lang,authz','type'=>'data','method'=>'POST','url'=>'/barang/{id}/update','route'=>'BarangController@update','guard'=>'web'],
+            ['permission'=>'barang-D','middleware'=> 'lang,authz','type'=>'data','method'=>'DELETE','url'=>'/barang/{id}','route'=>'BarangController@destroy','guard'=>'web'],
+            // Barang Keluar Setting
+            ['permission'=>'barangkeluar-R','middleware'=> 'lang,authz','type'=>'view','method'=>'GET','url'=>'/barangkeluar','route'=>'BarangKeluarController@index','guard'=>'web'],
+            ['permission'=>'barangkeluar-R','middleware'=> 'lang,authz','type'=>'data','method'=>'GET','url'=>'/barangkeluar/list','route'=>'BarangKeluarController@datatables','guard'=>'web'],
+            ['permission'=>'barangkeluar-C','middleware'=> 'lang,authz','type'=>'data','method'=>'POST','url'=>'/barangkeluar','route'=>'BarangKeluarController@store','guard'=>'web'],
+            ['permission'=>'barangkeluar-U','middleware'=> 'lang,authz','type'=>'data','method'=>'GET','url'=>'/barangkeluar/{id}','route'=>'BarangKeluarController@show','guard'=>'web'],
+            ['permission'=>'barangkeluar-U','middleware'=> 'lang,authz','type'=>'data','method'=>'POST','url'=>'/barangkeluar/{id}/update','route'=>'BarangKeluarController@update','guard'=>'web'],
+            ['permission'=>'barangkeluar-D','middleware'=> 'lang,authz','type'=>'data','method'=>'DELETE','url'=>'/barangkeluar/{id}','route'=>'BarangKeluarController@destroy','guard'=>'web'],
+            //Barang Masuk Setting
+            ['permission'=>'barangmasuk-R','middleware'=> 'lang,authz','type'=>'view','method'=>'GET','url'=>'/barangmasuk','route'=>'BarangMasukController@index','guard'=>'web'],
+            ['permission'=>'barangmasuk-R','middleware'=> 'lang,authz','type'=>'data','method'=>'GET','url'=>'/barangmasuk/list','route'=>'BarangMasukController@datatables','guard'=>'web'],
+            ['permission'=>'barangmasuk-C','middleware'=> 'lang,authz','type'=>'data','method'=>'POST','url'=>'/barangmasuk','route'=>'BarangMasukController@store','guard'=>'web'],
+            ['permission'=>'barangmasuk-U','middleware'=> 'lang,authz','type'=>'data','method'=>'GET','url'=>'/barangmasuk/{id}','route'=>'BarangMasukController@show','guard'=>'web'],
+            ['permission'=>'barangmasuk-U','middleware'=> 'lang,authz','type'=>'data','method'=>'POST','url'=>'/barangmasuk/{id}/update','route'=>'BarangMasukController@update','guard'=>'web'],
+            ['permission'=>'barangmasuk-D','middleware'=> 'lang,authz','type'=>'data','method'=>'DELETE','url'=>'/barangmasuk/{id}','route'=>'BarangMasukController@destroy','guard'=>'web'],
 
+            //Return Barang Setting
+            ['permission'=>'returnbarang-C','middleware'=>'lang.authz','type'=>'data','method'=>'POST','url'=>'/returnbarang','route'=>'ReturnBarangController@store','guard'=>'web'],
+            ['permission'=>'returnbarang-U','middleware'=>'lang.authz','type'=>'data','method'=>'GET','url'=>'/returnbarang/{id}','route'=>'ReturnBarangController@show','guard'=>'web'],          
+            
+
+            //get barang 
+            ['middleware'=> 'lang,authz','type'=>'data','method'=>'POST','url'=>'/getBarang/{jenis_code}','route'=>'BarangKeluarController@getBarang','guard'=>'web'],
+            ['middleware'=> 'lang,authz','type'=>'data','method'=>'POST','url'=>'/getBarangKeluar/{id}','route'=>'BarangKeluarController@update','guard'=>'web'],
+            
             //Landing Page
             ['permission' => 'landingPage-R', 'middleware' => 'lang,authz', 'type' => 'view', 'method' => 'GET', 'url' => '/landingpage', 'route' => 'LandingPageController@index', 'guard' => 'web'],
             ['permission' => 'landingPage-R', 'middleware' => 'lang,authz', 'type' => 'data', 'method' => 'GET', 'url' => '/landingpage/list', 'route' => 'LandingPageController@datatables', 'guard' => 'web'],
