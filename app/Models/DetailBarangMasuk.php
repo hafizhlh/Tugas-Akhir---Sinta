@@ -14,6 +14,7 @@ class DetailBarangMasuk extends Model
         'jumlah_barang_masuk',
         'delete_mark'
     ];
+    public $timestamps = false;
 
     public function barang()
     {

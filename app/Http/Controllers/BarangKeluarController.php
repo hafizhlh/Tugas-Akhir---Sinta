@@ -1,10 +1,12 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use App\Models\Barang;
 use Illuminate\Http\Request;
 
 use App\Models\BarangKeluar;
-
+use App\Models\DetailBarangKeluar;
 use App\Models\Menu;
 use Exception;
 use Illuminate\Support\Facades\Auth;
@@ -16,21 +18,23 @@ class BarangKeluarController extends Controller
     {
         $data['menus'] = $this->getDashboardMenu();
         $data['menu']  = Menu::select('id', 'name')->get();
+        $data['barang']= Barang::select('barang_id', 'nama_barang')->get();
         return view('BarangKeluar', $data);
     }
-    
 
     public function datatables()
     {
-        $data = BarangKeluar::orderBy('tgl_pengambilan', 'asc')->where('delete_mark', 0)
-        ->join('detail_barang_keluars', 'detail_barang_keluars.barang_keluar_id', '=', 'barang_keluars.barang_keluar_id')
-        ->get();
-
+        $data = DB::table('barang_keluars')
+                ->join('detail_barang_keluars', 'barang_keluars.barang_keluar_id', '=', 'detail_barang_keluars.barang_keluar_id')
+                ->join('barangs', 'detail_barang_keluars.barang_id', '=', 'barangs.barang_id')
+                ->where('barang_keluars.delete_mark', 0)
+                ->get();
         return datatables()->of($data)
             ->addIndexColumn()
             ->addColumn('action', function ($row) {
                 $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->barang_keluar_id . '" data-original-title="Edit" class="edit btn btn-primary btn-sm editBarang">Edit</a>';
                 $btn = $btn . ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->barang_keluar_id . '" data-original-title="Delete" class="btn btn-danger btn-sm deleteLandingPage">Delete</a>';
+                $btn = $btn . ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->barang_keluar_id . '" data-original-title="return" class="return btn btn-info btn-sm returnBarang">Return Barang</a>';
                 return $btn;
             })
             
@@ -40,18 +44,25 @@ class BarangKeluarController extends Controller
 
     public function store(Request $request)
     {
+        $barang = Barang::where('barang_id', $request->barang_code)->first();
+        if($barang->jumlah_barang < $request->jumlah){
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Jumlah barang tidak mencukupi',
+            ]);
+        }
+
         $attributes = $request->only([
-            'user_code',
-            'tanggal',
-            'nodofticket',
-            'keterangan_code',            
+            'nodofetiket_code',
+            'keterangan_code',   
+            'barang_code',
+            'jumlah',        
         ]);
         $roles = [
-            'user_code' => 'required | exists:users,id',
-            'tanggal' => 'required',
-            'nodofticket' => 'required',            
+            'nodofetiket_code' => 'required',
             'keterangan_code' => 'required',
-
+            'barang_code' => 'required',
+            'jumlah' => 'required',
         ];
         $messages = [
             'required' => trans('messages.required'),
@@ -61,22 +72,32 @@ class BarangKeluarController extends Controller
 
         DB::beginTransaction();
         try {        
-            $data = BarangKeluar::create([
-                'user_id' => $request->user_code,
-                'tgl_pengambilan' => $request->tanggal,
+            $data = DB::table('barang_keluars')->insert([
+                'user_id' => Auth::user()->id,
                 'no_dof_etiket' => $request->nodofetiket_code,
-                'keterangan' => $request->keterangan_code,             
-                'created_at' => now(),
-                'updated_at' => now(),
+                'tgl_pengambilan' => date('Y-m-d'),
+                'keterangan' => $request->keterangan_code,
+                'delete_mark' => 0,
             ]);
-            // $data = DB::table('barangkeluar')->insert([
-            // 'user_id' => $request->user_code,
-            // 'tgl_pengambilan' => $request->tanggal,
-            // 'no_dof_etiket' => $request->nodofetiket_code,
-            // 'keterangan' => $request->keterangan_code, 
-            //     'created_at' => now(),
-            //     'updated_at' => now(),
-            // ]);
+            if($data){
+                $barang_keluar_id = DB::getPdo()->lastInsertId();
+                $data = DB::table('detail_barang_keluars')->insert([
+                    'barang_keluar_id' => $barang_keluar_id,
+                    'barang_id' => $request->barang_code,
+                    'jumlah_barang_keluar' => $request->jumlah,
+                    'delete_mark' => 0,
+                ]);
+                $data = DB::table('barangs')->where('barang_id', $request->barang_code)->update([
+                    'jumlah_barang' => $barang->jumlah_barang - $request->jumlah,
+                ]);
+                
+                $data=array([
+                    'barang_keluar_id' => $barang_keluar_id,
+                    'barang_id' => $request->barang_code,
+                    'jumlah_barang_keluar' => $request->jumlah,
+                    'delete_mark' => 0,
+                ]);
+            }
             DB::commit();
             $response = responseSuccess(trans("messages.create-success"), $data);
             return response()->json($response, 200, [], JSON_PRETTY_PRINT);
@@ -166,5 +187,10 @@ class BarangKeluarController extends Controller
         BarangKeluar::destroy($id);
         $response = responseSuccess(trans('message.delete-success'));
         return response()->json($response,200);
+    }
+
+    public function getBarang($jenis_code){
+        $data = Barang::where('jenis_barang', $jenis_code)->get();
+        return response()->json($data);
     }
 }

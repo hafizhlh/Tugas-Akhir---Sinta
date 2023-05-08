@@ -35,14 +35,12 @@ class BarangController extends Controller
     public function store(Request $request)
     {
         $attributes = $request->only([
-            'user_code',
             'barang_name',
             'jenis_code',
             'jumlah_code',
             'keterangan_code',            
         ]);
         $roles = [
-            'user_code' => 'required | exists:users,id',
             'barang_name' => 'required',
             'jenis_code' => 'required',
             'jumlah_code' => 'required',
@@ -58,7 +56,7 @@ class BarangController extends Controller
         DB::beginTransaction();
         try {        
             $data = Barang::create([
-                'user_id' => $request->user_code,
+                'user_id' => Auth::user()->id,
                 'nama_barang' => $request->barang_name,
                 'jenis_barang' => $request->jenis_code,
                 'jumlah_barang' => (int)$request->jumlah_code,
@@ -90,7 +88,6 @@ class BarangController extends Controller
 
         $roles = [
             'barang_id' => 'required|exists:barangs,barang_id',
-
         ];
         $messages = [
             'required' => trans('messages.required'),
@@ -102,6 +99,7 @@ class BarangController extends Controller
         $data     = $this->findDataWhere(Barang::class, ['barang_id' => $id]);
         $response = responseSuccess(trans("messages.read-success"), $data);
         return response()->json($response, 200, [], JSON_PRETTY_PRINT);
+        return $id;
     }
 
     public function edit($id)

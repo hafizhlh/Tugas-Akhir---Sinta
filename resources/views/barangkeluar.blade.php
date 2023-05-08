@@ -136,15 +136,7 @@
                 <form role="form" class="form" name="formmenus" id="formmenus" enctype="multipart/formdata" method="">
                     <div class="modal-body" style="height: 500px;">
                         <div class="mb-7">
-                            <div class="form-group row">
-                                <label class="col-lg-3 col-form-label">User ID:</label>
-                                <div class="col-lg-9">
-                                    <input type="text" class="form-control" id="user_code" name="user_code"
-                                           placeholder="e.g: A000"/>
-                                    <span class="form-text text-muted">Masukkan id user anda</span>
-                                </div>
-                            </div>
-
+                        <input type="hidden" name="user_code" id="user_code">
                             <div class="form-group row">
                                 <label class="col-lg-3 col-form-label">NomorDOF/ E-Ticket:</label>
                                 <div class="col-lg-9">
@@ -159,8 +151,8 @@
                 <div class="col-lg-9">
                     <select class="form-control" id="jenis_code" name="jenis_code">
                         <option value="">Pilih jenis barang</option>
-                        <option value="persediaan">Persediaan</option>
-                        <option value="asset">Asset</option>
+                        <option value="1">Persediaan</option>
+                        <option value="2">Asset</option>
                     </select>
                     <span class="form-text text-muted">Pilih jenis barang untuk menampilkan opsi barang</span>
                 </div>
@@ -168,51 +160,29 @@
             <div class="form-group row">
                 <label class="col-lg-3 col-form-label">Barang:</label>
                 <div class="col-lg-9">
-                    <select class="form-control" id="barang_code" name="barang_code">
-                        <option value="">Pilih barang</option>
+                    <select class="form-control select2" id="barang_code" name="barang_code" style="width: 100%;">
+                        <option class="form-control"
+                                    value=''>Pilih barang</option>
                     </select>
-                    <span class="form-text text-muted">Pilih barang yang akan dikeluarkan</span>
                 </div>
             </div>
             <div class="form-group row">
-                <label class="col-lg-3 col-form-label">Jenis Barang Baru:</label>
+                <label class="col-lg-3 col-form-label">Jumlah Barang:</label>
                 <div class="col-lg-9">
-                    <input type="text" class="form-control" id="jenis_code_baru" name="jenis_code_baru" />
-                    <span class="form-text text-muted">Masukkan jenis barang baru jika tidak ada di opsi di atas</span>
+                    <input type="number" class="form-control" id="jumlah" name="jumlah"
+                            placeholder="e.g:100"/>
+                    <span class="form-text text-muted">Masukkan Jumlah Barang</span>
                 </div>
             </div>
             <div class="form-group row">
-                <label class="col-lg-3 col-form-label">Barang Baru:</label>
+                <label class="col-lg-3 col-form-label">Keterangan Barang:</label>
                 <div class="col-lg-9">
-                    <input type="text" class="form-control" id="barang_code_baru" name="barang_code_baru" />
-                    <span class="form-text text-muted">Masukkan nama barang baru jika tidak ada di opsi di atas</span>
+                    <input type="text" class="form-control" id="keterangan_code" name="keterangan_code"
+                            placeholder="e.g:untuk router"/>
+                    <span class="form-text text-muted">Masukkan keterangan Barang</span>
                 </div>
-            </div>
-                
-                
-                
-                           
-
-
-<!--  -->
-                            <div class="form-group row">
-                                <label class="col-lg-3 col-form-label">Jumlah Barang:</label>
-                                <div class="col-lg-9">
-                                    <input type="number" class="form-control" id="jumlah" name="jumlah"
-                                           placeholder="e.g:100"/>
-                                    <span class="form-text text-muted">Masukkan Jumlah Barang</span>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-lg-3 col-form-label">Keterangan Barang:</label>
-                                <div class="col-lg-9">
-                                    <input type="text" class="form-control" id="keterangan_code" name="keterangan_code"
-                                           placeholder="e.g:untuk router"/>
-                                    <span class="form-text text-muted">Masukkan keterangan Barang</span>
-                                </div>
-                            </div>
-                           
-                        </div>
+            </div>    
+        </div>
 
                     </div>
 
@@ -220,7 +190,7 @@
                         <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal"><i
                                     class="fa fa-times"></i>Cancel
                         </button>
-                        @can(['barang-C' , 'barang-U'])
+                        @can(['barangkeluar-C' , 'barangkeluar-U'])
                             <button type="submit" id="saveMenu" data-id="" class="btn btn-primary font-weight-bold">
                                 <i class="fa fa-save"></i> Save changes
                             </button>
@@ -231,7 +201,81 @@
             </div>
         </div>
     </div>
+
+    
     <!--end:Modal-->
+
+    <div class="modal fade" id="modalReturn" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalReturnTitle">Return barang</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <i aria-hidden="true" class="ki ki-close"></i>
+                    </button>
+                </div>
+                
+                <!--begin:Form-->
+                <script src="script.js"></script>
+                <form role="form" class="form" name="formreturn" id="formreturn" enctype="multipart/formdata" method="">
+                    <input type="hidden" name="id_barang_keluar" id="id_barang_keluar" >
+                    
+                    <div class="modal-body" style="height: 500px;">
+                        <div class="mb-7">
+                        <input type="hidden" name="user_code" id="user_code">
+                            <div class="form-group row">
+                                <label class="col-lg-3 col-form-label">NomorDOF/ E-Ticket:</label>
+                                <div class="col-lg-9">
+                                    <input type="text" class="form-control" id="nodof_code" name="nodofetiket_code"
+                                           placeholder="e.g:10451 /GS-10571" disabled/>
+                                    <span class="form-text text-muted">masukan DOF(Deep Of Field)/ E-Ticket(</span>
+                                </div>
+                            </div>
+                            <!--  -->
+                <div class="form-group row">
+                <label class="col-lg-3 col-form-label">Jenis Barang:</label>
+                <div class="col-lg-9">
+                        
+                    <input type="text" class="form-control" id="tipebarang_code" name="jenis_code" disabled>
+                    <span class="form-text text-muted">Pilih jenis barang untuk menampilkan opsi barang</span>
+                </div>
+            </div>
+            <input type="hidden" class="form-control" id="barang_id" name="barang_id">
+            <div class="form-group row">
+                <label class="col-lg-3 col-form-label">Barang:</label>
+                <div class="col-lg-9">
+                    <input type="text" class="form-control" id="barangdikembalikan_code" name="barang_code" readonly>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-lg-3 col-form-label">Jumlah Barang:</label>
+                <div class="col-lg-9">
+                    <input type="number" class="form-control" id="jumlahdikembalikan" name="jumlah"
+                            placeholder="e.g:100"/>
+                    <span class="form-text text-muted">Masukkan Jumlah Barang</span>
+                </div>
+            </div>
+               
+        </div>
+
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal"><i
+                                    class="fa fa-times"></i>Cancel
+                        </button>
+                        @can(['barangkeluar-C' , 'barangkeluar-U'])
+                            <button type="submit" id="btn_return_barang" data-id="" class="btn btn-primary font-weight-bold">
+                                <i class="fa fa-reply"></i> Save changes
+                            </button>
+                        @endcan
+                    </div>
+                </form>
+                <!--end:Form-->
+            </div>
+        </div>
+    </div>
 
 @endsection
 
@@ -245,7 +289,27 @@
 
         $(document).ready(function () {
 
+            
             $('.select2').select2();
+            $('#jenis_code').on('change', function () {
+                var jenis_code = $(this).val();
+                if (jenis_code) {
+                    $.ajax({
+                        url: './getBarang/' + jenis_code,
+                        type: "GET",
+                        dataType: "json",
+                        success: function (data) {
+                            $('select[name="barang_code"]').empty();
+                            $.each(data, function (key, value) {
+                                $('select[name="barang_code"]').append('<option value="' + value.barang_id + '">' + value.nama_barang + '</option>');
+                            });
+                        }
+                    });
+                } else {
+                   
+                    $('select[name="barang_code"]').empty();
+                }
+            });
 
             var datatable = $('#kt_datatable_menu');
 
@@ -258,7 +322,7 @@
                     source: {
                         read: {
                             method: 'GET',
-                            url: './barangkeluar/list'
+                            url: '/BarangKeluar/list'
                         }
                     },
                     pageSize: 10,
@@ -278,37 +342,41 @@
                 // columns definition
                 columns: [
                     {
-                        field: 'tanggal_keluar',
-                        title: 'tanggal keluar',
+                        field: 'barang_keluar_id',
+                        title: 'id barang keluar',
+                        // make center aligment.
+                        textAlign: 'center',
                         
                     },
                     {
-                        field: 'nodofeticket_code',
+                        field: 'nama_barang',
+                        title: 'nama barang',
+                        textAlign: 'center',
+
+                    },
+                    {
+                        field: 'jumlah_barang_keluar',
+                        title: 'jumlah',
+                        textAlign: 'center',
+                    },
+                    {
+                        field: 'no_dof_etiket',
                         title: 'nodof/eticket',
-
+                        textAlign: 'center',
                     },
                     {
-                        field:'user_name',
-                        title:'nama user'
+                        field:'tgl_pengambilan',
+                        title:'tanggal pengambilan',
+                        textAlign: 'center',
                     },
-                    { field:'jenis_code_barang', 
-                      title:'jenis barang'
-                    },
-                    
-                    {
-                        field: 'barang_code',
-                        title: 'barang',
-                    },
-                    {
-                        field: 'jumlah_barang',
-                        title: 'jumlah barang',
+                    { 
+                        field:'keterangan', 
+                        title:'keterangan',
+                        autoHide: false,
+                        overflow: 'visible',
+                        textAlign: 'center',
                     },
                     {
-                        field: 'keterangan_code',
-                        title: 'keterangan barang',
-
-                    },
-                     {
                         field: 'Actions',
                         title: 'Actions',
                         sortable: false,
@@ -320,8 +388,11 @@
                                     @can('barangkeluar-U')
                                         "<button type='button' class='edits btn btn-sm btn-icon btn-outline-warning ' title='Edit' data-toggle='tooltip' data-id=" + row.barang_keluar_id + " ><i class='fa fa-edit'></i> </button>  " +
                                     @endcan
-                                            @can('barangkeluar-D')
+                                    @can('barangkeluar-D')
                                         "<button type='button' class='deletes btn-sm btn btn-icon btn-outline-danger' title='Delete' data-toggle='tooltip' alt='' data-id=" + row.barang_keluar_id+ " ><i class='fa fa-trash'></i></button>  " +
+                                    @endcan
+                                    @can('barangkeluar-U')
+                                        "<button type='button' class='returns btn btn-sm btn-icon btn-outline-info ' title='Return' data-toggle='tooltip' data-id=" + row.barang_keluar_id + " ><i class='fa fa-reply-all'></i> </button>  " +
                                     @endcan
                                         "</center>";
                         },
@@ -335,7 +406,7 @@
             @can('barangkeluar-C')
             $(document).on('click', '#addMenu', function () {
                 $("#saveMenu").data("id", "");
-                $('#modalMenuTitle').text('Create barnag'
+                $('#modalMenuTitle').text('Mengeluarkan Barang'
                 );
                 $('#modalMenu').modal('show');
                 $(`.form-control`).removeClass('is-invalid');
@@ -382,7 +453,41 @@
                     $('#modalMenu').modal('show');
                 });
             });
-
+            $(document).on('click', '.returns', function () {
+                $.ajax({
+                    type: 'GET', // define the type of HTTP verb we want to use (POST for our form)
+                    url: './returnbarang/' + $(this).data('id'), // the url where we want to POST
+                    beforeSend: function () {
+                        let form = document.forms.formreturn; // <form name="formmenus"> element
+                        form.reset();
+                        $(`.form-control`).removeClass('is-invalid');
+                        $(`.invalid-feedback`).remove();
+                    }
+                }).done(function (res) {
+                    let form = document.forms.formmenus; // <form name="formmenus"> element
+                    console.log(res.success);
+                    if (res.success) {
+                        showtoastr('success', res.message);
+                        console.log(res.data[0])
+                        $('#id_barang_keluar').val(res.data[0].barang_keluar_id);
+                        // $('#tanggal_code').val(res.data.tanggal_keluar);
+                        $('#barang_id').val(res.data[0].barang_id);
+                        $('#nodof_code').val(res.data[0].no_dof_etiket);
+                        $('#barangdikembalikan_code').val(res.data[0].nama_barang);                        
+                        $('#tipebarang_code').val(res.data[0].jenis_barang);
+                        $('#jumlahdikembalikan').val(res.data.jumlah_barang);                        
+                        $("#saveMenu").data("id", res.data.barang_id);
+                    }
+                }).fail(function (data) {
+                    show_toastr('error', data.responseJSON.status, data.responseJSON.message);
+                    $.each(data.responseJSON.errors, function (index, value) {
+                        show_toastr('error', index, value);
+                    });
+                }).always(function () {
+                    $('#modalReturnTitle').text('Return Barang');
+                    $('#modalReturn').modal('show');
+                });
+            });
             @endcan
 
             @can(['barangkeluar-C', 'barangkeluar-U'])
@@ -407,6 +512,50 @@
                     dataType: 'JSON', // what type of data do we expect back from the server
                     contentType: false,
                     processData: false,
+                    beforeSend: function () {
+                        $(`.form-control`).removeClass('is-invalid');
+                        $(`.invalid-feedback`).remove();
+                        $('#saveMenu').attr('disabled', true).html("<i class='fa fa-spinner fa-spin'></i> processing");
+                    }
+                }).done(function (data) {
+                    $("#modalMenu").modal('hide');
+                    showtoastr('success', data.message);
+                    $("#saveMenu").data("id", "");
+                    $("#formmenus")[0].reset();
+                    menuID = "";
+                    let form = document.forms.formmenus; // <form name="formmenus"> element
+                    form.reset();
+                    datatable.reload();
+                }).fail(function (data) {
+                    show_toastr('error', data.responseJSON.status, data.responseJSON.message);
+                    $.each(data.responseJSON.errors, function (index, value) {
+                        if ($(`input[name='${index}']`)) {
+                            $(`input[name='${index}']`).addClass(`is-invalid`);
+                            $(`input[name='${index}']`).after(`<div class="invalid-feedback">${value}</div>`);
+                        }
+                        show_toastr('error', index, value);
+                    });
+                }).always(function () {
+                    $('#saveMenu').attr('disabled', false).html("<i class='fa fa-save'></i> Save");
+                });
+            });
+            @endcan
+
+            @can(['barangkeluar-C', 'barangkeluar-U'])
+            $('#formreturn').submit(function (e) {
+                e.preventDefault();
+               
+                $.ajax({
+                    type: "POST", // define the type of HTTP verb we want to use (POST for our form)
+                    url: './returnbarang/', // the url where we want to POST
+                    data: {
+                        'barang_keluar_id': $('#id_barang_keluar').val(),
+                        'jumlah': $('#jumlahdikembalikan').val(),
+                        'barang_id': $('#barang_id').val(),
+                    },
+                    dataType: 'JSON', // what type of data do we expect back from the server
+                    // contentType: false,
+                    // processData: false,
                     beforeSend: function () {
                         $(`.form-control`).removeClass('is-invalid');
                         $(`.invalid-feedback`).remove();

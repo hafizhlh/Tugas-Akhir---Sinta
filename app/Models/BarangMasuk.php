@@ -6,11 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class BarangMasuk extends Model
 {
-    protected $table = 'barang_masuk';
+    protected $table = 'barang_masuks';
     protected $primaryKey = 'barang_masuk_id';
     protected $fillable = [
-        'barang_masuk_id',
-        'tanggal_barang_masuk',        
+        'tanggal_barang_masuk',
         'delete_mark',
     ];
+    public $timestamps = false;
 }

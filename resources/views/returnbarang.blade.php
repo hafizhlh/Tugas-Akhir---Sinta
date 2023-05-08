@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'Barang')
+@section('title', 'ReturnBarang')
 
 @section('css_page')
     <!-- BEGIN VENDOR CSS-->
@@ -45,7 +45,7 @@
                     <!--end::Page Title-->
                     <!--begin::Actions-->
                     <div class="subheader-separator subheader-separator-ver mt-2 mb-2 mr-4 bg-gray-200"></div>
-                    <h5 class="text-dark font-weight-bold mt-2 mb-2 mr-5">Barang</h5>
+                    <h5 class="text-dark font-weight-bold mt-2 mb-2 mr-5">Return Barang</h5>
                     <!--end::Actions-->
                 </div>
                 <div>
@@ -67,17 +67,17 @@
                 <div class="card card-custom gutter-b">
                     <div class="card-header flex-wrap py-3">
                         <div class="card-title">
-                            <h3 class="card-label">Data Barang
+                            <h3 class="card-label">Data Return Barang
                                 <span class="d-block text-muted pt-2 font-size-sm"></span></h3>
                         </div>
                         <div class="card-toolbar">
                             <!--begin::Button-->
-                            @can('barang-C')
+                            @can('returnbarang-C')
                                 <button id="addMenu" name="addMenu" class="btn btn-primary font-weight-bolder">
                                     <span class="svg-icon svg-icon-md">
                                         <!--begin::Svg Icon | path:assets/media/svg/icons/Design/Flatten.svg-->
                                         <!--end::Svg Icon-->
-                                    </span>Barang Baru</a>
+                                    </span>Barang Return
                                 </button>
                         @endcan
                         <!--end::Button-->
@@ -120,77 +120,7 @@
         <!--end::Entry-->
     </div>
 
-    <!--begin:Modal-->
-    <div class="modal fade" id="modalMenu" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-         aria-hidden="true">
-        <div class="modal-dialog modal-dialog-scrollable" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modalMenuTitle">Create Barang</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <i aria-hidden="true" class="ki ki-close"></i>
-                    </button>
-                </div>
-                <!--begin:Form-->
-                <form role="form" class="form" name="formmenus" id="formmenus" enctype="multipart/formdata" method="">
-                    <div class="modal-body" style="height: 400px;">
-                    <input type="hidden" name="user_code" id="user_code">
-                        <div class="mb-7">
-                            <div class="form-group row">
-                                <label class="col-lg-3 col-form-label">Nama Barang:</label>
-                                <div class="col-lg-9">
-                                    <input type="text" class="form-control" id="barang_name" name="barang_name"
-                                           placeholder="e.g:TOTOLINK N200RE Mini Wireless N Router 300Mbps - v.4"/>
-                                    <span class="form-text text-muted">Masukkan nama Barang</span>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-lg-3 col-form-label">Jenis Barang:</label>
-                                <div class="col-lg-9">
-                                    <select class="form-control" id="jenis_code" name="jenis_code">
-                                        <option value="">Pilih Jenis Barang</option>
-                                        <option value="1">Consummables</option>
-                                        <option value="2">Asset</option>
-                                    </select>
-                                    <span class="form-text text-muted">Masukkan Jenis Barang</span>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-lg-3 col-form-label">Jumlah Barang:</label>
-                                <div class="col-lg-9">
-                                    <input type="number" class="form-control" id="jumlah_code" name="jumlah_code"
-                                           placeholder="e.g:100"/>
-                                    <span class="form-text text-muted">Masukkan Jumlah Barang</span>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-lg-3 col-form-label">Keterangan Barang:</label>
-                                <div class="col-lg-9">
-                                    <input type="text" class="form-control" id="keterangan_code" name="keterangan_code"
-                                           placeholder="e.g:untuk router"/>
-                                    <span class="form-text text-muted">Masukkan keterangan Barang</span>
-                                </div>
-                            </div>
-                           
-                        </div>
 
-                    </div>
-
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal"><i
-                                    class="fa fa-times"></i>Cancel
-                        </button>
-                        @can(['barang-C' , 'barang-U'])
-                            <button type="submit" id="saveMenu" data-id="" class="btn btn-primary font-weight-bold">
-                                <i class="fa fa-save"></i> Save changes
-                            </button>
-                        @endcan
-                    </div>
-                </form>
-                <!--end:Form-->
-            </div>
-        </div>
-    </div>
     <!--end:Modal-->
 
 @endsection
@@ -206,10 +136,28 @@
         $(document).ready(function () {
 
             $('.select2').select2();
-
+            $('#jenis_code').on('change', function () {
+                var jenis_code = $(this).val();
+                if (jenis_code) {
+                    $.ajax({
+                        url: './getBarang/' + jenis_code,
+                        type: "GET",
+                        dataType: "json",
+                        success: function (data) {
+                            $('select[name="barang_code"]').empty();
+                            $.each(data, function (key, value) {
+                                $('select[name="barang_code"]').append('<option value="' + value.barang_id + '">' + value.nama_barang + '</option>');
+                            });
+                        }
+                    });
+                } else {
+                   
+                    $('select[name="barang_code"]').empty();
+                }
+            });
             var datatable = $('#kt_datatable_menu');
 
-            @can('barang-R')
+            @can('returnbarang-R')
 
             datatable.KTDatatable({
                 // datasource definition
@@ -218,7 +166,7 @@
                     source: {
                         read: {
                             method: 'GET',
-                            url: '/barang/list'
+                            url: './returnbarang/list'
                         }
                     },
                     pageSize: 10,
@@ -238,11 +186,15 @@
                 // columns definition
                 columns: [
                     {
+                        field: 'return_id',
+                        title: 'id return',
+                    }, 
+                    {
                         field: 'nama_barang',
                         title: 'nama barang',
                     }, {
                         field: 'jumlah_barang',
-                        title: 'jumlah barang',
+                        title: 'jumlah_barang_return',
                     }, {
                         field: 'Actions',
                         title: 'Actions',
@@ -252,10 +204,10 @@
                         overflow: 'visible',
                         template: function (row) {
                             return "<center>" +
-                                    @can('barang-U')
+                                    @can('returnbarang-U')
                                         "<button type='button' class='edits btn btn-sm btn-icon btn-outline-warning ' title='Edit' data-toggle='tooltip' data-id=" + row.barang_id + " ><i class='fa fa-edit'></i> </button>  " +
                                     @endcan
-                                            @can('barang-D')
+                                            @can('returnbarang-D')
                                         "<button type='button' class='deletes btn-sm btn btn-icon btn-outline-danger' title='Delete' data-toggle='tooltip' alt='' data-id=" + row.barang_id+ " ><i class='fa fa-trash'></i></button>  " +
                                     @endcan
                                         "</center>";
@@ -267,11 +219,10 @@
             });
             @endcan
 
-            @can('barang-C')
+            @can('returnbarang-C')
             $(document).on('click', '#addMenu', function () {
                 $("#saveMenu").data("id", "");
-                $('#modalMenuTitle').text('Create barnag'
-                );
+                $('#modalMenuTitle').text('Mengembalikan Barang');
                 $('#modalMenu').modal('show');
                 $(`.form-control`).removeClass('is-invalid');
                 $(`.invalid-feedback`).remove();
@@ -282,11 +233,11 @@
 
             @endcan
 
-            @can('barang-U')
+            @can('returnbarang-U')
             $(document).on('click', '.edits', function () {
                 $.ajax({
                     type: 'GET', // define the type of HTTP verb we want to use (POST for our form)
-                    url: './barang/' + $(this).data('id'), // the url where we want to POST
+                    url: './returnbarang/' + $(this).data('id'), // the url where we want to POST
                     beforeSend: function () {
                         let form = document.forms.formmenus; // <form name="formmenus"> element
                         form.reset();
@@ -318,7 +269,7 @@
 
             @endcan
 
-            @can(['barang-C', 'barang-U'])
+            @can(['returnbarang-C', 'returnbarang-U'])
             $('#formmenus').submit(function (e) {
                 e.preventDefault();
                 var formData = new FormData($("#formmenus")[0]);
@@ -327,9 +278,9 @@
                 let menuID = $("#saveMenu").data("id");
                 
                 if (typeof menuID == "undefined" || menuID == "") {
-                    var url = `./barang`;
+                    var url = `./returnbarang`;
                 } else {
-                    var url = `./barang/${menuID}/update`;
+                    var url = `./returnbarang/${menuID}/update`;
                 }
                 //var url = (menuID != "" || menuID != undefined) ? `./company/${menuID}/update` : `./company`;
 
@@ -369,7 +320,7 @@
             });
             @endcan
 
-            @can('barang-D')
+            @can('returnbarang-D')
             $(document).on('click', '.deletes', function () {
                 Swal.fire({
                     title: 'Are you sure?',
@@ -386,7 +337,7 @@
                 {
                     $.ajax({
                         type: 'DELETE', // define the type of HTTP verb we want to use (POST for our form)
-                        url: './barang/' + $(this).data('id'), // the url where we want to POST
+                        url: './returnbarang/' + $(this).data('id'), // the url where we want to POST
                     })
                         .done(function (data) {
                             showtoastr('success', data.message);
