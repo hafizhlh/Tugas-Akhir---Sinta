@@ -26,6 +26,7 @@ class BarangController extends Controller
             ->addColumn('action', function ($row) {
                 $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->barang_id . '" data-original-title="Edit" class="edit btn btn-primary btn-sm editBarang">Edit</a>';
                 $btn = $btn . ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->barang_id . '" data-original-title="Delete" class="btn btn-danger btn-sm deleteLandingPage">Delete</a>';
+                $btn = $btn . ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->barang_id . '" data-nama="' . $row->nama_barang.'" data-barcode="'.$row->barcode_barang.'" data-jenis_barang="'.$row->jenis_barang.'" data-jumlah_barang="'.$row->jumlah_barang.'" data-keterangan_barang="'.$row->keterangan_barang.'" data-original-title="Detail" class="btn btn-info btn-sm detailLandingPage">Detail</a>';
                 return $btn;
             })
             ->rawColumns(['action'])
@@ -38,26 +39,31 @@ class BarangController extends Controller
             'barang_name',
             'jenis_code',
             'jumlah_code',
+            'barcode',
             'keterangan_code',            
         ]);
         $roles = [
             'barang_name' => 'required',
             'jenis_code' => 'required',
             'jumlah_code' => 'required',
+            'barcode' => 'required|unique:barangs,barcode_barang',
             'keterangan_code' => 'required',
 
         ];
         $messages = [
             'required' => trans('messages.required'),
+            'unique'=>trans('messages.unique'),
         ];
 
         $this->validators($attributes, $roles, $messages);
+    
 
         DB::beginTransaction();
         try {        
             $data = Barang::create([
                 'user_id' => Auth::user()->id,
                 'nama_barang' => $request->barang_name,
+                'barcode_barang' => $request->barcode,
                 'jenis_barang' => $request->jenis_code,
                 'jumlah_barang' => (int)$request->jumlah_code,
                 'keterangan_barang' => $request->keterangan_code,

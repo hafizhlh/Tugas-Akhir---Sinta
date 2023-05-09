@@ -35,6 +35,7 @@ class BarangKeluarController extends Controller
                 $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->barang_keluar_id . '" data-original-title="Edit" class="edit btn btn-primary btn-sm editBarang">Edit</a>';
                 $btn = $btn . ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->barang_keluar_id . '" data-original-title="Delete" class="btn btn-danger btn-sm deleteLandingPage">Delete</a>';
                 $btn = $btn . ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->barang_keluar_id . '" data-original-title="return" class="return btn btn-info btn-sm returnBarang">Return Barang</a>';
+                $btn = $btn . ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->barang_keluar_id . '" data-user_id="'.$row->user_id .'" data-tgl_pengambilan="'.$row->tgl_pengambilan.'"data-no_dof_etiket="'.$row->no_dof_etiket.'"data-nama="' . $row->nama_barang.'" data-barcode="'.$row->barcode_barang.'" data-jenis_barang="'.$row->jenis_barang.'"data-keterangan="'.$row->keterangan.'"data-jumlah_barang_keluar="'.$row->jumlah_barang_keluar.'" data-keterangan_barang="'.$row->keterangan_barang.'"   data-original-title="Detail" class="btn btn-info btn-sm detailLandingPage">Detail</a>';
                 return $btn;
             })
             

@@ -145,6 +145,15 @@
                                 </div>
                             </div>
                             <div class="form-group row">
+                                <label class="col-lg-3 col-form-label">Kode Barcode:</label>
+                                <div class="col-lg-9">
+                                    <input type="text" class="form-control" id="barcode" name="barcode"
+                                           placeholder="contoh:SW.PG.abc.123.123"/>
+                                    <span class="form-text text-muted">Masukkan kode</span>
+                                </div>
+                            </div>
+                             
+                            <div class="form-group row">
                                 <label class="col-lg-3 col-form-label">Jenis Barang:</label>
                                 <div class="col-lg-9">
                                     <select class="form-control" id="jenis_code" name="jenis_code">
@@ -191,6 +200,84 @@
             </div>
         </div>
     </div>
+    <!--end:Modal-->
+
+
+      <!--begin:Modal info-->
+    <div class="modal fade" id="modalInfo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalMenuTitle">Informasi Barang</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <i aria-hidden="true" class="ki ki-close"></i>
+                    </button>
+                </div>
+                <!--begin:Form-->
+                <form role="form" class="form" name="formmenus" id="formmenus" enctype="multipart/formdata" method="">
+                    <div class="modal-body" style="height: 400px;">
+                        <input type="hidden" name="user_code" id="user_code">
+                        <div class="mb-7">
+                            <div class="form-group row">
+                                <label class="col-lg-3 col-form-label">Nama Barang:</label>
+                                <div class="col-lg-9">
+                                    <input type="text" class="form-control" id="barang_name_detail" name="barang_name_detail"
+                                           placeholder="e.g:TOTOLINK N200RE Mini Wireless N Router 300Mbps - v.4" readonly/>
+                                    <span class="form-text text-muted" >Masukkan nama Barang</span>
+                                 
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-lg-3 col-form-label">Kode Barcode:</label>
+                                <div class="col-lg-9">
+                                    <input type="text" class="form-control" id="barcode_detail" name="barcode_detail"
+                                           placeholder="contoh:SW.PG.abc.123.123" readonly/>
+                                    <span class="form-text text-muted">Masukkan kode</span>
+                                </div>
+                            </div>
+                             
+                            <div class="form-group row">
+                                <label class="col-lg-3 col-form-label">Jenis Barang:</label>
+                                <div class="col-lg-9">
+                                    <input type="text" class="form-control" id="jenis_code_detail" name="jenis_code_detail"
+                                    readonly/>
+                                    
+                                    <span class="form-text text-muted">Masukkan Jenis Barang</span>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-lg-3 col-form-label">Jumlah Barang:</label>
+                                <div class="col-lg-9">
+                                    <input type="number" class="form-control" id="jumlah_code_detail" name="jumlah_code_detail"
+                                    readonly/>
+                                    <span class="form-text text-muted">Masukkan Jumlah Barang</span>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-lg-3 col-form-label">Keterangan Barang:</label>
+                                <div class="col-lg-9">
+                                    <input type="text" class="form-control" id="keterangan_code_detail" name="keterangan_code_detail"
+                                    readonly/>
+                                    <span class="form-text text-muted" readonly>Masukkan keterangan Barang</span>
+                                </div>
+                            </div>
+                           
+                        </div>
+
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">
+                            <i class="fa fa-times"></i>Tutup
+                        </button>
+                    </div>
+                </form>
+                <!--end:Form-->
+            </div>
+        </div>
+    </div>
+
     <!--end:Modal-->
 
 @endsection
@@ -257,8 +344,13 @@
                                     @endcan
                                             @can('barang-D')
                                         "<button type='button' class='deletes btn-sm btn btn-icon btn-outline-danger' title='Delete' data-toggle='tooltip' alt='' data-id=" + row.barang_id+ " ><i class='fa fa-trash'></i></button>  " +
-                                    @endcan
-                                        "</center>";
+                                    @endcan                                  
+                                            @can ('barang-R')
+                                        "<button type='button' class='details btn btn-sm btn-icon btn-outline-info ' title='Detail' data-toggle='tooltip' data-id=" + row.barang_id + " data-nama="+row.nama_barang+" data-barcode="+row.barcode_barang+" data-jenis_barang="+row.jenis_barang+" data-jumlah_barang="+row.jumlah_barang+" data-keterangan_barang="+row.keterangan_barang+"><i class='fa fa-eye'></i> </button>  " +
+                                      
+                                        @endcan
+                                            "</center>";
+                                        
                         },
                     }
                 ],
@@ -270,7 +362,7 @@
             @can('barang-C')
             $(document).on('click', '#addMenu', function () {
                 $("#saveMenu").data("id", "");
-                $('#modalMenuTitle').text('Create barnag'
+                $('#modalMenuTitle').text('Create barangg'
                 );
                 $('#modalMenu').modal('show');
                 $(`.form-control`).removeClass('is-invalid');
@@ -279,7 +371,6 @@
                 form.reset();
                 
             });
-
             @endcan
 
             @can('barang-U')
@@ -299,6 +390,7 @@
                     if (res.success) {
                         showtoastr('success', res.message);
                         $('#user_code').val(res.data.user_id);
+                        $('#barcode').val(res.data.barcode_barang);                        
                         $('#barang_name').val(res.data.nama_barang);
                         $('#jenis_code').val(res.data.jenis_barang);
                         $('#jumlah_code').val(res.data.jumlah_barang);                        
@@ -316,7 +408,62 @@
                 });
             });
 
+            $(document).on('click', '.returns', function () {
+                $.ajax({
+                    type: 'GET', // define the type of HTTP verb we want to use (POST for our form)
+                    url: './returnbarang/' + $(this).data('id'), // the url where we want to POST
+                    beforeSend: function () {
+                        let form = document.forms.formreturn; // <form name="formmenus"> element
+                        form.reset();
+                        $(`.form-control`).removeClass('is-invalid');
+                        $(`.invalid-feedback`).remove();
+                    }
+                }).done(function (res) {
+                    let form = document.forms.formmenus; // <form name="formmenus"> element
+                    console.log(res.success);
+                    if (res.success) {
+                        showtoastr('success', res.message);
+                        console.log(res.data[0])
+                        $('#id_barang_keluar').val(res.data[0].barang_keluar_id);
+                        // $('#tanggal_code').val(res.data.tanggal_keluar);
+                        $('#barang_id').val(res.data[0].barang_id);
+                        $('#nodof_code').val(res.data[0].no_dof_etiket);
+                        $('#barangdikembalikan_code').val(res.data[0].nama_barang);                        
+                        $('#tipebarang_code').val(res.data[0].jenis_barang);
+                        $('#jumlahdikembalikan').val(res.data.jumlah_barang);                        
+                        $("#saveMenu").data("id", res.data.barang_id);
+                    }
+                }).fail(function (data) {
+                    show_toastr('error', data.responseJSON.status, data.responseJSON.message);
+                    $.each(data.responseJSON.errors, function (index, value) {
+                        show_toastr('error', index, value);
+                    });
+                }).always(function () {
+                    $('#modalReturnTitle').text('Return Barang');
+                    $('#modalReturn').modal('show');
+                });
+            });
             @endcan
+
+            $(document).on('click', '.details', function(){
+                $('#barang_name_detail').val($(this).data('nama'));
+                $('#barcode_detail').val($(this).data('barcode'));
+                var kode = $(this).data('jenis_barang');
+                if(kode == 1){
+                    $('#jenis_code_detail').val('Consummables');
+                }else{
+                    $('#jenis_code_detail').val('Asset');
+                }   
+
+                $('#jenis_code_detail').val();
+                
+
+                $('#jumlah_code_detail').val($(this).data('jumlah_barang'));
+                $('#keterangan_code_detail').val($(this).data('keterangan_barang'));
+
+                // show modal
+                $('#modalInfo').modal('show');
+            })
 
             @can(['barang-C', 'barang-U'])
             $('#formmenus').submit(function (e) {
@@ -381,15 +528,14 @@
                     confirmButtonText: 'Yes, delete it!'
                 })
                     .then(isConfirm => {
-                    if(isConfirm.isConfirmed
-            )
-                {
+                    if(isConfirm.isConfirmed){
                     $.ajax({
                         type: 'DELETE', // define the type of HTTP verb we want to use (POST for our form)
                         url: './barang/' + $(this).data('id'), // the url where we want to POST
                     })
                         .done(function (data) {
                             showtoastr('success', data.message);
+                            
                         })
                         .fail(function (data) {
                             show_toastr('error', data.responseJSON.status, data.responseJSON.message);

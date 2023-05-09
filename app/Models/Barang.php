@@ -16,5 +16,6 @@ class Barang extends Model
         'jenis_barang',
         'jumlah_barang',
         'keterangan_barang',
+        'barcode_barang',
     ];
 }

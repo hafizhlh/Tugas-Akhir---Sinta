@@ -36,6 +36,7 @@ class BarangMasukController extends Controller
             ->addColumn('action', function ($row) {
                 $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->id_barang_masuk . '" data-original-title="Edit" class="edit btn btn-primary btn-sm editBarang">Edit</a>';
                 $btn = $btn . ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->id_barang_masuk . '" data-original-title="Delete" class="btn btn-danger btn-sm deleteLandingPage">Delete</a>';
+                $btn = $btn . ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->id_barang_masuk . '" data-tanggal_barang_masuk="'.$row->tanggal_barang_masuk.'"data-nama_barang="'.$row->nama_barang.'"data-jenis_barang="'.$row->jenis_barang.'"data-jumlah_barang_masuk="'.$row->jumlah_barang_masuk.'" data-jumlah_barang="'.$row->jumlah_barang .'"data-keterangan_barang="'.$row->keterangan_barang.'"data-original-title="Detail" class="btn btn-info btn-sm detailBarang">Detail</a>';
                 return $btn;
             })
 

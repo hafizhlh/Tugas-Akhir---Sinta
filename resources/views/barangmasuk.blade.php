@@ -189,6 +189,88 @@
         </div>
     </div>
     <!--end:Modal-->
+    <!--begin:ModalInformasi-->
+    <div class="modal fade" id="modalInfo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalnfoTitle">Informasi Barang Masuk</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <i aria-hidden="true" class="ki ki-close"></i>
+                    </button>
+                </div>
+                  <!--begin:Form-->
+                  <script src="script.js"></script>
+                   <div class="modal-body" style="height: 500px;">
+                        <div class="mb-7">
+                       
+                        
+                            <!--  -->
+                            <div class="form-group row">
+                <label class="col-lg-3 col-form-label">tanggal barang masuk:</label>
+                <div class="col-lg-9">
+                    <input type="text" class="form-control" id="tanggal_barang_masuk" name="tanggal_barang_masuk"
+                         readonly   />
+                  
+                </div>
+            </div>
+                <div class="form-group row">
+                <label class="col-lg-3 col-form-label">Jenis Barang:</label>
+                <div class="col-lg-9">
+                    <input type="text" class="form-control" id="jenis_code_detail" name="jenis_code"
+                         readonly   />
+                  
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-lg-3 col-form-label">Barang:</label>
+                <div class="col-lg-9">
+                    <input type="text" class="form-control" id="barang_code_detail" name="barang_code"
+                         readonly   />
+                </div>
+            </div>
+            
+            <div class="form-group row">
+                <label class="col-lg-3 col-form-label">Jumlah Barang masuk:</label>
+                <div class="col-lg-9">
+                    <input type="number" class="form-control" id="jumlah_barang_masuk" name="jumlah_barang_masuk "
+                            readonly/>
+   
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-lg-3 col-form-label">Jumlah stok Barang:</label>
+                <div class="col-lg-9">
+                    <input type="text" class="form-control" id="stok_detail" name="stok_detail"
+                             readonly/>
+              
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-lg-3 col-form-label">keterangan:</label>
+                <div class="col-lg-9">
+                    <input type="text" class="form-control" id="keterangan" name="keterangan"
+                             readonly/>
+              
+                </div>
+            </div>
+        </div>
+    </div>
+      
+      
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal"><i
+                                    class="fa fa-times"></i>Tutup                       
+                    </div>
+              
+                <!--end:Form-->
+            </div>
+        </div>
+    </div>
+    <!--end:Modal-->
 
 @endsection
 
@@ -205,7 +287,7 @@
             $('.select2').select2();
             $('#jenis_code').on('change', function () {
                 var jenis_code = $(this).val();
-                if (jenis_code) {
+                if (jenis_code) {                    
                     $.ajax({
                         url: './getBarang/' + jenis_code,
                         type: "GET",
@@ -281,10 +363,15 @@
                                             @can('barangmasuk-D')
                                         "<button type='button' class='deletes btn-sm btn btn-icon btn-outline-danger' title='Delete' data-toggle='tooltip' alt='' data-id=" + row.id_barang_masuk+ " ><i class='fa fa-trash'></i></button>  " +
                                     @endcan
+                                    @can('barangmasuk-R')
+                                        "<button type='button' class='details btn-sm btn btn-icon btn-outline-info' title='Detail' data-toggle='tooltip' alt='' data-id=" + row.id_barang_masuk + " data-tanggal_barang_masuk="+row.tanggal_barang_masuk+" data-nama_barang="+row.nama_barang+" data-jenis_barang="+ row.jenis_barang+" data-jumlah_barang_masuk="+row.jumlah_barang_masuk+" data-jumlah_barang="+row.jumlah_barang +" data-keterangan_barang="+row.keterangan_barang+" ><i class='fa fa-eye'></i></button>  " +
+                                    @endcan
+                                    
                                         "</center>";
                         },
                     }
                 ],
+                
 
 
             });
@@ -293,8 +380,7 @@
             @can('barangmasuk-C')
             $(document).on('click', '#addMenu', function () {
                 $("#saveMenu").data("id", "");
-                $('#modalMenuTitle').text('Create barang'
-                );
+                $('#modalMenuTitle').text('Create barang');
                 $('#modalMenu').modal('show');
                 $(`.form-control`).removeClass('is-invalid');
                 $(`.invalid-feedback`).remove();
@@ -339,6 +425,28 @@
             });
 
             @endcan
+            $(document).on('click', '.details', function () {
+                $('#tanggal_barang_masuk').val($(this).data('tanggal_barang_masuk'));
+                var jenis_barang = $(this).data('jenis_barang');
+                if (jenis_barang == 1) {
+                    $('#jenis_code_detail').val('Persediaan');
+                } else {
+                    $('#jenis_code_detail').val('Asset');
+                }
+                $('#barang_code_detail').val($(this).data('nama_barang'));
+                $('#jumlah_barang_masuk').val($(this).data('jumlah_barang_masuk'));
+                // alert($(this).data('jumlah_barang'));
+                $('#stok_detail').val($(this).data('jumlah_barang'));
+                $('#keterangan').val($(this).data('keterangan_barang'));
+                
+            
+                //modal untuk show
+                $('#modalInfo').modal('show');
+
+            });
+
+        
+                
 
             @can(['barangmasuk-C', 'barangmasuk-U'])
             $('#formmenus').submit(function (e) {

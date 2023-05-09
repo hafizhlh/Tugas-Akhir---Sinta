@@ -13,7 +13,7 @@ class AddBarcodeBarang extends Migration
      */
     public function up()
     {
-        schema::table('barcode',function(Blueprint $table) {
+        schema::table('barangs',function(Blueprint $table) {
             $table->string('barcode_barang', 255)->default('');
         });
     }
@@ -25,8 +25,9 @@ class AddBarcodeBarang extends Migration
      */
     public function down()
     {
-        schema::table('barcode',function(Blueprint $table) {
+        schema::table('barangs',function(Blueprint $table) {
             $table->dropColumn('barcode_barang');
         });
-    }
 }
+}
+
