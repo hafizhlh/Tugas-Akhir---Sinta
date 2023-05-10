@@ -25,10 +25,9 @@ class ReturnBarangController extends Controller
     {
         $data = DB::table('return_barangs')
                 ->join('detail_return_barangs', 'return_barangs.return_id', '=', 'detail_return_barangs.return_id')
-                ->join('detail_barang_keluars', 'barang_keluars.barang_keluar_id', '=', 'detail_barang_keluars.barang_keluar_id')
+                // ->join('detail_barang_keluars', 'barang_keluars.barang_keluar_id', '=', 'detail_barang_keluars.barang_keluar_id')
                 ->join('barangs', 'detail_return_barangs.barang_id', '=', 'barangs.barang_id')
-                ->where('return_barangs.delete_mark', 0)
-                ->get();  
+                ->where('return_barangs.delete_mark', 0);
         return datatables()->of($data)
             ->addIndexColumn()
             ->addColumn('action', function ($row) {
@@ -76,6 +75,7 @@ class ReturnBarangController extends Controller
 
     public function show($id)
     {
+        return $id;
         $data = DB::table('barang_keluars')
                 ->join('detail_barang_keluars', 'barang_keluars.barang_keluar_id', '=', 'detail_barang_keluars.barang_keluar_id')
                 ->join('barangs', 'detail_barang_keluars.barang_id', '=', 'barangs.barang_id')
