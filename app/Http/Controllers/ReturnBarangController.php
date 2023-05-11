@@ -95,7 +95,7 @@ class ReturnBarangController extends Controller
         // change jenis_barang to nama_barang
         foreach ($data as $key => $value) {
             if($data[$key]->jenis_barang == 1){
-                $data[$key]->jenis_barang = 'Persediaan';
+                $data[$key]->jenis_barang = 'Consumable';
             }
             else if($data[$key]->jenis_barang == 2){
                 $data[$key]->jenis_barang = 'Asset';

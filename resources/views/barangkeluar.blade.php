@@ -152,7 +152,7 @@
                             <div class="col-lg-9">
                                 <select class="form-control" id="jenis_code" name="jenis_code">
                                     <option value="">Pilih jenis barang</option>
-                                    <option value="1">Persediaan</option>
+                                    <option value="1">Consumable</option>
                                     <option value="2">Asset</option>
                                 </select>
                                 <span class="form-text text-muted">Pilih jenis barang untuk menampilkan opsi
@@ -616,7 +616,7 @@
             $('#barcode_detail').val($(this).data('barcode'));
             var jenis_barang = $(this).data('jenis_barang');
             if (jenis_barang == 1) {
-                $('#jenis_code_detail').val('Persediaan');
+                $('#jenis_code_detail').val('Consumable');
             } else {
                 $('#jenis_code_detail').val('Asset');
             }

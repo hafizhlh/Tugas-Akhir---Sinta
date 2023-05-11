@@ -145,7 +145,7 @@
                 <div class="col-lg-9">
                     <select class="form-control" id="jenis_code" name="jenis_code">
                         <option value="">Pilih jenis barang</option>
-                        <option value="1">Persediaan</option>
+                        <option value="1">Consumable</option>
                         <option value="2">Asset</option>
                     </select>
                     <span class="form-text text-muted">Pilih jenis barang untuk menampilkan opsi barang</span>
@@ -295,7 +295,7 @@
                         success: function (data) {
                             $('select[name="barang_code"]').empty();
                             $.each(data, function (key, value) {
-                                $('select[name="barang_code"]').append('<option value="' + value.barang_id + '">' + value.nama_barang + '</option>');
+                                $('select[name="barang_code"]').append('<option value="' + value.barang_id + '">' + value.nama_barang + ' ('+ value.barcode_barang +')</option>');
                             });
                         }
                     });
