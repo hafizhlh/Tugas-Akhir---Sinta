@@ -167,9 +167,23 @@ class BarangController extends Controller
     }
     public function destroy($id)
     {
+        DB::beginTransaction();
+        try {
+            // // delete all data where have relation with this id
+            // DB::table('barang_masuks')->where('barang_id', $id)->delete();
+            // DB::table('barang_keluars')->where('barang_id', $id)->delete();
+            // DB::table('return_barangs')->where('barang_id', $id)->delete();
+            // DB::table('detail_return_barangs')->where('barang_id', $id)->delete();
 
-        Barang::destroy($id);
-        $response = responseSuccess(trans('message.delete-success'));
-        return response()->json($response,200);
+            DB::table('barangs')->where('barang_id', $id)->update([
+                'delete_mark' => 1,
+            ]);
+            $response = responseSuccess(trans('message.delete-success'));
+            DB::commit();
+            return response()->json($response,200);
+        } catch (Exception $e) {
+            DB::rollback();
+            return response()->json($e->getMessage(),500);
+        }
     }
 }

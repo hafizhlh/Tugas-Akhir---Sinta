@@ -184,10 +184,18 @@ class BarangKeluarController extends Controller
     }
     public function destroy($id)
     {
-
-        BarangKeluar::destroy($id);
-        $response = responseSuccess(trans('message.delete-success'));
-        return response()->json($response,200);
+        DB::beginTransaction();
+        try {
+            DB::table('barang_keluars')->where('barang_keluar_id', $id)->update([
+                'delete_mark' => 1,
+            ]);
+            $response = responseSuccess(trans('message.delete-success'));
+            DB::commit();
+            return response()->json($response,200);
+        } catch (Exception $e) {
+            DB::rollback();
+            return response()->json($e->getMessage(),500);
+        }
     }
 
     public function getBarang($jenis_code){

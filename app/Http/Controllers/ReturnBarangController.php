@@ -58,6 +58,12 @@ class ReturnBarangController extends Controller
                 'jumlah_barang_return' => $request->jumlah,
                 'delete_mark' => 0,
             ]);
+            $barang_keluar = DB::table('detail_barang_keluars')->where('barang_keluar_id', $request->barang_keluar_id)->where('barang_id', $request->barang_id)->first();
+            $jumlah_barang_keluar = $barang_keluar->jumlah_barang_keluar - $request->jumlah;
+            $update_jumlah = DB::table('detail_barang_keluars')->where('barang_keluar_id', $request->barang_keluar_id)->where('barang_id', $request->barang_id)->update([
+                'jumlah_barang_keluar' => $jumlah_barang_keluar,
+            ]);
+
             $barang = DB::table('barangs')->where('barang_id', $request->barang_id)->first();
             //update jumlah barang
             $jumlah = $barang->jumlah_barang + $request->jumlah;
@@ -75,7 +81,6 @@ class ReturnBarangController extends Controller
 
     public function show($id)
     {
-        return $id;
         $data = DB::table('barang_keluars')
                 ->join('detail_barang_keluars', 'barang_keluars.barang_keluar_id', '=', 'detail_barang_keluars.barang_keluar_id')
                 ->join('barangs', 'detail_barang_keluars.barang_id', '=', 'barangs.barang_id')

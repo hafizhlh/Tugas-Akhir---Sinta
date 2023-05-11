@@ -707,10 +707,10 @@
                         "<i class='fa fa-spinner fa-spin'></i> processing");
                 }
             }).done(function (data) {
-                $("#modalMenu").modal('hide');
+                $("#modalInfo").modal('hide');
                 showtoastr('success', data.message);
                 $("#saveMenu").data("id", "");
-                $("#formmenus")[0].reset();
+                $("#formreturn")[0].reset();
                 menuID = "";
                 let form = document.forms.formmenus; // <form name="formmenus"> element
                 form.reset();
