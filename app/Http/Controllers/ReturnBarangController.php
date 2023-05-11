@@ -59,6 +59,12 @@ class ReturnBarangController extends Controller
                 'delete_mark' => 0,
             ]);
             $barang_keluar = DB::table('detail_barang_keluars')->where('barang_keluar_id', $request->barang_keluar_id)->where('barang_id', $request->barang_id)->first();
+            if($barang_keluar->jumlah_barang_keluar < $request->jumlah){
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Jumlah barang yang dikembalikan melebihi jumlah barang yang dikeluarkan',
+                ], 500);
+            }
             $jumlah_barang_keluar = $barang_keluar->jumlah_barang_keluar - $request->jumlah;
             $update_jumlah = DB::table('detail_barang_keluars')->where('barang_keluar_id', $request->barang_keluar_id)->where('barang_id', $request->barang_id)->update([
                 'jumlah_barang_keluar' => $jumlah_barang_keluar,
