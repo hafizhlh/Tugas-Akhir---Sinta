@@ -16,6 +16,9 @@
                     <!--begin::Actions-->
                     <div class="subheader-separator subheader-separator-ver mt-2 mb-2 mr-4 bg-gray-200"></div>
                     <h5 class="text-dark font-weight-bold mt-2 mb-2 mr-5">Dashboard</h5>
+                    {{-- @foreach ($month as $months)
+                      <p>{{ $months }}</p>
+                    @endforeach --}}
                     <!--end::Actions-->
                 </div>
                 <div>
@@ -33,6 +36,7 @@
                         <div id="chart"></div>
                         <div id="topc"></div>
                         <div id="topa"></div>
+                        <div id="chartb"></div>
                     </div>
                 </div>
               
@@ -249,6 +253,53 @@
         }
         };
 
+        var month = [];
+        var consumables = [];
+        var assets = [];
+        @foreach ($month as $m)
+          month.push('{{ $m['month'] }}');
+          consumables.push({{ $m['consumables'] }});
+          assets.push({{ $m['assets'] }}); 
+        @endforeach
+        var optionsb = {
+          series: [{
+            name: "Consumables",
+            data: consumables
+        },
+        {
+            name: "Assets",
+            data: assets
+        }
+      ],
+          chart: {
+          height: 350,
+          type: 'line',
+          zoom: {
+            enabled: false
+          }
+        },
+        dataLabels: {
+          enabled: false
+        },
+        colors: ['#FF1654', '#247BA0'],
+        stroke: {
+          curve: 'straight'
+        },
+        title: {
+          text: 'Product Trends by Month',
+          align: 'left'
+        },
+        grid: {
+          row: {
+            colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
+            opacity: 0.5
+          },
+        },
+        xaxis: {
+          categories: month,
+        }
+        };
+
 
         var chart = new ApexCharts(document.querySelector("#chart"), options);
         chart.render();
@@ -256,6 +307,8 @@
         topc.render();
         var topa = new ApexCharts(document.querySelector("#topa"), optionsa);
         topa.render();
+        var chartb = new ApexCharts(document.querySelector("#chartb"), optionsb);
+        chartb.render();
 
     });
 </script>

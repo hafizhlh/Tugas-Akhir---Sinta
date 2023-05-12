@@ -429,7 +429,7 @@
                 $('#tanggal_barang_masuk').val($(this).data('tanggal_barang_masuk'));
                 var jenis_barang = $(this).data('jenis_barang');
                 if (jenis_barang == 1) {
-                    $('#jenis_code_detail').val('Persediaan');
+                    $('#jenis_code_detail').val('Consumable');
                 } else {
                     $('#jenis_code_detail').val('Asset');
                 }

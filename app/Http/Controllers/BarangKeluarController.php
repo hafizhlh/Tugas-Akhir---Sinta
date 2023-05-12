@@ -87,6 +87,8 @@ class BarangKeluarController extends Controller
                     'barang_id' => $request->barang_code,
                     'jumlah_barang_keluar' => $request->jumlah,
                     'delete_mark' => 0,
+                    'created_at' => date('Y-m-d H:i:s'),
+                    'updated_at' => date('Y-m-d H:i:s'),
                 ]);
                 $data = DB::table('barangs')->where('barang_id', $request->barang_code)->update([
                     'jumlah_barang' => $barang->jumlah_barang - $request->jumlah,

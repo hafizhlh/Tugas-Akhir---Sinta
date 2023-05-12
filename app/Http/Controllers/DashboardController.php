@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Barang;
+use App\Models\BarangKeluar;
 use App\Models\Company;
+use App\Models\DetailBarangKeluar;
 use App\Models\Interco;
 use App\Models\IntercoPeriode;
+use Carbon\Carbon;
 use DB;
 use Illuminate\Http\Request;
 
@@ -37,6 +40,38 @@ class DashboardController extends Controller
         ->groupBy('detail_barang_keluars.barang_id', 'barangs.nama_barang', 'barangs.jenis_barang')
         ->orderBy('total', 'desc')
         ->get();
+        // $barang_keluars = DB::table('detail_barang_keluars')->select('created_at')->orderBy('created_at')->get();
+        $consumables = Barang::select('barang_id')->where('jenis_barang', 1)->get();
+        $assets = Barang::select('barang_id')->where('jenis_barang', 2)->get();
+    $bulan_consumables = DetailBarangKeluar::whereIn('barang_id', $consumables)->pluck('created_at')->map(function($created_at){
+        return Carbon::parse($created_at)->format('m');
+    })->unique()->sort();
+    $bulan_assets = DetailBarangKeluar::whereIn('barang_id', $assets)->pluck('created_at')->map(function($created_at){
+        return Carbon::parse($created_at)->format('m');
+    })->unique()->sort();
+    $bulan = $bulan_consumables->merge($bulan_assets)->unique()->sort();
+        $stringmonth = [
+            '01' => 'Januari',
+            '02' => 'Februari',
+            '03' => 'Maret',
+            '04' => 'April',
+            '05' => 'Mei',
+            '06' => 'Juni',
+            '07' => 'Juli',
+            '08' => 'Agustus',
+            '09' => 'September',
+            '10' => 'Oktober',
+            '11' => 'November',
+            '12' => 'Desember',
+        ];
+        $data['month'] = [];
+        $count = 0;
+        foreach ($bulan as $key => $value) {
+            $data['month'][$count]['month'] = $stringmonth[$value];
+            $data['month'][$count]['consumables'] = DetailBarangKeluar::whereIn('barang_id', $consumables)->whereMonth('created_at', $value)->sum('jumlah_barang_keluar');
+            $data['month'][$count]['assets'] = DetailBarangKeluar::whereIn('barang_id', $assets)->whereMonth('created_at', $value)->sum('jumlah_barang_keluar');
+            $count++;
+        }
         // return dd($data['topa']);
         return view('dashboard', $data);
 
