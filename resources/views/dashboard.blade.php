@@ -31,15 +31,48 @@
         <div class="d-flex flex-column-fluid">
             <!--begin::Container-->
             <div class="container-fluid">
-                <div class="card">
-                    <div class="card-body">
-                        <div id="chart"></div>
-                        <div id="topc"></div>
-                        <div id="topa"></div>
-                        <div id="chartb"></div>
+              <div class="row hidden-md-up">
+                <div class="col-md-6 col-lg-6">
+                  <div class="card mb-4">
+                    <div class="card">
+                      <div class="card-body">
+                        <h3 class="card-title">Top 5 Barang Consumable</h3>
+                          <div id="topc"></div>
+                      </div>
                     </div>
+                  </div>
                 </div>
-              
+                <div class="col-md-6 col-lg-6">
+                  <div class="card mb-4">
+                    <div class="card">
+                      <div class="card-body">
+                        <h3 class="card-title">Top 5 Barang Aset</h3>
+                          <div id="topa"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6 col-lg-6">
+                  <div class="card mb-4">
+                    <div class="card">
+                      <div class="card-body">
+                        <h3 class="card-title">Permintaan Consumable & Aset</h3>
+                          <div id="chartb"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6 col-lg-6">
+                  <div class="card mb-4">
+                    <div class="card">
+                      <div class="card-body">
+                        <h3 class="card-title">Jenis Barang</h3>
+                          <div id="chart"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
             <!--end::Container-->
         </div>
@@ -47,10 +80,12 @@
 @endsection
 
 @section('js_page')
-
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"></script>
+<script src="https://pingendo.com/assets/bootstrap/bootstrap-4.0.0-alpha.6.min.js"></script>
 <script>
     $(document).ready(function() {
-        // pie
+        // Jenis Barang
         var pie = [];
         @foreach  ($pie as $p) 
           pie.push({{ $p->total }});
@@ -75,7 +110,7 @@
         }]
         };
 
-        // top consumable
+        // Top 5 Barang Consumable
         var topc = [];
         @foreach  ($topc as $c) 
           topc.push({{ $c->total }});
@@ -164,7 +199,7 @@
         }
         };
 
-        // top asset
+        // Top 5 Barang Aset
         var topa = [];
         @foreach  ($topa as $a) 
           topa.push({{ $a->total }});
@@ -253,6 +288,7 @@
         }
         };
 
+        // Permintaan Consummabl & Aset
         var month = [];
         var consumables = [];
         var assets = [];

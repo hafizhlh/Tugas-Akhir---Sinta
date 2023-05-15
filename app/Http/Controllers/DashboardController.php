@@ -32,6 +32,7 @@ class DashboardController extends Controller
         ->where('barangs.jenis_barang', '1')
         ->groupBy('detail_barang_keluars.barang_id', 'barangs.nama_barang', 'barangs.jenis_barang')
         ->orderBy('total', 'desc')
+        ->take(5) //memberikan limit 5 baris data
         ->get();
         $data['topa'] = DB::table('detail_barang_keluars')
         ->join('barangs', 'detail_barang_keluars.barang_id', '=', 'barangs.barang_id')
@@ -39,6 +40,7 @@ class DashboardController extends Controller
         ->where('barangs.jenis_barang', '2')
         ->groupBy('detail_barang_keluars.barang_id', 'barangs.nama_barang', 'barangs.jenis_barang')
         ->orderBy('total', 'desc')
+        ->take(5) //memberikan limit 5 baris data
         ->get();
         // $barang_keluars = DB::table('detail_barang_keluars')->select('created_at')->orderBy('created_at')->get();
         $consumables = Barang::select('barang_id')->where('jenis_barang', 1)->get();
