@@ -36,18 +36,8 @@
                   <div class="card mb-4">
                     <div class="card">
                       <div class="card-body">
-                        <h3 class="card-title">Top 5 Barang Consumable</h3>
-                          <div id="topc"></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-6 col-lg-6">
-                  <div class="card mb-4">
-                    <div class="card">
-                      <div class="card-body">
-                        <h3 class="card-title">Top 5 Barang Aset</h3>
-                          <div id="topa"></div>
+                        <h3 class="card-title">Jenis Barang</h3>
+                          <div id="chart"></div>
                       </div>
                     </div>
                   </div>
@@ -66,8 +56,18 @@
                   <div class="card mb-4">
                     <div class="card">
                       <div class="card-body">
-                        <h3 class="card-title">Jenis Barang</h3>
-                          <div id="chart"></div>
+                        <h3 class="card-title">Top 5 Barang Aset</h3>
+                          <div id="topa"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6 col-lg-6">
+                  <div class="card mb-4">
+                    <div class="card">
+                      <div class="card-body">
+                        <h3 class="card-title">Top 5 Barang Consumable</h3>
+                          <div id="topc"></div>
                       </div>
                     </div>
                   </div>
@@ -80,9 +80,7 @@
 @endsection
 
 @section('js_page')
-<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"></script>
-<script src="https://pingendo.com/assets/bootstrap/bootstrap-4.0.0-alpha.6.min.js"></script>
+
 <script>
     $(document).ready(function() {
         // Jenis Barang
@@ -91,9 +89,10 @@
           pie.push({{ $p->total }});
         @endforeach
         var options = {
+          colors: ['#2196F3', '#FF1654'],
           series: pie,
           chart: {
-          width: 380,
+          width: 530,
           type: 'pie',
         },
         labels: ['Asset', 'Consumable'],
@@ -101,7 +100,7 @@
           breakpoint: 480,
           options: {
             chart: {
-              width: 200
+              width: 580
             },
             legend: {
               position: 'bottom'
@@ -120,6 +119,7 @@
           topk.push('{{ $c->nama_barang}}');
         @endforeach
         var optionsc = {
+          colors: ['#FF1654'],
           series: [{
           name: 'Inflation',
           data: topc
@@ -317,7 +317,7 @@
         dataLabels: {
           enabled: false
         },
-        colors: ['#FF1654', '#247BA0'],
+        colors: ['#FF1654', '#2196F3'],
         stroke: {
           curve: 'straight'
         },
