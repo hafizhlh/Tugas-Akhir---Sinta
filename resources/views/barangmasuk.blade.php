@@ -164,7 +164,7 @@
                 <label class="col-lg-3 col-form-label">Jumlah Barang:</label>
                 <div class="col-lg-9">
                     <input type="number" class="form-control" id="jumlah" name="jumlah"
-                            placeholder="e.g:100"/>
+                            placeholder="Contoh : 100"/>
                     <span class="form-text text-muted">Masukkan Jumlah Barang</span>
                 </div>
             </div>

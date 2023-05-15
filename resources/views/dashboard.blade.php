@@ -97,10 +97,11 @@
         },
         labels: ['Asset', 'Consumable'],
         responsive: [{
+          series: pie,
           breakpoint: 480,
           options: {
             chart: {
-              width: 580
+              width: '100%'
             },
             legend: {
               position: 'bottom'

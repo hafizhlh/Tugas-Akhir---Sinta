@@ -142,7 +142,7 @@
                             <label class="col-lg-3 col-form-label">NomorDOF/ E-Ticket:</label>
                             <div class="col-lg-9">
                                 <input type="text" class="form-control" id="nodofetiket_code" name="nodofetiket_code"
-                                    placeholder="e.g:10451 /GS-10571" />
+                                    placeholder="Contoh : 10451 /GS-10571" />
                                 <span class="form-text text-muted">masukan DOF(Deep Of Field)/ E-Ticket</span>
                             </div>
                         </div>
@@ -172,7 +172,7 @@
                             <label class="col-lg-3 col-form-label">Jumlah Barang:</label>
                             <div class="col-lg-9">
                                 <input type="number" class="form-control" id="jumlah" name="jumlah"
-                                    placeholder="e.g:100" />
+                                    placeholder="Contoh : 100" />
                                 <span class="form-text text-muted">Masukkan Jumlah Barang</span>
                             </div>
                         </div>
@@ -180,7 +180,7 @@
                             <label class="col-lg-3 col-form-label">Keterangan Barang:</label>
                             <div class="col-lg-9">
                                 <input type="text" class="form-control" id="keterangan_code" name="keterangan_code"
-                                    placeholder="e.g:untuk router" />
+                                    placeholder="Contoh : untuk router" />
                                 <span class="form-text text-muted">Masukkan keterangan Barang</span>
                             </div>
                         </div>
@@ -230,7 +230,7 @@
                             <label class="col-lg-3 col-form-label">NomorDOF/ E-Ticket:</label>
                             <div class="col-lg-9">
                                 <input type="text" class="form-control" id="nodof_code" name="nodofetiket_code"
-                                    placeholder="e.g:10451 /GS-10571" disabled />
+                                    placeholder="Contoh : 10451 /GS-10571" disabled />
                                 <span class="form-text text-muted">masukan DOF(Deep Of Field)/ E-Ticket(</span>
                             </div>
                         </div>
@@ -256,7 +256,7 @@
                             <label class="col-lg-3 col-form-label">Jumlah Barang:</label>
                             <div class="col-lg-9">
                                 <input type="number" class="form-control" id="jumlahdikembalikan" name="jumlah"
-                                    placeholder="e.g:100" />
+                                    placeholder="Contoh : 100" />
                                 <span class="form-text text-muted">Masukkan Jumlah Barang</span>
                             </div>
                         </div>
