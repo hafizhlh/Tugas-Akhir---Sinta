@@ -57,7 +57,7 @@
         <!--begin::Login-->
         <div class="login login-5 wizard d-flex flex-column flex-lg-row flex-column-fluid">
             <!--begin::Aside-->
-            <div class="login-aside flex-row-fluid d-flex flex-column" style="background-image:url({{url('assets/media/bg/bglogin.png')}});background-repeat: no-repeat;background-repeat: round;">
+            <div class="login-aside flex-row-fluid d-flex flex-column" style="background-image:url({{url('assets/media/bg/login-foto.png')}});background-repeat: no-repeat;background-repeat: round; ">
                 {{--<div class="login-aside d-flex flex-column flex-row-auto">--}}
                 <!--begin::Aside Top-->
                 <div class="d-flex flex-column-auto flex-column pt-lg-0 pt-15">
@@ -127,7 +127,7 @@
                             <!--end::Form group-->
                             <!--begin::Action-->
                             <div class="pb-lg-0 pb-5">
-                                <button type="submit" style="background-color:#00ae4d;" id="kt_login_singin_form_submit_button" class="btn btn-primary btn-lg btn-block font-weight-bolder font-size-h6 px-8 py-4 my-3 mr-3">
+                                <button type="submit" style="background-color:#14AF4E;" id="kt_login_singin_form_submit_button" class="btn btn-primary btn-lg btn-block font-weight-bolder font-size-h6 px-8 py-4 my-3 mr-3">
                                     Sign In
                                 </button>
                             </div>

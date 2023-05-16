@@ -173,44 +173,43 @@
             <script src="script.js"></script>
             <form role="form" class="form" name="formmenus" id="formmenus" enctype="multipart/formdata" method="">
                 <input type="hidden" name="barang_masuk_id" id="barang_masuk_id">
-                <div class="modal-body" style="height: 500px;">
-                    <div class="mb-7">
-
-
-                        <!--  -->
-                        <div class="form-group row">
-                            <label class="col-lg-3 col-form-label">Jenis Barang:</label>
-                            <div class="col-lg-9">
-                                <select class="form-control" id="jenis_code" name="jenis_code">
-                                    <option value="">Pilih jenis barang</option>
-                                    <option value="1">Consumable</option>
-                                    <option value="2">Asset</option>
-                                </select>
-                                <span class="form-text text-muted">Pilih jenis barang untuk menampilkan opsi
-                                    barang</span>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-lg-3 col-form-label">Barang:</label>
-                            <div class="col-lg-9">
-                                <select class="form-control select2" id="barang_code" name="barang_code"
-                                    style="width: 100%;">
-                                    <option class="form-control" value=''>Pilih barang</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-lg-3 col-form-label">Jumlah Barang:</label>
-                            <div class="col-lg-9">
-                                <input type="number" class="form-control" id="jumlah" name="jumlah"
-                                    placeholder="e.g:100" />
-                                <span class="form-text text-muted">Masukkan Jumlah Barang</span>
-                            </div>
-                        </div>
-                    </div>
+                    <div class="modal-body" style="height: 500px;">
+                        <div class="mb-7">
+                       
+                        
+                            <!--  -->
+                <div class="form-group row">
+                <label class="col-lg-3 col-form-label">Jenis Barang:</label>
+                <div class="col-lg-9">
+                    <select class="form-control" id="jenis_code" name="jenis_code">
+                        <option value="">Pilih jenis barang</option>
+                        <option value="1">Consumable</option>
+                        <option value="2">Asset</option>
+                    </select>
+                    <span class="form-text text-muted">Pilih jenis barang untuk menampilkan opsi barang</span>
                 </div>
-
-
+            </div>
+            <div class="form-group row">
+                <label class="col-lg-3 col-form-label">Barang:</label>
+                <div class="col-lg-9">
+                    <select class="form-control select2" id="barang_code" name="barang_code" style="width: 100%;">
+                        <option class="form-control"
+                                    value=''>Pilih barang</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-lg-3 col-form-label">Jumlah Barang:</label>
+                <div class="col-lg-9">
+                    <input type="number" class="form-control" id="jumlah" name="jumlah"
+                            placeholder="Contoh : 100"/>
+                    <span class="form-text text-muted">Masukkan Jumlah Barang</span>
+                </div>
+            </div>
+            </div>
+            </div>
+      
+      
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal"><i
@@ -602,24 +601,24 @@
             });
         });
 
-        @endcan
-        $(document).on('click', '.details', function () {
-            $('#tanggal_barang_masuk').val($(this).data('tanggal_barang_masuk'));
-            var jenis_barang = $(this).data('jenis_barang');
-            if (jenis_barang == 1) {
-                $('#jenis_code_detail').val('Persediaan');
-            } else {
-                $('#jenis_code_detail').val('Asset');
-            }
-            $('#barang_code_detail').val($(this).data('nama_barang'));
-            $('#jumlah_barang_masuk').val($(this).data('jumlah_barang_masuk'));
-            // alert($(this).data('jumlah_barang'));
-            $('#stok_detail').val($(this).data('jumlah_barang'));
-            $('#keterangan').val($(this).data('keterangan_barang'));
-
-
-            //modal untuk show
-            $('#modalInfo').modal('show');
+            @endcan
+            $(document).on('click', '.details', function () {
+                $('#tanggal_barang_masuk').val($(this).data('tanggal_barang_masuk'));
+                var jenis_barang = $(this).data('jenis_barang');
+                if (jenis_barang == 1) {
+                    $('#jenis_code_detail').val('Persediaan');
+                } else {
+                    $('#jenis_code_detail').val('Asset');
+                }
+                $('#barang_code_detail').val($(this).data('nama_barang'));
+                $('#jumlah_barang_masuk').val($(this).data('jumlah_barang_masuk'));
+                // alert($(this).data('jumlah_barang'));
+                $('#stok_detail').val($(this).data('jumlah_barang'));
+                $('#keterangan').val($(this).data('keterangan_barang'));
+                
+            
+                //modal untuk show
+                $('#modalInfo').modal('show');
 
         });
 

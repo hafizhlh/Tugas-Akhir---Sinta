@@ -140,7 +140,7 @@
                                 <label class="col-lg-3 col-form-label">Nama Barang:</label>
                                 <div class="col-lg-9">
                                     <input type="text" class="form-control" id="barang_name" name="barang_name"
-                                           placeholder="e.g:TOTOLINK N200RE Mini Wireless N Router 300Mbps - v.4"/>
+                                           placeholder="Contoh : Totolink N200RE Mini"/>
                                     <span class="form-text text-muted">Masukkan nama Barang</span>
                                 </div>
                             </div>
@@ -148,7 +148,7 @@
                                 <label class="col-lg-3 col-form-label">Kode Barcode:</label>
                                 <div class="col-lg-9">
                                     <input type="text" class="form-control" id="barcode" name="barcode"
-                                           placeholder="contoh:SW.PG.abc.123.123"/>
+                                           placeholder="contoh : SW.PG.abc.123.123"/>
                                     <span class="form-text text-muted">Masukkan kode</span>
                                 </div>
                             </div>
@@ -168,7 +168,7 @@
                                 <label class="col-lg-3 col-form-label">Jumlah Barang:</label>
                                 <div class="col-lg-9">
                                     <input type="number" class="form-control" id="jumlah_code" name="jumlah_code"
-                                           placeholder="e.g:100"/>
+                                           placeholder="Contoh : 100"/>
                                     <span class="form-text text-muted">Masukkan Jumlah Barang</span>
                                 </div>
                             </div>
@@ -176,7 +176,7 @@
                                 <label class="col-lg-3 col-form-label">Keterangan Barang:</label>
                                 <div class="col-lg-9">
                                     <input type="text" class="form-control" id="keterangan_code" name="keterangan_code"
-                                           placeholder="e.g:untuk router"/>
+                                           placeholder="Contoh : untuk router"/>
                                     <span class="form-text text-muted">Masukkan keterangan Barang</span>
                                 </div>
                             </div>
@@ -223,7 +223,7 @@
                                 <label class="col-lg-3 col-form-label">Nama Barang:</label>
                                 <div class="col-lg-9">
                                     <input type="text" class="form-control" id="barang_name_detail" name="barang_name_detail"
-                                           placeholder="e.g:TOTOLINK N200RE Mini Wireless N Router 300Mbps - v.4" readonly/>
+                                           placeholder="Contoh : Totolink N200RE Mini" readonly/>
                                     <span class="form-text text-muted" >Masukkan nama Barang</span>
                                  
                                 </div>
