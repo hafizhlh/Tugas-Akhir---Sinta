@@ -157,6 +157,12 @@ class RoutesTableSeeder extends Seeder
             ['permission'=>'barangmasuk-C','middleware'=> 'lang,authz','type'=>'data','method'=>'POST','url'=>'/barangmasuk','route'=>'BarangMasukController@store','guard'=>'web'],
             ['permission'=>'returnbarang-C','middleware'=> 'lang,authz','type'=>'data','method'=>'POST','url'=>'/returnbarang','route'=>'ReturnBarangController@store','guard'=>'web'],
             ['permission'=>'returnbarang-U','middleware'=> 'lang,authz','type'=>'data','method'=>'POST','url'=>'/returnbarang/{id}/update','route'=>'ReturnBarangController@update','guard'=>'web'],
+
+            //Barang Delete
+            ['permission'=>'barang-D','middleware'=> 'lang,authz','type'=>'data','method'=>'DELETE','url'=>'/barang/{id}','route'=>'BarangController@destroy','guard'=>'web'],
+            ['permission'=>'barangkeluar-D','middleware'=> 'lang,authz','type'=>'data','method'=>'DELETE','url'=>'/barangkeluar/{id}','route'=>'BarangKeluarController@destroy','guard'=>'web'],
+            ['permission'=>'barangmasuk-D','middleware'=> 'lang,authz','type'=>'data','method'=>'DELETE','url'=>'/barangmasuk/{id}','route'=>'BarangMasukController@destroy','guard'=>'web'],
+            ['permission'=>'returnbarang-D','middleware'=> 'lang,authz','type'=>'data','method'=>'DELETE','url'=>'/returnbarang/{id}','route'=>'ReturnBarangController@destroy','guard'=>'web'],
         ];
 
         foreach($data as $k_data => $v_data){
