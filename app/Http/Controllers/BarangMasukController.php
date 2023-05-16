@@ -2,14 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\BarangmasukExport;
+use App\Exports\Exportxls;
 use App\Models\DetailBarangMasuk;
 use App\Models\Barang;
 use App\Models\BarangMasuk;
 use Illuminate\Http\Request;
 use App\Models\Menu;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class BarangMasukController extends Controller
 {
@@ -36,7 +43,7 @@ class BarangMasukController extends Controller
             ->addColumn('action', function ($row) {
                 $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->id_barang_masuk . '" data-original-title="Edit" class="edit btn btn-primary btn-sm editBarang">Edit</a>';
                 $btn = $btn . ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->id_barang_masuk . '" data-original-title="Delete" class="btn btn-danger btn-sm deleteLandingPage">Delete</a>';
-                $btn = $btn . ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->id_barang_masuk . '" data-tanggal_barang_masuk="'.$row->tanggal_barang_masuk.'"data-nama_barang="'.$row->nama_barang.'"data-jenis_barang="'.$row->jenis_barang.'"data-jumlah_barang_masuk="'.$row->jumlah_barang_masuk.'" data-jumlah_barang="'.$row->jumlah_barang .'"data-keterangan_barang="'.$row->keterangan_barang.'"data-original-title="Detail" class="btn btn-info btn-sm detailBarang">Detail</a>';
+                $btn = $btn . ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->id_barang_masuk . '" data-tanggal_barang_masuk="' . $row->tanggal_barang_masuk . '"data-nama_barang="' . $row->nama_barang . '"data-jenis_barang="' . $row->jenis_barang . '"data-jumlah_barang_masuk="' . $row->jumlah_barang_masuk . '" data-jumlah_barang="' . $row->jumlah_barang . '"data-keterangan_barang="' . $row->keterangan_barang . '"data-original-title="Detail" class="btn btn-info btn-sm detailBarang">Detail</a>';
                 return $btn;
             })
 
@@ -205,15 +212,89 @@ class BarangMasukController extends Controller
             ]);
             $response = responseSuccess(trans('message.delete-success'));
             DB::commit();
-            return response()->json($response,200);
+            return response()->json($response, 200);
         } catch (Exception $e) {
             DB::rollback();
-            return response()->json($e->getMessage(),500);
+            return response()->json($e->getMessage(), 500);
         }
     }
     public function getBarang($jenis_code)
     {
         $data = Barang::where('jenis_barang', $jenis_code)->get();
         return response()->json($data);
+    }
+
+    public function export()
+    {
+        // $data = DB::select('SELECT * FROM Barang_masuks'); // Ganti dengan query yang sesuai
+
+        // return Excel::download(new ($data), 'barangmasuk.xlsx'); // Ganti dengan nama export file yang diinginkan
+        return (new BarangmasukExport(date('m'), date('Y')))->download('barangmasuk.xlsx');
+    }
+    public function getCountByBarangMasukId($barang_masuk_id)
+    {
+        $count = DB::table('detail_barang_masuks')
+            ->where('barang_masuk_id', $barang_masuk_id)
+            ->count();
+        return $count;
+    }
+    public function exportTanggalBarangMasuk(Request $request)
+    {
+
+        $data = DB::table('detail_barang_masuks')
+            ->join('barang_masuks', 'detail_barang_masuks.barang_masuk_id', '=', 'barang_masuks.barang_masuk_id')
+            ->join('barangs', 'detail_barang_masuks.barang_id', '=', 'barangs.barang_id')
+            // ->select('barang_masuks.barang_masuk_id as id_barang_masuk', 'barang_masuks.*', 'detail_barang_masuks.*', 'barangs.*')
+            ->whereBetween('tanggal_barang_masuk', [$request->tanggal_awal, $request->tanggal_akhir])           
+            ->select("barang_masuks.tanggal_barang_masuk","barangs.nama_barang", "barangs.jenis_barang","detail_barang_masuks.jumlah_barang_masuk","barangs.jumlah_barang","barangs.keterangan_barang")
+            ->get();
+
+        $collect = $data->map(function ($item) {
+            $item->jenis_barang = $item->jenis_barang == 1 ? "consummable" : "asset";
+            return $item;
+        });
+
+        // dd($collect);
+
+        $column = [
+            'tanggal barang masuk',
+            'nama barang',
+            'jenis barang',
+            'jumlah barang masuk',
+            'jumlah stok barang saat ini',
+            'keterangan barang'
+
+        ];
+        return Excel::download((new Exportxls($data, $column)), 'Laporan BarangMasuk bulanan.xlsx');
+    }
+    public function exportTahunBarangMasuk():BinaryFileResponse
+    {
+        $year_now = date('Y');
+        $data = DB::table('detail_barang_masuks')
+            ->join('barang_masuks', 'detail_barang_masuks.barang_masuk_id', '=', 'barang_masuks.barang_masuk_id')
+            ->join('barangs', 'detail_barang_masuks.barang_id', '=', 'barangs.barang_id')
+            // ->select('barang_masuks.barang_masuk_id as id_barang_masuk', 'barang_masuks.*', 'detail_barang_masuks.*', 'barangs.*')
+            ->where('tanggal_barang_masuk', 'like','%'.$year_now .'%')          
+            ->select("barang_masuks.tanggal_barang_masuk","barangs.nama_barang", "barangs.jenis_barang","detail_barang_masuks.jumlah_barang_masuk","barangs.jumlah_barang","barangs.keterangan_barang")
+            ->get();
+
+        $collect = $data->map(function ($item) {
+            $item->jenis_barang = $item->jenis_barang == 1 ? "consummable" : "asset";
+            return $item;
+        });
+
+        // dd($collect);
+        
+
+        $column = [
+            'tanggal barang masuk',
+            'nama barang',
+            'jenis barang',
+            'jumlah barang masuk',
+            'jumlah stok barang saat ini',
+            'keterangan barang'
+
+        ];
+        return Excel::download((new Exportxls($data, $column)), 'Laporan BarangMasuk tahunan.xlsx');
     }
 }

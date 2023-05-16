@@ -81,6 +81,39 @@
                             </span>keluarkan barang</a>
                         </button>
                         @endcan
+                        <button type="button" class="btn btn-light-primary font-weight-bolder dropdown-toggle"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="svg-icon svg-icon-md">
+                                <!--begin::Svg Icon | path:assets/media/svg/icons/Design/PenAndRuller.svg-->
+                                <!--end::Svg Icon-->
+                            </span>Export
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
+                            <!--begin::Navigation-->
+                            <ul class="navi flex-column navi-hover py-2">
+                                <li
+                                    class="navi-header font-weight-bolder text-uppercase font-size-sm text-primary pb-2">
+                                    Choose an option:
+                                </li>
+                                <li class="navi-item" id="export_bulanan">
+                                    <a onclick="modalBulananExport()" class="navi-link">
+                                        <span class="navi-icon">
+                                            <i class="la la-file-excel-o"></i>
+                                        </span>
+                                        <span class="navi-text">bulanan</span>
+                                    </a>
+                                </li>
+                                </li>
+                                <li class="navi-item" >                                
+                                <a onclick="modalTahunanExport()" class="navi-link">
+                                        <span class="navi-icon">
+                                            <i class="la la-file-pdf-o"></i>
+                                        </span>
+                                        <span class="navi-text">Tahunan</span>
+                                    </a>
+                                </li>
+                            </ul>
+                            <!--end::Navigation-->
                         <!--end::Button-->
                     </div>
                 </div>
@@ -379,6 +412,73 @@
 
 
 <!--end:Modal-->
+
+<!--begin:Modal bulanan-->
+<div class="modal fade" id="BulananExportkeluar" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalMenuTitle">Barang Keluar</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i aria-hidden="true" class="ki ki-close"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-body">
+                    <div class="mb-7">
+                        <div class="form-group row">
+                            <label class="col-lg-3 col-form-label">tanggal awal:</label>
+                            <div class="col-lg-9">
+                            <input type='date' class="form-control" id="tgl_awal" placeholder="Select time"/>
+                                <span class="form-text text-muted">Masukkan tanggal</span>
+                            </div>                           
+                            
+                        </div>
+                    </div>
+
+                    <div class="mb-7">
+                        <div class="form-group row">
+                            <label class="col-lg-3 col-form-label">tanggal akhir:</label>
+                            <div class="col-lg-9">
+                            <input type='date' class="form-control" id="tgl_akhir" placeholder="Select time"/>
+                                <span class="form-text text-muted">Masukkan tanggal</span>
+                            </div>                           
+                            
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary btn-export_excel">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--end:Modal-->
+<!--begin:Modal Tahunan-->
+<div class="modal fade" id="exportTahunankeluar" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalMenuTitle">Barang keluar</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i aria-hidden="true" class="ki ki-close"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-body">
+                    <div class="mb-7">
+                        <div class="form-group row">
+                            <label class="col-lg-3 col-form-label">apakah anda ingin membuat tahun ini?</label>         
+                        </div>
+                    </div>
+
+                    
+                </div>
+                <button type="submit" class="btn btn-primary btn-export_pdf">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--end:Modal-->
 @endsection
 
 @section('js_page')
@@ -388,8 +488,10 @@
 <!--end::Page Scripts-->
 
 <script type="text/javascript">
-    $(document).ready(function () {
 
+   
+        $(document).ready(function () {
+      
         //select data dari barang 
         $('.select2').select2();
         $('#jenis_code').on('change', function () {
@@ -772,6 +874,61 @@
         @endcan
 
     });
+    $('#export_bulanan').click(function () {
+        $('#BulananExportkeluar').modal('show');
+    });
+    function modalTahunanExport() {
+        $('#exportTahunankeluar').modal('show')
+    }
+    function modalBulananExport() {
+        $('#BulananExportkeluar').modal('show')
+    }
+
+    $('.btn-export_excel').click(function(){
+        var tanggal_awal = new Date($('#tgl_awal').val());
+        var tanggal_akhir = new Date($('#tgl_akhir').val());
+        if(tanggal_akhir < tanggal_awal){
+            toastr.warning('Tanggal akhir tidak boleh lebih kecil dari tanggal awal');
+            return false;
+        }
+        $.ajax({
+            xhrFields: {responseType: 'blob',
+    },
+            url: './barangkeluar-export' ,
+                type: "Post",                   
+                data: {
+                    tanggal_awal: $('#tgl_awal').val(),
+                    tanggal_akhir: $('#tgl_akhir').val(),
+                },
+                success: function(result, status, xhr) {
+      var disposition = xhr.getResponseHeader('content-disposition');
+      var filename = ('Laporan Keluar bulanan.xlsx');
+
+      var blob = new Blob([result], {
+        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+      });
+      var link = document.createElement('a');
+      link.href = window.URL.createObjectURL(blob);
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+        })
+
+    });
+    $('.btn-export_pdf').on('click', function (){
+                $.ajax({
+                xhrFields: {responseType: 'blob',},
+                    url: './barangkeluar-export-tahunan' ,
+                    type: "get",                   
+                    success: function() {
+                        window.location.href = './barangkeluar-export-tahunan';
+                    }       
+                })
+            })
+
 
 </script>
 

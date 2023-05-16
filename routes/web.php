@@ -23,6 +23,8 @@ use App\Models\Routes;
 
 // Route::get('/dashboard', 'DashboardController@index')->middleware('authz');
 
+
+
 try {
     $routes= Routes::where('guard','web')->get()->toArray();
     
