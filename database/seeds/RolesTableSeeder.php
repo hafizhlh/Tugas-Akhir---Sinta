@@ -18,6 +18,10 @@ class RolesTableSeeder extends Seeder
         Role::create(['name'=>'READER', 'guard_name'=>'web', 'is_holding'=>0, 'is_admincomp'=>0]);
         Role::create(['name'=>'ADMIN2', 'guard_name'=>'web', 'is_holding'=>0, 'is_admincomp'=>0]);
 
+        Role::create(['name'=>'ADMIN', 'guard_name'=>'web', 'is_holding'=>0, 'is_admincomp'=>0]);
+        Role::create(['name'=>'SUPER ADMIN', 'guard_name'=>'web', 'is_holding'=>0, 'is_admincomp'=>0]);
+        Role::create(['name'=>'PENGAMBIL BARANG', 'guard_name'=>'web', 'is_holding'=>0, 'is_admincomp'=>0]);
+
         $this->command->info("Role Seeder Success !");
     }
 }
