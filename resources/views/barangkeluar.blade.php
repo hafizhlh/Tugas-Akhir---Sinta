@@ -175,7 +175,7 @@
                             <label class="col-lg-3 col-form-label">NomorDOF/ E-Ticket:</label>
                             <div class="col-lg-9">
                                 <input type="text" class="form-control" id="nodofetiket_code" name="nodofetiket_code"
-                                    placeholder="Contoh : 10451 /GS-10571" />
+                                    placeholder="Contoh : HLP-23-01223/DOF-10571" />
                                 <span class="form-text text-muted">masukan DOF(Deep Of Field)/ E-Ticket</span>
                             </div>
                         </div>
