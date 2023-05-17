@@ -563,6 +563,7 @@
             $(`.invalid-feedback`).remove();
             let form = document.forms.formmenus; // <form name="formmenus"> element
             form.reset();
+            $('#barang_code').val('').trigger('change');
 
         });
 
@@ -589,6 +590,7 @@
                     $('#barang_code').val(res.data[0].barang_id).trigger('change');
                     $('#jumlah').val(res.data[0].jumlah_barang_masuk);
                     $("#saveMenu").data("id", res.data[0].barang_masuk_id);
+                    setBarang(res.data[0].jenis_barang, res.data[0].barang_id);
                 }
             }).fail(function (data) {
                 show_toastr('error', data.responseJSON.status, data.responseJSON.message);
@@ -602,6 +604,25 @@
         });
 
             @endcan
+            function setBarang(param1, param2) {
+                $.ajax({
+                    url: './getBarang/' + param1,
+                    type: "GET",
+                    dataType: "json",
+                    success: function (data) {
+                        $('#barang_code').empty();
+                        $('#barang_code').append('<option value="">Pilih Barang</option>');
+                        $.each(data, function (key, value) {
+                            if (value.barang_id == param2) {
+                                $('#barang_code').append('<option value="' + value.barang_id + '" selected>' + value.nama_barang + '</option>');
+                            } else {
+                                $('#barang_code').append('<option value="' + value.barang_id + '">' + value.nama_barang + '</option>');
+                            }
+                        });
+                    }
+                });
+            }
+
             $(document).on('click', '.details', function () {
                 $('#tanggal_barang_masuk').val($(this).data('tanggal_barang_masuk'));
                 var jenis_barang = $(this).data('jenis_barang');

@@ -160,11 +160,9 @@ class BarangMasukController extends Controller
 
     public function update($id, Request $request)
     {
-
         $attributes = $request->only([
             'barang_code',
             'jumlah',
-            'delete_mark',
         ]);
 
 
@@ -172,7 +170,6 @@ class BarangMasukController extends Controller
         $roles = [
             'barang_code' => 'required',
             'jumlah' => 'required',
-            'delete_mark' => 'required',
 
         ];
 
@@ -183,16 +180,23 @@ class BarangMasukController extends Controller
 
         $this->validators($attributes, $roles, $messages);
 
-        $data = $this->findDataWhere(BarangMasuk::class, ['barang_masuk_id' => $id]);
-
         DB::beginTransaction();
         try {
-            $data->update([
-
-                'barang_code' => $request->barang_code,
-                'jumlah' => $request->jumlah,
-                'delete_mark' => $request->delete_mark,
+            $barang = DB::table('barangs')->where('barang_id', $request->barang_code)->first();
+            $data = DB::table('detail_barang_masuks')->where('barang_masuk_id', $id)->update([
+                'barang_id' => $request->barang_code,
+                'jumlah_barang_masuk' => $request->jumlah,
+                'delete_mark' => 0,
             ]);
+            $data = DB::table('barangs')->where('barang_id', $request->barang_code)->update([
+                'jumlah_barang' => $barang->jumlah_barang + $request->jumlah,
+            ]);
+            $data = [
+                'barang_masuk_id' => $id,
+                'barang_id' => $request->barang_code,
+                'jumlah_barang_masuk' => $request->jumlah,
+                'delete_mark' => 0,
+            ];
             DB::commit();
             $response = responseSuccess(trans("messages.update-success"), $data);
             return response()->json($response, 200, [], JSON_PRETTY_PRINT);
