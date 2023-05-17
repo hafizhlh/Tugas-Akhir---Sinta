@@ -634,6 +634,7 @@
         //menampilkan update modal menu dalam mengubah atau mengedit data
         @can('barangkeluar-U')
         $(document).on('click', '.edits', function () {
+            alert('edit');
             $.ajax({
                 type: 'GET', // define the type of HTTP verb we want to use (POST for our form)
                 url: './barangkeluar/' + $(this).data(
@@ -651,13 +652,14 @@
                 if (res.success) {
                     //jika berhasil mengambil data untuk mengedit
                     showtoastr('success', res.message);
+                    console.log(res.data);
                     $('#user_code').val(res.data.user_id);
                     $('#tanggal_code').val(res.data.tanggal_keluar);
-                    $('#nodofeticket_code').val(res.data.nodofeticket_code);
+                    $('#nodofetiket_code').val(res.data.no_dof_etiket);
                     $('#barang_code').val(res.data.barang_id);
                     $('#jenis_code').val(res.data.jenis_barang);
-                    $('#jumlah_code').val(res.data.jumlah_barang);
-                    $('#keterangan_code').val(res.data.keterangan_barang);
+                    $('#jumlah').val(res.data.jumlah_barang);
+                    $('#keterangan_code').val(res.data.keterangan);
                     $("#saveMenu").data("id", res.data.barang_id);
                 }
             }).fail(function (data) {
