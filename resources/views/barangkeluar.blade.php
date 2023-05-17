@@ -74,7 +74,7 @@
                     <div class="card-toolbar">
                         <!--begin::Button-->
                         @can('barangkeluar-C')
-                        <button id="addMenu" name="addMenu" class="btn btn-primary font-weight-bolder">
+                        <button id="addMenu" name="addMenu" class="btn btn-primary mx-1 font-weight-bolder">
                             <span class="svg-icon svg-icon-md">
                                 <!--begin::Svg Icon | path:assets/media/svg/icons/Design/Flatten.svg-->
                                 <!--end::Svg Icon-->
@@ -418,7 +418,7 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="modalMenuTitle">Barang Keluar</h5>
+                <h5 class="modal-title" id="modalMenuTitle">Laporan Bulanan Barang Keluar</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <i aria-hidden="true" class="ki ki-close"></i>
                 </button>
@@ -458,7 +458,7 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="modalMenuTitle">Barang keluar</h5>
+                <h5 class="modal-title" id="modalMenuTitle">Laporan Tahunan Barang Masuk</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <i aria-hidden="true" class="ki ki-close"></i>
                 </button>
@@ -467,7 +467,7 @@
                 <div class="modal-body">
                     <div class="mb-7">
                         <div class="form-group row">
-                            <label class="col-lg-3 col-form-label">apakah anda ingin membuat tahun ini?</label>         
+                        <h5> apakah anda ingin membuat tahun ini?</h5>     
                         </div>
                     </div>
 

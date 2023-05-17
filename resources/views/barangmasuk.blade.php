@@ -75,14 +75,18 @@
                     </div>
                     <div class="card-toolbar">
                         <!--begin::Button-->
+                       
                         @can('barangmasuk-C')
-                        <button id="addMenu" name="addMenu" class="btn btn-primary font-weight-bolder">
+                        <button id="addMenu" name="addMenu" class="btn btn-primary mx-1 font-weight-bolder">
                             <span class="svg-icon svg-icon-md">
                                 <!--begin::Svg Icon | path:assets/media/svg/icons/Design/Flatten.svg-->
                                 <!--end::Svg Icon-->
                             </span>Masukan barang</a>
                         </button>
-                        @endcan
+                        @endcan                        
+                        <!--end::Button-->
+                        <!--begin::Button-->  
+                                     
                         <button type="button" class="btn btn-light-primary font-weight-bolder dropdown-toggle"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <span class="svg-icon svg-icon-md">
@@ -90,6 +94,7 @@
                                 <!--end::Svg Icon-->
                             </span>Export
                         </button>
+                       
                         <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
                             <!--begin::Navigation-->
                             <ul class="navi flex-column navi-hover py-2">
@@ -379,13 +384,13 @@
                 <div class="modal-body">
                     <div class="mb-7">
                         <div class="form-group row">
-                            <label class="col-lg-3 col-form-label">apakah anda ingin membuat tahun ini?</label>         
+                            <h5> apakah anda ingin membuat tahun ini?</h5>        
                         </div>
                     </div>
 
                     
                 </div>
-                <button type="submit" class="btn btn-primary btn-export_pdf">Save changes</button>
+                <button type="submit" class="btn btn-primary float-right btn-export_pdf">Save changes</button>
             </div>
         </div>
     </div>
