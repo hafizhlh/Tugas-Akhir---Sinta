@@ -72,16 +72,6 @@
                         </h3>
                     </div>
                     <div class="card-toolbar">
-                        <!--begin::Button-->
-                        @can('returnbarang-C')
-                        <button id="addMenu" name="addMenu" class="btn btn-primary font-weight-bolder">
-                            <span class="svg-icon svg-icon-md">
-                                <!--begin::Svg Icon | path:assets/media/svg/icons/Design/Flatten.svg-->
-                                <!--end::Svg Icon-->
-                            </span>Barang Return
-                        </button>
-                        @endcan
-                        <!--end::Button-->
                     </div>
                 </div>
                 <div class="card-body">
@@ -187,8 +177,8 @@
                     field: 'return_id',
                     title: 'id return',
                 },
-                
-             
+
+
 
                 {
                     field: 'nama_barang',
@@ -196,11 +186,12 @@
                 }, {
                     field: 'jumlah_barang_return',
                     title: 'jumlah return barang',
-                }, 
-                {field:'jumlah_barang',
+                },
+                {
+                    field: 'jumlah_barang',
                     title: 'Stok Barang',
 
-                   
+
                 },
                 {
                     field: 'waktu_return',
@@ -209,8 +200,8 @@
                 {
                     field: 'action',
                     title: 'Action',
-                    
-                    
+
+
                 }
             ],
 
