@@ -126,7 +126,7 @@ class BarangKeluarController extends Controller
 
         $this->validators($attributes, $roles, $messages);
 
-        $data     = DB::table('detail_barang_keluars')->where('detail_barang_keluars.xxbarang_keluar_id', $id)
+        $data     = DB::table('detail_barang_keluars')->where('detail_barang_keluars.barang_keluar_id', $id)
                     ->join('barangs', 'detail_barang_keluars.barang_id', '=', 'barangs.barang_id')
                     ->join('barang_keluars', 'detail_barang_keluars.barang_keluar_id', '=', 'barang_keluars.barang_keluar_id')
                     ->get();

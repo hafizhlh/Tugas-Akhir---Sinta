@@ -634,7 +634,6 @@
         //menampilkan update modal menu dalam mengubah atau mengedit data
         @can('barangkeluar-U')
         $(document).on('click', '.edits', function () {
-            alert('edit');
             $.ajax({
                 type: 'GET', // define the type of HTTP verb we want to use (POST for our form)
                 url: './barangkeluar/' + $(this).data(
@@ -653,14 +652,15 @@
                     //jika berhasil mengambil data untuk mengedit
                     showtoastr('success', res.message);
                     console.log(res.data);
-                    $('#user_code').val(res.data.user_id);
-                    $('#tanggal_code').val(res.data.tanggal_keluar);
-                    $('#nodofetiket_code').val(res.data.no_dof_etiket);
-                    $('#barang_code').val(res.data.barang_id);
-                    $('#jenis_code').val(res.data.jenis_barang);
-                    $('#jumlah').val(res.data.jumlah_barang);
-                    $('#keterangan_code').val(res.data.keterangan);
+                    $('#user_code').val(res.data[0].user_id);
+                    $('#tanggal_code').val(res.data[0].tanggal_keluar);
+                    $('#nodofetiket_code').val(res.data[0].no_dof_etiket);
+                    $('#barang_code').val(res.data[0].barang_id).trigger('change');
+                    $('#jenis_code').val(res.data[0].jenis_barang).trigger('change');
+                    $('#jumlah').val(res.data[0].jumlah_barang_keluar);
+                    $('#keterangan_code').val(res.data[0].keterangan);
                     $("#saveMenu").data("id", res.data.barang_id);
+                    setBarang(res.data[0].jenis_barang, res.data[0].barang_id);
                 }
             }).fail(function (data) {
                 //jika salah sebaliknya 
@@ -712,6 +712,24 @@
             });
         });
         @endcan
+        function setBarang(param1, param2) {
+                $.ajax({
+                    url: './getBarang/' + param1,
+                    type: "GET",
+                    dataType: "json",
+                    success: function (data) {
+                        $('#barang_code').empty();
+                        $('#barang_code').append('<option value="">Pilih Barang</option>');
+                        $.each(data, function (key, value) {
+                            if (value.barang_id == param2) {
+                                $('#barang_code').append('<option value="' + value.barang_id + '" selected>' + value.nama_barang + '</option>');
+                            } else {
+                                $('#barang_code').append('<option value="' + value.barang_id + '">' + value.nama_barang + '</option>');
+                            }
+                        });
+                    }
+                });
+            }
         $(document).on('click', '.details', function () {
             $('#user_code_detail').val($(this).data('user_id'));
             $('#tgl_pengambilan').val($(this).data('tgl_pengambilan'));
