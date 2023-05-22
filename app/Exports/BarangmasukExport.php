@@ -25,7 +25,7 @@ class BarangmasukExport implements FromQuery
     public function query()
     {
        
-            
+
             
         return BarangMasuk::query()
         ->join('detail_barang_masuks', 'detail_barang_masuks.barang_masuk_id', '=', 'barang_masuks.barang_masuk_id')

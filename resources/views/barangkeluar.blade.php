@@ -655,9 +655,7 @@
                     $('#user_code').val(res.data[0].user_id);
                     $('#tanggal_code').val(res.data[0].tanggal_keluar);
                     $('#nodofetiket_code').val(res.data[0].no_dof_etiket);
-                    $('#barang_code').val(res.data[0].barang_id).trigger('change');
-                    $('#jenis_code').val(res.data[0].jenis_barang).trigger('change');
-                    $('#jumlah').val(res.data[0].jumlah_barang_keluar);
+                    
                     $('#keterangan_code').val(res.data[0].keterangan);
                     $("#saveMenu").data("id", res.data.barang_id);
                     setBarang(res.data[0].jenis_barang, res.data[0].barang_id);
