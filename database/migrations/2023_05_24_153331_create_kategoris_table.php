@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddBarcodeBarang extends Migration
+class CreateKategorisTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,10 @@ class AddBarcodeBarang extends Migration
      */
     public function up()
     {
-        schema::table('barangs',function(Blueprint $table) {
-            $table->string('barcode_barang', 255)->default('');
+        Schema::create('kategoris', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->string('nama_kategori', 100);
+            $table->timestamps();
         });
     }
 
@@ -25,9 +27,6 @@ class AddBarcodeBarang extends Migration
      */
     public function down()
     {
-        schema::table('barangs',function(Blueprint $table) {
-            $table->dropColumn('barcode_barang');
-        });
+        Schema::dropIfExists('kategoris');
+    }
 }
-}
-

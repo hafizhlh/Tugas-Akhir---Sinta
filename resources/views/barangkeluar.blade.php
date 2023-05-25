@@ -655,7 +655,8 @@
                     $('#user_code').val(res.data[0].user_id);
                     $('#tanggal_code').val(res.data[0].tanggal_keluar);
                     $('#nodofetiket_code').val(res.data[0].no_dof_etiket);
-                    
+                    $('#jumlah_barang_keluar').val(res.data[0].jumlah_barang);
+                    $('#jenis_code').val(res.data[0].jenis_barang);
                     $('#keterangan_code').val(res.data[0].keterangan);
                     $("#saveMenu").data("id", res.data.barang_id);
                     setBarang(res.data[0].jenis_barang, res.data[0].barang_id);
@@ -696,7 +697,7 @@
                     $('#nodof_code').val(res.data[0].no_dof_etiket);
                     $('#barangdikembalikan_code').val(res.data[0].nama_barang);
                     $('#tipebarang_code').val(res.data[0].jenis_barang);
-                    $('#jumlahdikembalikan').val(res.data.jumlah_barang);
+                    $('#jumlahdikembalikan').val(res.data[0].jumlah_barang);
                     $("#saveMenu").data("id", res.data.barang_id);
                 }
             }).fail(function (data) {

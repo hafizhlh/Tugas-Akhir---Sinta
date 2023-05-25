@@ -12,6 +12,7 @@
 */
 
 use App\Models\Routes;
+use Illuminate\Support\Facades\Route;
 
 // Route::get('/', function () {
 //     return view('dashboard');
@@ -22,6 +23,8 @@ use App\Models\Routes;
 // Route::GET('/logout','LoginController@destroy');
 
 // Route::get('/dashboard', 'DashboardController@index')->middleware('authz');
+Route::post('/postKategori', 'KategoriController@store');
+Route::get('/getKategori', 'KategoriController@datatables');
 
 
 

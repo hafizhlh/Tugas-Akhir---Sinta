@@ -2,41 +2,28 @@
 
 namespace App\Http\Controllers;
 
+
+use App\Models\Kategori;
 use Illuminate\Http\Request;
-use App\Models\Barang;
 use App\Models\Menu;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
-class BarangController extends Controller
+class KategoriController extends Controller
 {
     public function index()
     {
         $data['menus'] = $this->getDashboardMenu();
         $data['menu']  = Menu::select('id', 'name')->get();
-        $data['kategori'] = DB::table('kategoris')->get();
-        return view('Barang', $data);
+        return view('Kategori', $data);
     }
 
     public function datatables()
     {
-        // $data = Barang::orderBy('nama_barang', 'asc')->where('delete_mark', 0)->get();
-        $data = DB::table('barangs')
-        ->join('kategoris', 'barangs.kategori_id', '=', 'kategoris.id')
-        ->where('barangs.delete_mark', 0)
-        ->get();
+        $data = Kategori::orderBy('nama_kategori', 'asc')->get();
         return datatables()->of($data)
             ->addIndexColumn()
-            ->addColumn('jenis_barang', function ($row) {
-                $jenis = $row->jenis_barang;
-                if ($jenis == 1) {
-                    $jenis = 'Consumable';
-                } else if ($jenis == 2) {
-                    $jenis = 'Aset';
-                }
-                return $jenis;
-            })
             ->addColumn('nama_kategori', function ($row) {
                 $kategori = $row->nama_kategori;
                 if ($kategori == '') {
@@ -47,9 +34,8 @@ class BarangController extends Controller
                 return $kategori;
             })
             ->addColumn('action', function ($row) {
-                $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->barang_id . '" data-original-title="Edit" class="edit btn btn-primary btn-sm editBarang">Edit</a>';
-                $btn = $btn . ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->barang_id . '" data-original-title="Delete" class="btn btn-danger btn-sm deleteLandingPage">Delete</a>';
-                $btn = $btn . ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->barang_id . '" data-nama="' . $row->nama_barang.'" data-barcode="'.$row->barcode_barang.'" data-jenis_barang="'.$row->jenis_barang.'" data-keterangan_barang="'.$row->keterangan_barang.'" data-original-title="Detail" class="btn btn-info btn-sm detailLandingPage">Detail</a>';
+                $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->id . '" data-original-title="Edit" class="edit btn btn-primary btn-sm editBarang">Edit</a>';
+                $btn = $btn . ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->id . '" data-original-title="Delete" class="btn btn-danger btn-sm deletes">Delete</a>';
                 return $btn;
             })
             ->rawColumns(['action'])
@@ -59,18 +45,10 @@ class BarangController extends Controller
     public function store(Request $request)
     {
         $attributes = $request->only([
-            'barang_name',
-            'jenis_code',
-            'barcode',
-            'keterangan_code',
-            'kategori_id', // Menambahkan field kategori_barang
+            'kategori_name', // Menambahkan field kategori_barang
         ]);
         $roles = [
-            'barang_name' => 'required',
-            'jenis_code' => 'required',
-            'barcode' => 'required|unique:barangs,barcode_barang',
-            'keterangan_code' => 'required',
-            'kategori_id' => 'required', // Validasi untuk kategori_barang
+            'kategori_name' => 'required', // Validasi untuk kategori_barang
         ];
         $messages = [
             'required' => trans('messages.required'),
@@ -82,13 +60,8 @@ class BarangController extends Controller
 
         DB::beginTransaction();
         try {
-            $data = Barang::create([
-                'user_id' => Auth::user()->id,
-                'nama_barang' => $request->barang_name,
-                'barcode_barang' => $request->barcode,
-                'jenis_barang' => $request->jenis_code,
-                'keterangan_barang' => $request->keterangan_code,
-                'kategori_barang' => $request->kategori_code, // Menambahkan kolom kategori_barang
+            $data = Kategori::create([
+                'nama_kategori' => $request->kategori_name, // Menambahkan kolom kategori_barang
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
@@ -103,10 +76,10 @@ class BarangController extends Controller
 
     public function show($id)
     {
-        $attributes['barang_id'] = $id;
+        $attributes['id'] = $id;
 
         $roles = [
-            'barang_id' => 'required|exists:barangs,barang_id',
+            'id' => 'required|exists:kategori,id',
         ];
         $messages = [
             'required' => trans('messages.required'),
@@ -115,7 +88,7 @@ class BarangController extends Controller
 
         $this->validators($attributes, $roles, $messages);
 
-        $data = $this->findDataWhere(Barang::class, ['barang_id' => $id]);
+        $data = $this->findDataWhere(Kategori::class, ['id' => $id]);
         $response = responseSuccess(trans("messages.read-success"), $data);
         return response()->json($response, 200, [], JSON_PRETTY_PRINT);
         return $id;
@@ -123,7 +96,7 @@ class BarangController extends Controller
 
     public function edit($id)
     {
-        $query = Barang::find($id);
+        $query = Kategori::find($id);
         $response = responseSuccess(trans("messages.read-success"), $query);
         return response()->json($response, 200, [], JSON_PRETTY_PRINT);
         //
@@ -133,19 +106,11 @@ class BarangController extends Controller
     {
 
         $attributes = $request->only([
-            'user_code',
-            'barang_name',
-            'jenis_code',
-            'keterangan_code',
-            'kategori_id', // Menambahkan field kategori_barang
+            'kategori_code', // Menambahkan field kategori_barang
         ]);
 
         $roles = [
-            'user_code' => 'required | exists:users,id',
-            'barang_name' => 'required',
-            'jenis_code' => 'required',
-            'keterangan_code' => 'required',
-            'kategori_id' => 'required', // Validasi untuk kategori_barang
+            'kategori_code' => 'required', // Validasi untuk kategori_barang
         ];
 
         $messages = [
@@ -155,16 +120,12 @@ class BarangController extends Controller
 
         $this->validators($attributes, $roles, $messages);
 
-        $data = $this->findDataWhere(Barang::class, ['barang_id' => $id]);
+        $data = $this->findDataWhere(Kategori::class, ['id' => $id]);
 
         DB::beginTransaction();
         try {
             $data->update([
-                'nama_barang' => $request->barang_name,
-                'user_id' => $request->user_code,
-                'jenis_barang' => $request->jenis_code,
-                'keterangan_barang' => $request->keterangan_code,
-                'kategori_barang' => $request->kategori_code, // Menambahkan kolom kategori_barang
+                'nama_kategori' => $request->kategori_code, // Menambahkan kolom kategori_barang
                 'updated_at' => now(),
             ]);
             DB::commit();
@@ -181,9 +142,7 @@ class BarangController extends Controller
     {
         DB::beginTransaction();
         try {
-            DB::table('barangs')->where('barang_id', $id)->update([
-                'delete_mark' => 1,
-            ]);
+            Kategori::where('id', $id)->delete();
             $response = responseSuccess(trans('message.delete-success'));
             DB::commit();
             return response()->json($response, 200);

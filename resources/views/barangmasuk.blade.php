@@ -518,7 +518,11 @@
                 },
                 {
                     field: 'jumlah_barang_masuk',
-                    title: 'jumlah barang',
+                    title: 'jumlah barang masuk',
+                },
+                { field: 'jumlah_barang',
+                  title: 'stok barang',
+
                 },
 
                 {
@@ -546,6 +550,7 @@
                             " data-jumlah_barang_masuk=" + row.jumlah_barang_masuk +
                             " data-jumlah_barang=" + row.jumlah_barang +
                             " data-keterangan_barang=" + row.keterangan_barang +
+                            
                             " ><i class='fa fa-eye'></i></button>  " +
                             @endcan
 
