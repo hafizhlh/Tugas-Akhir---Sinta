@@ -25,7 +25,16 @@ class BarangMasukController extends Controller
         $data['menus'] = $this->getDashboardMenu();
         $data['menu']  = Menu::select('id', 'name')->get();
         $data['barang'] = Barang::select('barang_id', 'nama_barang')->get();
+        $data['kategori'] = DB::table('kategoris')->get();
         return view('BarangMasuk', $data);
+
+        // Menambahkan parameter jenis_barang pada query untuk menyortir berdasarkan jenis barang yang dipilih
+    if (isset($_GET['jenis_barang'])) {
+        $jenisBarang = $_GET['jenis_barang'];
+        $data['barang'] = Barang::select('barang_id', 'nama_barang')->where('jenis_barang', $jenisBarang)->get();
+    }
+    
+    return view('BarangMasuk', $data);
     }
 
 
@@ -222,6 +231,7 @@ class BarangMasukController extends Controller
             return response()->json($e->getMessage(), 500);
         }
     }
+    
     public function getBarang($jenis_code)
     {
         $data = Barang::where('jenis_barang', $jenis_code)->get();
@@ -244,22 +254,19 @@ class BarangMasukController extends Controller
     }
     public function exportTanggalBarangMasuk(Request $request)
     {
-
         $data = DB::table('detail_barang_masuks')
             ->join('barang_masuks', 'detail_barang_masuks.barang_masuk_id', '=', 'barang_masuks.barang_masuk_id')
             ->join('barangs', 'detail_barang_masuks.barang_id', '=', 'barangs.barang_id')
-            // ->select('barang_masuks.barang_masuk_id as id_barang_masuk', 'barang_masuks.*', 'detail_barang_masuks.*', 'barangs.*')
-            ->whereBetween('tanggal_barang_masuk', [$request->tanggal_awal, $request->tanggal_akhir])           
+            ->whereBetween('tanggal_barang_masuk', [$request->tanggal_awal, $request->tanggal_akhir])
+            ->where('barangs.jenis_barang', $request->jenis_barang)
             ->select("barang_masuks.tanggal_barang_masuk","barangs.nama_barang", "barangs.jenis_barang","detail_barang_masuks.jumlah_barang_masuk","barangs.jumlah_barang","barangs.keterangan_barang")
             ->get();
-
+    
         $collect = $data->map(function ($item) {
             $item->jenis_barang = $item->jenis_barang == 1 ? "consummable" : "asset";
             return $item;
         });
-
-        // dd($collect);
-
+    
         $column = [
             'tanggal barang masuk',
             'nama barang',
@@ -267,10 +274,11 @@ class BarangMasukController extends Controller
             'jumlah barang masuk',
             'jumlah stok barang saat ini',
             'keterangan barang'
-
         ];
+    
         return Excel::download((new Exportxls($data, $column)), 'Laporan BarangMasuk bulanan.xlsx');
     }
+    
     public function exportTahunBarangMasuk():BinaryFileResponse
     {
         $year_now = date('Y');

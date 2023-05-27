@@ -268,7 +268,6 @@
                             </div>
                            
                         </div>
-
                     </div>
 
                     <div class="modal-footer">
@@ -331,15 +330,13 @@
                     {
                         field : 'DT_RowIndex',
                         title : 'No',
-                    },
-                   {
+                    },{
                         field: 'jenis_barang',
                         title: 'jenis barang',
                     },{
                         field: 'nama_kategori',
                         title: 'kategori barang',
-                    },
-                    {
+                    },{
                         field: 'nama_barang',
                         title: 'nama barang',
                     }, 
@@ -471,12 +468,10 @@
                     $('#jenis_code_detail').val('Consummables');
                 }else{
                     $('#jenis_code_detail').val('Asset');
-                }   
+                }  
+                $('#jenis_code_detail').val();  
 
-                $('#jenis_code_detail').val();
-                
                 $('#kategori_code_detail').val($(this).data('kategori'));
-
                 $('#keterangan_code_detail').val($(this).data('keterangan_barang'));
 
                 // show modal

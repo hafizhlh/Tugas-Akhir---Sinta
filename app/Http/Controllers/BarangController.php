@@ -13,6 +13,7 @@ class BarangController extends Controller
 {
     public function index()
     {
+        $data['data'] = Barang::orderBy('nama_barang', 'asc')->where('delete_mark', 0)->get();
         $data['menus'] = $this->getDashboardMenu();
         $data['menu']  = Menu::select('id', 'name')->get();
         $data['kategori'] = DB::table('kategoris')->get();
@@ -85,6 +86,7 @@ class BarangController extends Controller
             $data = Barang::create([
                 'user_id' => Auth::user()->id,
                 'nama_barang' => $request->barang_name,
+                'kategori_id' => $request->kategori_id,
                 'barcode_barang' => $request->barcode,
                 'jenis_barang' => $request->jenis_code,
                 'keterangan_barang' => $request->keterangan_code,
@@ -104,7 +106,6 @@ class BarangController extends Controller
     public function show($id)
     {
         $attributes['barang_id'] = $id;
-
         $roles = [
             'barang_id' => 'required|exists:barangs,barang_id',
         ];

@@ -20,6 +20,7 @@ class BarangKeluarController extends Controller
         $data['menus'] = $this->getDashboardMenu();
         $data['menu']  = Menu::select('id', 'name')->get();
         $data['barang']= Barang::select('barang_id', 'nama_barang')->get();
+        $data['kategori'] = DB::table('kategoris')->get();
         return view('BarangKeluar', $data);
     }
 
@@ -204,8 +205,8 @@ class BarangKeluarController extends Controller
         }
     }
 
-    public function getBarang($jenis_code){
-        $data = Barang::where('jenis_barang', $jenis_code)->get();
+    public function getBarang($jenis_code, $kategori_id){
+        $data = Barang::where('jenis_barang', $jenis_code)->where('kategori_id', $kategori_id)->get();
         return response()->json($data);
     }
 

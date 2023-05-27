@@ -195,6 +195,18 @@
                 </div>
             </div>
             <div class="form-group row">
+                <label class="col-lg-3 col-form-label">Nama Kategori</label>
+                <div class="col-lg-9">
+                    <select class="form-control select2" id="kategori_id" name="kategori_id" style="width: 100%>
+                        <option value="">Pilih Kategori</option>
+                        @foreach($kategori as $k)
+                            <option value="{{$k->id}}">{{$k->nama_kategori}}</option>
+                        @endforeach
+                    </select>
+                    <span class="form-text text-muted">Masukkan Nama Kategori</span>
+                </div>
+            </div>
+            <div class="form-group row">
                 <label class="col-lg-3 col-form-label">Barang:</label>
                 <div class="col-lg-9">
                     <select class="form-control select2" id="barang_code" name="barang_code" style="width: 100%;">
@@ -456,9 +468,10 @@
         $('.select2').select2();
         $('#jenis_code').on('change', function () {
             var jenis_code = $(this).val();
+            var kategori_id = $('#kategori_id').val();
             if (jenis_code) {
                 $.ajax({
-                    url: './getBarang/' + jenis_code,
+                    url: './getBarang/' + jenis_code + '/' + kategori_id,
                     type: "GET",
                     dataType: "json",
                     success: function (data) {
@@ -506,8 +519,11 @@
             },
             // columns definition
             columns: [
-
                 {
+                        field : 'DT_RowIndex',
+                        title : 'No',
+                    
+                },{
                     field: 'jenis_barang',
                     title: 'jenis barang'
                 },
@@ -757,7 +773,35 @@
         $('#exportTahunan').modal('show')
     }
 
-    
+document.getElementById('jenis_code').addEventListener('change', function() {
+    var jenisCode = this.value;
+    if (jenisCode) {
+        // Mengirim permintaan AJAX untuk mendapatkan daftar barang berdasarkan jenis barang yang dipilih
+        fetch('/get-barang-by-code/' + jenisCode)
+            .then(function(response) {
+                return response.json();
+            })
+            .then(function(data) {
+                // Menghapus semua opsi sebelumnya dari daftar barang
+                var daftarBarangSelect = document.getElementById('daftarBarang');
+                daftarBarangSelect.innerHTML = '<option value="">Pilih Barang</option>';
+                // Menambahkan opsi baru ke daftar barang berdasarkan data yang diterima dari permintaan AJAX
+                data.forEach(function(barang) {
+                    var option = document.createElement('option');
+                    option.value = barang.barang_id;
+                    option.textContent = barang.nama_barang;
+                    daftarBarangSelect.appendChild(option);
+                });
+            })
+            .catch(function(error) {
+                console.log(error);
+            });
+    } else {
+        // Jika jenis barang tidak dipilih, menghapus semua opsi dari daftar barang
+        var daftarBarangSelect = document.getElementById('daftarBarang');
+        daftarBarangSelect.innerHTML = '<option value="">Pilih Barang</option>';
+    }
+});
 
 </script>
 

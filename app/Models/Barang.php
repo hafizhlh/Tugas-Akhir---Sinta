@@ -13,7 +13,7 @@ class Barang extends Model
         'user_id',
         'nama_barang',
         'jenis_barang',
-        'jumlah_barang',
+        'kategori_id',
         'keterangan_barang',
         'barcode_barang',
     ];

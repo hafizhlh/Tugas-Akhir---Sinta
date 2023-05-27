@@ -118,35 +118,41 @@
                     </div>
                 </div>
                 <div class="card-body">
+                    {{-- <div class="table-responsive">
+                        <table class="datatable datatable-bordered datatable-head-custom" id="kt_datatable_menu"> --}}
                     <!--begin: Search Form-->
                     <!--begin::Search Form-->
-                    <div class="mb-7">
-                        <div class="row align-items-center">
-                            <div class="col-lg-9 col-xl-8">
+                            <div class="mb-7">
                                 <div class="row align-items-center">
-                                    <div class="col-md-4 my-2 my-md-0">
-                                        <div class="input-icon">
-                                            <input type="text" class="form-control" placeholder="Search..."
-                                                id="kt_datatable_search_query" />
-                                            <span>
-                                                <i class="flaticon2-search-1 text-muted"></i>
-                                            </span>
+                                    <div class="col-lg-9 col-xl-8">
+                                        <div class="row align-items-center">
+                                            <div class="col-md-4 my-2 my-md-0">
+                                                <div class="input-icon">
+                                                    <input type="text" class="form-control" placeholder="Search..."
+                                                        id="kt_datatable_search_query" />
+                                                    <span>
+                                                        <i class="flaticon2-search-1 text-muted"></i>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <a href="#" class="btn btn-light-primary px-6 font-weight-bold">Search</a>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <a href="#" class="btn btn-light-primary px-6 font-weight-bold">Search</a>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
+                        {{-- </table>
+                    </div> --}}
                     <!--end::Search Form-->
                     <!--end: Search Form-->
                     <!--begin: Datatable-->
+                            <!-- Table content goes here -->
                     <div class="datatable datatable-bordered datatable-head-custom" id="kt_datatable_menu"></div>
                     <!--end: Datatable-->
                 </div>
             </div>
+            
             <!--end::Card-->
         </div>
         <!--end::Container-->
@@ -190,6 +196,18 @@
                                 </select>
                                 <span class="form-text text-muted">Pilih jenis barang untuk menampilkan opsi
                                     barang</span>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-lg-3 col-form-label">Nama Kategori</label>
+                            <div class="col-lg-9">
+                                <select class="form-control select2" id="kategori_id" name="kategori_id" style="width: 100%>
+                                    <option value="">Pilih Kategori</option>
+                                    @foreach($kategori as $k)
+                                        <option value="{{$k->id}}">{{$k->nama_kategori}}</option>
+                                    @endforeach
+                                </select>
+                                <span class="form-text text-muted">Masukkan Nama Kategori</span>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -496,9 +514,10 @@
         $('.select2').select2();
         $('#jenis_code').on('change', function () {
             var jenis_code = $(this).val();
+            var kategori_id = $('#kategori_id').val();
             if (jenis_code) {
                 $.ajax({
-                    url: './getBarang/' + jenis_code,
+                    url: './getBarang/' + jenis_code + '/' + kategori_id,
                     type: "GET",
                     dataType: "json",
                     success: function (data) {
@@ -546,19 +565,24 @@
                 key: 'generalSearch'
             },
             // columns definition
-            columns: [{
-                    field: 'barang_keluar_id',
-                    title: 'id barang keluar',
-                    // make center aligment.
-                    textAlign: 'center',
+            columns: [
 
-                },
                 {
+                    field : 'DT_RowIndex',
+                    title : 'No',
+                },{
                     field: 'nama_barang',
                     title: 'nama barang',
                     textAlign: 'center',
 
                 },
+                // {
+                //     field: 'barang_keluar_id',
+                //     title: 'id barang keluar',
+                //     // make center aligment.
+                //     textAlign: 'center',
+
+                // },
                 {
                     field: 'jumlah_barang_keluar',
                     title: 'jumlah',
@@ -606,7 +630,10 @@
                             " ><i class='fa fa-reply-all'></i> </button>  " +
                             @endcan
                         @can('barangkeluar-R')
-                        "<button type='button' class='details btn btn-sm btn-icon btn-outline-info ' title='Detail' data-toggle='tooltip' data-id="+row.barang_keluar_id+" data-user_id="+row.user_id+" data-tgl_pengambilan="+row.tgl_pengambilan+" data-no_dof_etiket="+row.no_dof_etiket+" data-nama="+row.nama_barang+" data-barcode="+row.barcode_barang+" data-jenis_barang="+row.jenis_barang+" data-keterangan=" +row.keterangan+" data-jumlah_barang_keluar="+row.jumlah_barang_keluar+" ><i class='fa fa-info-circle'></i> </button>  " +
+                        "<button type='button' class='details btn btn-sm btn-icon btn-outline-info ' title='Detail' data-toggle='tooltip' data-id="+
+                        row.barang_keluar_id+" data-user_id="+row.user_id+" data-tgl_pengambilan="+row.tgl_pengambilan+" data-no_dof_etiket="+row.no_dof_etiket+
+                        " data-nama="+row.nama_barang+" data-barcode="+row.barcode_barang+" data-jenis_barang="+row.jenis_barang+" data-keterangan=" +row.keterangan+
+                        " data-jumlah_barang_keluar="+row.jumlah_barang_keluar+" ><i class='fa fa-info-circle'></i> </button>  " +
                             @endcan 
                         "</center>";
                     },
