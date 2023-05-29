@@ -66,11 +66,43 @@ class PermissionsTableSeeder extends Seeder
             array( 'name' => 'home-D', 'guard_name' => 'web', 'action_id' => 'D', 'menu_id' => 2),
             array( 'name' => 'home-A', 'guard_name' => 'web', 'action_id' => 'A', 'menu_id' => 2),
 
-            array( 'name' => 'landigPage-C', 'guard_name' => 'web', 'action_id' => 'C', 'menu_id' => 9),
-            array( 'name' => 'landigPage-R', 'guard_name' => 'web', 'action_id' => 'R', 'menu_id' => 9),
-            array( 'name' => 'landigPage-U', 'guard_name' => 'web', 'action_id' => 'U', 'menu_id' => 9),
-            array( 'name' => 'landigPage-D', 'guard_name' => 'web', 'action_id' => 'D', 'menu_id' => 9),
-            array( 'name' => 'landigPage-A', 'guard_name' => 'web', 'action_id' => 'A', 'menu_id' => 9),
+            //barang
+            array( 'name' => 'barang-C', 'guard_name' => 'web', 'action_id' => 'C', 'menu_id' => 9),
+            array( 'name' => 'barang-R', 'guard_name' => 'web', 'action_id' => 'R', 'menu_id' => 9),
+            array( 'name' => 'barang-U', 'guard_name' => 'web', 'action_id' => 'U', 'menu_id' => 9),
+            array( 'name' => 'barang-D', 'guard_name' => 'web', 'action_id' => 'D', 'menu_id' => 9),
+            array( 'name' => 'barang-A', 'guard_name' => 'web', 'action_id' => 'A', 'menu_id' => 9),
+
+            //kategori
+            array( 'name' => 'kategori-C', 'guard_name' => 'web', 'action_id' => 'C', 'menu_id' => 10),
+            array( 'name' => 'kategori-R', 'guard_name' => 'web', 'action_id' => 'R', 'menu_id' => 10),
+            array( 'name' => 'kategori-U', 'guard_name' => 'web', 'action_id' => 'U', 'menu_id' => 10),
+            array( 'name' => 'kategori-D', 'guard_name' => 'web', 'action_id' => 'D', 'menu_id' => 10),
+            array( 'name' => 'kategori-A', 'guard_name' => 'web', 'action_id' => 'A', 'menu_id' => 10),
+
+            //return barang
+            array( 'name' => 'returnbarang-C', 'guard_name' => 'web', 'action_id' => 'C', 'menu_id' => 11),
+            array( 'name' => 'returnbarang-R', 'guard_name' => 'web', 'action_id' => 'R', 'menu_id' => 11),
+            array( 'name' => 'returnbarang-U', 'guard_name' => 'web', 'action_id' => 'U', 'menu_id' => 11),
+            array( 'name' => 'returnbarang-D', 'guard_name' => 'web', 'action_id' => 'D', 'menu_id' => 11),
+            array( 'name' => 'returnbarang-A', 'guard_name' => 'web', 'action_id' => 'A', 'menu_id' => 11),
+
+            //barang keluar
+            array( 'name' => 'barangkeluar-C', 'guard_name' => 'web', 'action_id' => 'C', 'menu_id' => 12),
+            array( 'name' => 'barangkeluar-R', 'guard_name' => 'web', 'action_id' => 'R', 'menu_id' => 12),
+            array( 'name' => 'barangkeluar-U', 'guard_name' => 'web', 'action_id' => 'U', 'menu_id' => 12),
+            array( 'name' => 'barangkeluar-D', 'guard_name' => 'web', 'action_id' => 'D', 'menu_id' => 12),
+            array( 'name' => 'barangkeluar-A', 'guard_name' => 'web', 'action_id' => 'A', 'menu_id' => 12),
+
+            //barang masuk
+            array( 'name' => 'barangmasuk-C', 'guard_name' => 'web', 'action_id' => 'C', 'menu_id' => 13),
+            array( 'name' => 'barangmasuk-R', 'guard_name' => 'web', 'action_id' => 'R', 'menu_id' => 13),
+            array( 'name' => 'barangmasuk-U', 'guard_name' => 'web', 'action_id' => 'U', 'menu_id' => 13),
+            array( 'name' => 'barangmasuk-D', 'guard_name' => 'web', 'action_id' => 'D', 'menu_id' => 13),
+            array( 'name' => 'barangmasuk-A', 'guard_name' => 'web', 'action_id' => 'A', 'menu_id' => 13),
+
+            
+
         ];
 
         foreach ($permissions as $k_data => $v_data){
