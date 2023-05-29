@@ -23,14 +23,10 @@ class CreateUsersTable extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->char('status',1)->default('y');
-            $table->char('company_code', 4);
             $table->string('key_devices')->nullable();
             $table->rememberToken();
             $table->date('deleted_at')->nullable();
             $table->timestamps();
-
-
-            $table->foreign('company_code')->references('company_code')->on('company');
         });
 
         DB::unprepared('
