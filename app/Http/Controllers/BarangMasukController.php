@@ -48,7 +48,15 @@ class BarangMasukController extends Controller
             ->get();
         return datatables()->of($data)
             ->addIndexColumn()
-
+            ->addColumn('jenis_barang', function ($row) {
+                $jenis = $row->jenis_barang;
+                if ($jenis == 1) {
+                    $jenis = 'Consumable';
+                } else if ($jenis == 2) {
+                    $jenis = 'Aset';
+                }
+                return $jenis;
+            })
             ->addColumn('action', function ($row) {
                 $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->id_barang_masuk . '" data-original-title="Edit" class="edit btn btn-primary btn-sm editBarang">Edit</a>';
                 $btn = $btn . ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->id_barang_masuk . '" data-original-title="Delete" class="btn btn-danger btn-sm deleteLandingPage">Delete</a>';
@@ -192,13 +200,14 @@ class BarangMasukController extends Controller
         DB::beginTransaction();
         try {
             $barang = DB::table('barangs')->where('barang_id', $request->barang_code)->first();
+            $data_old = DB::table('detail_barang_masuks')->where('barang_masuk_id', $id)->first();
             $data = DB::table('detail_barang_masuks')->where('barang_masuk_id', $id)->update([
                 'barang_id' => $request->barang_code,
                 'jumlah_barang_masuk' => $request->jumlah,
                 'delete_mark' => 0,
             ]);
             $data = DB::table('barangs')->where('barang_id', $request->barang_code)->update([
-                'jumlah_barang' => $barang->jumlah_barang + $request->jumlah,
+                'jumlah_barang' => $barang->jumlah_barang + ($request->jumlah - $data_old->jumlah_barang_masuk),
             ]);
             $data = [
                 'barang_masuk_id' => $id,
@@ -220,6 +229,12 @@ class BarangMasukController extends Controller
 
         DB::beginTransaction();
         try {
+            // min stock barang from table barang
+            $data = DB::table('detail_barang_masuks')->where('barang_masuk_id', $id)->first();
+            $barang = DB::table('barangs')->where('barang_id', $data->barang_id)->first();
+            $data = DB::table('barangs')->where('barang_id', $data->barang_id)->update([
+                'jumlah_barang' => $barang->jumlah_barang - $data->jumlah_barang_masuk,
+            ]);
             DB::table('barang_masuks')->where('barang_masuk_id', $id)->update([
                 'delete_mark' => 1,
             ]);

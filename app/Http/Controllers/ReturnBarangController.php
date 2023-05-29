@@ -90,6 +90,7 @@ class ReturnBarangController extends Controller
         $data = DB::table('barang_keluars')
                 ->join('detail_barang_keluars', 'barang_keluars.barang_keluar_id', '=', 'detail_barang_keluars.barang_keluar_id')
                 ->join('barangs', 'detail_barang_keluars.barang_id', '=', 'barangs.barang_id')
+                ->join('kategoris', 'barangs.kategori_id', '=', 'kategoris.id')
                 ->where('barang_keluars.barang_keluar_id', $id)
                 ->get();
         // change jenis_barang to nama_barang

@@ -277,7 +277,12 @@
 
                         </div>
                     </div>
-
+                    <div class="form-group row">
+                        <label class="col-lg-3 col-form-label">Kategori Barang:</label>
+                        <div class="col-lg-9">
+                            <input type="text" class="form-control" id="kategori_barang_info" name="nama_kategori" readonly/>
+                        </div>
+                    </div>
                     <div class="form-group row">
                         <label class="col-lg-3 col-form-label">Barang:</label>
                         <div class="col-lg-9">
@@ -466,8 +471,8 @@
        
 
         $('.select2').select2();
-        $('#jenis_code').on('change', function () {
-            var jenis_code = $(this).val();
+        $('#kategori_id').on('change', function () {
+            var jenis_code = $('#jenis_code').val();
             var kategori_id = $('#kategori_id').val();
             if (jenis_code) {
                 $.ajax({
@@ -525,19 +530,23 @@
                     
                 },{
                     field: 'jenis_barang',
-                    title: 'jenis barang'
+                    title: 'jenis barang',
+                    textAlign: 'center',
                 },
 
                 {
                     field: 'nama_barang',
                     title: 'barang',
+                    textAlign: 'center',
                 },
                 {
                     field: 'jumlah_barang_masuk',
                     title: 'jumlah barang masuk',
+                    textAlign: 'center',
                 },
                 { field: 'jumlah_barang',
                   title: 'stok barang',
+                  textAlign: 'center',
 
                 },
 
@@ -615,8 +624,9 @@
                     $('#jenis_code').val(res.data[0].jenis_barang).trigger('change');
                     $('#barang_code').val(res.data[0].barang_id).trigger('change');
                     $('#jumlah').val(res.data[0].jumlah_barang_masuk);
+                    $('#kategori_id').val(res.data[0].kategori_id).trigger('change');
                     $("#saveMenu").data("id", res.data[0].barang_masuk_id);
-                    setBarang(res.data[0].jenis_barang, res.data[0].barang_id);
+                    setBarang(res.data[0].jenis_barang, res.data[0].barang_id, res.data[0].kategori_id);
                 }
             }).fail(function (data) {
                 show_toastr('error', data.responseJSON.status, data.responseJSON.message);
@@ -630,9 +640,9 @@
         });
 
             @endcan
-            function setBarang(param1, param2) {
+            function setBarang(param1, param2, param3) {
                 $.ajax({
-                    url: './getBarang/' + param1,
+                    url: './getBarang/' + param1 + '/' + param3,
                     type: "GET",
                     dataType: "json",
                     success: function (data) {
@@ -659,15 +669,14 @@
                 }
                 $('#barang_code_detail').val($(this).data('nama_barang'));
                 $('#jumlah_barang_masuk').val($(this).data('jumlah_barang_masuk'));
+                $('#kategori_barang_info').val($(this).data('nama_kategori'));
+
                 // alert($(this).data('jumlah_barang'));
                 $('#stok_detail').val($(this).data('jumlah_barang'));
-                $('#keterangan').val($(this).data('keterangan_barang'));
-                
-            
+                $('#keterangan').val($(this).data('keterangan_barang'));                
                 //modal untuk show
                 $('#modalInfo').modal('show');
-
-        });
+             });
 
 
 

@@ -289,12 +289,19 @@
                         <div class="form-group row">
                             <label class="col-lg-3 col-form-label">Jenis Barang:</label>
                             <div class="col-lg-9">
-
                                 <input type="text" class="form-control" id="tipebarang_code" name="jenis_code" disabled>
                                 <span class="form-text text-muted">Pilih jenis barang untuk menampilkan opsi
                                     barang</span>
                             </div>
                         </div>
+                        <div class="form-group row">
+                            <label class="col-lg-3 col-form-label">Nama Kategori:</label>
+                            <div class="col-lg-9">
+                                <input type="text" class="form-control"id="kategori_return" name="kategori_return" disabled>
+                                <span class="form-text text-muted">Masukkan Nama Kategori</span>
+                            </div>
+                        </div>
+
                         <input type="hidden" class="form-control" id="barang_id" name="barang_id">
                         <div class="form-group row">
                             <label class="col-lg-3 col-form-label">Barang:</label>
@@ -375,7 +382,23 @@
                             <span class="form-text text-muted">masukan DOF(Deep Of Field)/ E-Ticket</span>
                         </div>
                     </div>
-                    <!--  -->
+                    <div class="form-group row">
+                        <label class="col-lg-3 col-form-label">Jenis Barang:</label>
+                        <div class="col-lg-9">
+                            <input type="text" class="form-control" id="jenis_code_detail" name="jenis_code_detail"
+                            readonly/>
+                            <span class="form-text text-muted">Masukkan Jenis Barang</span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-lg-3 col-form-label">Kategori Barang:</label>
+                        <div class="col-lg-9">
+                            <input type="text" class="form-control" id="kategori_barang" name="kategori_barang"
+                                   placeholder="Contoh : Totolink N200RE Mini" readonly/>
+                            <span class="form-text text-muted" >Masukkan kategori Barang</span>
+                         
+                        </div>
+                    </div>
                     <div class="form-group row">
                         <label class="col-lg-3 col-form-label">Barang:</label>
                         <div class="col-lg-9">
@@ -512,8 +535,8 @@
       
         //select data dari barang 
         $('.select2').select2();
-        $('#jenis_code').on('change', function () {
-            var jenis_code = $(this).val();
+        $('#kategori_id').on('change', function () {
+            var jenis_code =  $('#jenis_code').val();
             var kategori_id = $('#kategori_id').val();
             if (jenis_code) {
                 $.ajax({
@@ -683,10 +706,12 @@
                     $('#tanggal_code').val(res.data[0].tanggal_keluar);
                     $('#nodofetiket_code').val(res.data[0].no_dof_etiket);
                     $('#jumlah_barang_keluar').val(res.data[0].jumlah_barang);
-                    $('#jenis_code').val(res.data[0].jenis_barang);
+                    $('#jenis_code').val(res.data[0].jenis_barang).trigger('change');
+                    $('#kategori_id').val(res.data[0].kategori_id).trigger('change');
+                    $('#barang_code').val(res.data[0].barang_id).trigger('change');
                     $('#keterangan_code').val(res.data[0].keterangan);
                     $("#saveMenu").data("id", res.data.barang_id);
-                    setBarang(res.data[0].jenis_barang, res.data[0].barang_id);
+                    setBarang(res.data[0].jenis_barang, res.data[0].barang_id, res.data[0].kategori_id);
                 }
             }).fail(function (data) {
                 //jika salah sebaliknya 
@@ -724,7 +749,8 @@
                     $('#nodof_code').val(res.data[0].no_dof_etiket);
                     $('#barangdikembalikan_code').val(res.data[0].nama_barang);
                     $('#tipebarang_code').val(res.data[0].jenis_barang);
-                    $('#jumlahdikembalikan').val(res.data[0].jumlah_barang);
+                    // $('#jumlahdikembalikan').val(res.data[0].jumlah_barang);
+                    $('#kategori_return').val(res.data[0].nama_kategori);
                     $("#saveMenu").data("id", res.data.barang_id);
                 }
             }).fail(function (data) {
@@ -740,7 +766,7 @@
         @endcan
         function setBarang(param1, param2) {
                 $.ajax({
-                    url: './getBarang/' + param1,
+                    url: './getBarang/' + param1 + '/' + param3,
                     type: "GET",
                     dataType: "json",
                     success: function (data) {

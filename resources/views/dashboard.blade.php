@@ -56,8 +56,8 @@
                   <div class="card mb-4">
                     <div class="card">
                       <div class="card-body">
-                        <h3 class="card-title">Top 5 Barang Aset</h3>
-                          <div id="topa"></div>
+                        <h3 class="card-title">Top 5 Barang Consumable</h3>
+                          <div id="topc"></div>
                       </div>
                     </div>
                   </div>
@@ -66,8 +66,8 @@
                   <div class="card mb-4">
                     <div class="card">
                       <div class="card-body">
-                        <h3 class="card-title">Top 5 Barang Consumable</h3>
-                          <div id="topc"></div>
+                        <h3 class="card-title">Top 5 Barang Aset</h3>
+                          <div id="topa"></div>
                       </div>
                     </div>
                   </div>
@@ -95,7 +95,7 @@
           width: 530,
           type: 'pie',
         },
-        labels: ['Asset', 'Consumable'],
+        labels: ['Consumable', 'Aset'],
         responsive: [{
           series: pie,
           breakpoint: 480,
@@ -120,7 +120,7 @@
           topk.push('{{ $c->nama_barang}}');
         @endforeach
         var optionsc = {
-          colors: ['#FF1654'],
+          colors: ['#2196F3'],
           series: [{
           name: 'Inflation',
           data: topc
@@ -210,6 +210,7 @@
           tops.push('{{ $a->nama_barang }}');
         @endforeach
         var optionsa = {
+          colors: ['#FF1654'],
           series: [{
           name: 'Inflation',
           data: topa
@@ -318,7 +319,7 @@
         dataLabels: {
           enabled: false
         },
-        colors: ['#FF1654', '#2196F3'],
+        colors: ['#2196F3', '#FF1654'],
         stroke: {
           curve: 'straight'
         },

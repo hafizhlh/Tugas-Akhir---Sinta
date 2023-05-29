@@ -227,14 +227,13 @@
                                 <div class="col-lg-9">
                                     <input type="text" class="form-control" id="jenis_code_detail" name="jenis_code_detail"
                                     readonly/>
-                                    
                                     <span class="form-text text-muted">Masukkan Jenis Barang</span>
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label class="col-lg-3 col-form-label">Kategori Barang:</label>
                                 <div class="col-lg-9">
-                                    <input type="text" class="form-control" id="kategori_barang" name="kategori_barang"
+                                    <input type="text" class="form-control" id="kategori_barang_info" name="kategori_barang_info"
                                            placeholder="Contoh : Totolink N200RE Mini" readonly/>
                                     <span class="form-text text-muted" >Masukkan kategori Barang</span>
                                  
@@ -295,6 +294,8 @@
 
         $(document).ready(function () {
 
+            
+
             $('.select2').select2();
 
             var datatable = $('#kt_datatable_menu');
@@ -333,12 +334,15 @@
                     },{
                         field: 'jenis_barang',
                         title: 'jenis barang',
+                        textAlign: 'center',
                     },{
                         field: 'nama_kategori',
                         title: 'kategori barang',
+                        textAlign: 'center',
                     },{
                         field: 'nama_barang',
                         title: 'nama barang',
+                        textAlign: 'center',
                     }, 
                     // {
                     //     field: 'jumlah_barang',
