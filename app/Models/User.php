@@ -10,11 +10,11 @@ use OwenIt\Auditing\Contracts\Auditable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Lab404\Impersonate\Models\Impersonate;
 
-class User extends Authenticatable implements Auditable
+class User extends Authenticatable 
 {
     use Notifiable;
     use HasRoles;
-    use \OwenIt\Auditing\Auditable;
+    // use \OwenIt\Auditing\Auditable;
     use SoftDeletes;
     use Impersonate;
     use \App\Traits\UuidKey;
@@ -27,7 +27,7 @@ class User extends Authenticatable implements Auditable
     public $incrementing = false;
     public $keyType = 'string';
     protected $fillable = [
-        'username', 'email', 'password','status','company',
+        'username', 'email', 'password','status',
     ];
 
     /**
@@ -48,6 +48,6 @@ class User extends Authenticatable implements Auditable
         'email_verified_at' => 'datetime',
         'old_values'   => 'json',
         'new_values'   => 'json',
-        'auditable_id' => 'string',
+        // 'auditable_id' => 'string',
     ];
 }
