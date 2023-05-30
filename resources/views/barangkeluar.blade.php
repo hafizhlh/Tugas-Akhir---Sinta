@@ -749,7 +749,6 @@
                     $('#nodof_code').val(res.data[0].no_dof_etiket);
                     $('#barangdikembalikan_code').val(res.data[0].nama_barang);
                     $('#tipebarang_code').val(res.data[0].jenis_barang);
-                    // $('#jumlahdikembalikan').val(res.data[0].jumlah_barang);
                     $('#kategori_return').val(res.data[0].nama_kategori);
                     $("#saveMenu").data("id", res.data.barang_id);
                 }
@@ -842,6 +841,7 @@
                 let form = document.forms.formmenus; // <form name="formmenus"> element
                 form.reset();
                 datatable.reload();
+                
             }).fail(function (data) {
                 show_toastr('error', data.responseJSON.status, data.responseJSON.message);
                 $.each(data.responseJSON.errors, function (index, value) {
@@ -990,6 +990,7 @@
         })
 
     });
+    
     $('.btn-export_pdf').on('click', function (){
                 $.ajax({
                 xhrFields: {responseType: 'blob',},

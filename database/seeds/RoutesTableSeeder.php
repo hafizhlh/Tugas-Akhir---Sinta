@@ -17,8 +17,8 @@ class RoutesTableSeeder extends Seeder
         
         $data = [
             /*Login*/
-            ['permission' => '', 'middleware' => 'lang', 'type' => 'view', 'method' => 'GET', 'url' => '/', 'route' => 'Landing\LandingPageController@index', 'guard' => 'web'],
-            ['permission' => '', 'middleware' => 'lang', 'type' => 'view', 'method' => 'GET', 'url' => '/login', 'route' => 'LoginController@index', 'guard' => 'web'],
+            // ['permission' => '', 'middleware' => 'lang', 'type' => 'view', 'method' => 'GET', 'url' => '/', 'route' => 'Landing\LandingPageController@index', 'guard' => 'web'],
+            ['permission' => '', 'middleware' => 'lang', 'type' => 'view', 'method' => 'GET', 'url' => '/', 'route' => 'LoginController@index', 'guard' => 'web'],
             ['permission' => '', 'middleware' => 'lang', 'type' => 'view', 'method' => 'POST', 'url' => '/login/store', 'route' => 'LoginController@store', 'guard' => 'web'],
             ['permission' => '', 'middleware' => 'lang,authz', 'type' => 'data', 'method' => 'GET', 'url' => '/logout', 'route' => 'LoginController@destroy', 'guard' => 'web'],
             /*Forget Password*/             
@@ -163,6 +163,25 @@ class RoutesTableSeeder extends Seeder
             ['permission'=>'barangkeluar-D','middleware'=> 'lang,authz','type'=>'data','method'=>'DELETE','url'=>'/barangkeluar/{id}','route'=>'BarangKeluarController@destroy','guard'=>'web'],
             ['permission'=>'barangmasuk-D','middleware'=> 'lang,authz','type'=>'data','method'=>'DELETE','url'=>'/barangmasuk/{id}','route'=>'BarangMasukController@destroy','guard'=>'web'],
             ['permission'=>'returnbarang-D','middleware'=> 'lang,authz','type'=>'data','method'=>'DELETE','url'=>'/returnbarang/{id}','route'=>'ReturnBarangController@destroy','guard'=>'web'],
+
+            //Tidak ada permission
+            ['permission' => '', 'middleware' => 'lang,authz', 'type' => 'view', 'method' => 'POST', 'url' => '/login/store', 'route' => 'LoginController@store', 'guard' => 'web'],
+            ['permission' => '', 'middleware' => 'lang,authz', 'type' => 'view', 'method' => 'GET', 'url' => '/forgetpassword', 'route' => 'ForgotPasswordController@index', 'guard' => 'web'],
+            ['permission' => '', 'middleware' => 'lang,authz', 'type' => 'view', 'method' => 'POST', 'url' => '/forgetpassword/store', 'route' => 'ForgotPasswordController@submitForgetPasswordForm', 'guard' => 'web'],
+            ['permission' => '', 'middleware' => 'lang,authz', 'type' => 'data', 'method' => 'POST', 'url' => '/changepassword', 'route' => 'WEBSETTING\UserController@changePassword', 'guard' => 'web'],
+            ['permission' => '', 'middleware' => 'lang,authz', 'type' => 'view', 'method' => 'GET', 'url' => '/tentang-TI', 'route' => 'Landing\TentangTIController@index', 'guard' => 'web'],
+            ['permission' => '', 'middleware' => 'lang,authz', 'type' => 'view', 'method' => 'GET', 'url' => '/security-awareness', 'route' => 'Landing\SecurityAwarenessController@index', 'guard' => 'web'],
+            ['permission' => '', 'middleware' => 'lang,authz', 'type' => 'view', 'method' => 'GET', 'url' => '/tautan', 'route' => 'Landing\TautanController@index', 'guard' => 'web'],
+            ['permission' => '', 'middleware' => 'lang,authz', 'type' => 'view', 'method' => 'GET', 'url' => '/it-agent', 'route' => 'Landing\ITAgentController@index', 'guard' => 'web'],
+
+            //Kategori
+            ['permission' => 'kategori-C', 'middleware' => 'lang,authz', 'type' => 'data', 'method' => 'POST', 'url' => '/kategori', 'route' => 'KategoriController@store', 'guard' => 'web'],
+            ['permission' => 'kategori-U', 'middleware' => 'lang,authz', 'type' => 'data', 'method' => 'POST', 'url' => '/kategori/{id}/update', 'route' => 'KategoriController@update', 'guard' => 'web'],
+            ['permission' => 'kategori-D', 'middleware' => 'lang,authz', 'type' => 'data', 'method' => 'DELETE', 'url' => '/kategori/{id}', 'route' => 'KategoriController@destroy', 'guard' => 'web'],
+            ['permission' => 'kategori-R', 'middleware' => 'lang,authz', 'type' => 'view', 'method' => 'GET', 'url' => '/kategori/list', 'route' => 'KategoriController@datatables', 'guard' => 'web'],
+            ['permission' => 'kategori-R', 'middleware' => 'lang,authz', 'type' => 'view', 'method' => 'GET', 'url' => '/kategori', 'route' => 'KategoriController@index', 'guard' => 'web'],
+            ['permission' => 'kategori-U', 'middleware' => 'lang,authz', 'type' => 'data', 'method' => 'GET', 'url' => '/kategori/{id}', 'route' => 'KategoriController@show', 'guard' => 'web'],
+            ['permission' => '', 'middleware' => 'lang,authz', 'type' => 'data', 'method' => 'GET', 'url' => '/getBarang/{jenis_code}/{kategori_id}', 'route' => 'BarangKeluarController@getBarang', 'guard' => 'web'],
         ];
 
         foreach($data as $k_data => $v_data){
