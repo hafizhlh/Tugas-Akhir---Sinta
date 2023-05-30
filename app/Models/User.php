@@ -14,7 +14,7 @@ class User extends Authenticatable
 {
     use Notifiable;
     use HasRoles;
-    use \OwenIt\Auditing\Auditable;
+    // use \OwenIt\Auditing\Auditable;
     use SoftDeletes;
     use Impersonate;
     use \App\Traits\UuidKey;

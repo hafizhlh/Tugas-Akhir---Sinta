@@ -162,6 +162,7 @@ class BarangMasukController extends Controller
 
         $data     = BarangMasuk::join('detail_barang_masuks', 'barang_masuks.barang_masuk_id', '=', 'detail_barang_masuks.barang_masuk_id')
             ->join('barangs', 'detail_barang_masuks.barang_id', '=', 'barangs.barang_id')
+            ->join('kategoris', 'barangs.kategori_id', '=', 'kategoris.id')
             ->where('barang_masuks.barang_masuk_id', $id)
             ->get();
         $response = responseSuccess(trans("messages.read-success"), $data);
@@ -179,14 +180,12 @@ class BarangMasukController extends Controller
     public function update($id, Request $request)
     {
         $attributes = $request->only([
-            'barang_code',
             'jumlah',
         ]);
 
 
 
         $roles = [
-            'barang_code' => 'required',
             'jumlah' => 'required',
 
         ];
@@ -200,19 +199,18 @@ class BarangMasukController extends Controller
 
         DB::beginTransaction();
         try {
-            $barang = DB::table('barangs')->where('barang_id', $request->barang_code)->first();
+            $detailbarangmasuk = DetailBarangMasuk::where('barang_masuk_id', $id)->first();
+            $barang = DB::table('barangs')->where('barang_id', $detailbarangmasuk->barang_id)->first();
             $data_old = DB::table('detail_barang_masuks')->where('barang_masuk_id', $id)->first();
             $data = DB::table('detail_barang_masuks')->where('barang_masuk_id', $id)->update([
-                'barang_id' => $request->barang_code,
                 'jumlah_barang_masuk' => $request->jumlah,
                 'delete_mark' => 0,
             ]);
-            $data = DB::table('barangs')->where('barang_id', $request->barang_code)->update([
+            $data = DB::table('barangs')->where('barang_id', $detailbarangmasuk->barang_id)->update([
                 'jumlah_barang' => $barang->jumlah_barang + ($request->jumlah - $data_old->jumlah_barang_masuk),
             ]);
             $data = [
                 'barang_masuk_id' => $id,
-                'barang_id' => $request->barang_code,
                 'jumlah_barang_masuk' => $request->jumlah,
                 'delete_mark' => 0,
             ];

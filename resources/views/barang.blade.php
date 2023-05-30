@@ -153,17 +153,6 @@
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label class="col-lg-3 col-form-label">Jenis Barang:</label>
-                                <div class="col-lg-9">
-                                    <select class="form-control" id="jenis_code" name="jenis_code">
-                                        <option value="">Pilih Jenis Barang</option>
-                                        <option value="1">Consummables</option>
-                                        <option value="2">Asset</option>
-                                    </select>
-                                    <span class="form-text text-muted">Masukkan Jenis Barang</span>
-                                </div>
-                            </div>
-                            <div class="form-group row">
                                 <label class="col-lg-3 col-form-label">Nama Kategori</label>
                                 <div class="col-lg-9">
                                     <select class="form-control select2" id="kategori_id" name="kategori_id" style="width: 100%>

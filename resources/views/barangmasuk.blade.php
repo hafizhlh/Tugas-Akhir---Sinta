@@ -180,13 +180,11 @@
                 <input type="hidden" name="barang_masuk_id" id="barang_masuk_id">
                     <div class="modal-body" style="height: 500px;">
                         <div class="mb-7">
-                       
-                        
                             <!--  -->
                 <div class="form-group row">
                 <label class="col-lg-3 col-form-label">Jenis Barang:</label>
                 <div class="col-lg-9">
-                    <select class="form-control" id="jenis_code" name="jenis_code">
+                    <select class="form-control select2" id="jenis_code" name="jenis_code">
                         <option value="">Pilih jenis barang</option>
                         <option value="1">Consumable</option>
                         <option value="2">Asset</option>
@@ -225,9 +223,6 @@
             </div>
             </div>
             </div>
-      
-      
-
                 <div class="modal-footer">
                     <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal"><i
                             class="fa fa-times"></i>Cancel
@@ -471,12 +466,32 @@
        
 
         $('.select2').select2();
-        $('#kategori_id').on('change', function () {
+        $('#jenis_code').on('change', function () {
             var jenis_code = $('#jenis_code').val();
-            var kategori_id = $('#kategori_id').val();
             if (jenis_code) {
                 $.ajax({
-                    url: './getBarang/' + jenis_code + '/' + kategori_id,
+                    url: './getkategori/' + jenis_code,
+                    type: "GET",
+                    dataType: "json",
+                    success: function (data) {
+                        $('select[name="kategori_id"]').empty();
+                        $.each(data, function (key, value) {
+                            $('select[name="kategori_id"]').append(
+                                '<option value="' + value.id + '">' +
+                                value.nama_kategori+'</option>');
+                        });
+                    }
+                });
+            } else {
+
+                $('select[name="barang_code"]').empty();
+            }
+        });
+        $('#kategori_id').on('change', function () {
+            var kategori_id = $('#kategori_id').val();
+            if (kategori_id) {
+                $.ajax({
+                    url: './getBarang/' + kategori_id,
                     type: "GET",
                     dataType: "json",
                     success: function (data) {
@@ -484,8 +499,7 @@
                         $.each(data, function (key, value) {
                             $('select[name="barang_code"]').append(
                                 '<option value="' + value.barang_id + '">' +
-                                value.nama_barang + ' (' + value
-                                .barcode_barang + ')</option>');
+                                value.nama_barang+'</option>');
                         });
                     }
                 });
@@ -599,7 +613,9 @@
             let form = document.forms.formmenus; // <form name="formmenus"> element
             form.reset();
             $('#barang_code').val('').trigger('change');
-
+            $('#jenis_code').attr('disabled', false);
+            $('#kategori_id').attr('disabled', false);
+            $('#barang_code').attr('disabled', false);
         });
 
         @endcan
@@ -616,6 +632,9 @@
                     $(`.invalid-feedback`).remove();
                 }
             }).done(function (res) {
+                $('#jenis_code').attr('disabled', true);
+                $('#kategori_id').attr('disabled', true);
+                $('#barang_code').attr('disabled', true);
                 let form = document.forms.formmenus; // <form name="formmenus"> element
                 console.log(res.success);
                 if (res.success) {
@@ -626,7 +645,8 @@
                     $('#jumlah').val(res.data[0].jumlah_barang_masuk);
                     $('#kategori_id').val(res.data[0].kategori_id).trigger('change');
                     $("#saveMenu").data("id", res.data[0].barang_masuk_id);
-                    setBarang(res.data[0].jenis_barang, res.data[0].barang_id, res.data[0].kategori_id);
+                    setkategori(res.data[0].jenis_barang, res.data[0].kategori_id);
+                    setBarang(res.data[0].barang_id, res.data[0].kategori_id);
                 }
             }).fail(function (data) {
                 show_toastr('error', data.responseJSON.status, data.responseJSON.message);
@@ -640,16 +660,34 @@
         });
 
             @endcan
-            function setBarang(param1, param2, param3) {
+            function setkategori(param1, param2) {
                 $.ajax({
-                    url: './getBarang/' + param1 + '/' + param3,
+                    url: './getKategori/' + param1,
+                    type: "GET",
+                    dataType: "json",
+                    success: function (data) {
+                        $('#kategori_id').empty();
+                        $('#kategori_id').append('<option value="">Pilih Kategori</option>');
+                        $.each(data, function (key, value) {
+                            if (value.kategori_id == param2) {
+                                $('#kategori_id').append('<option value="' + value.kategori_id + '" selected>' + value.nama_kategori + '</option>');
+                            } else {
+                                $('#kategori_id').append('<option value="' + value.kategori_id + '">' + value.nama_kategori + '</option>');
+                            }
+                        });
+                    }
+                });
+            }
+            function setBarang(param1, param2) {
+                $.ajax({
+                    url: './getBarang/' + param2,
                     type: "GET",
                     dataType: "json",
                     success: function (data) {
                         $('#barang_code').empty();
                         $('#barang_code').append('<option value="">Pilih Barang</option>');
                         $.each(data, function (key, value) {
-                            if (value.barang_id == param2) {
+                            if (value.barang_id == param1) {
                                 $('#barang_code').append('<option value="' + value.barang_id + '" selected>' + value.nama_barang + '</option>');
                             } else {
                                 $('#barang_code').append('<option value="' + value.barang_id + '">' + value.nama_barang + '</option>');

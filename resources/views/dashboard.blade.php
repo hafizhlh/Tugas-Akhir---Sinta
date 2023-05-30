@@ -81,7 +81,7 @@
 
 @section('js_page')
 
-<script>
+{{-- <script>
     $(document).ready(function() {
         // Jenis Barang
         var pie = [];
@@ -349,5 +349,5 @@
         chartb.render();
 
     });
-</script>
+</script> --}}
 @endsection

@@ -54,6 +54,10 @@ class KategoriController extends Controller
             ->rawColumns(['action'])
             ->make(true);
     }
+    public function getkategori($id){
+        $kategori = Kategori::where('jenis_barang', $id)->get();
+        return response()->json($kategori);
+    }
     private function getJenisBarang(){
         return [
             1 => 'Consumable',
