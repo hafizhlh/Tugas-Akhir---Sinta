@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-
+use App\Models\Barang;
 use App\Models\Kategori;
 use Illuminate\Http\Request;
 use App\Models\Menu;
@@ -16,14 +16,27 @@ class KategoriController extends Controller
     {
         $data['menus'] = $this->getDashboardMenu();
         $data['menu']  = Menu::select('id', 'name')->get();
+        $data['jenis_barang'] = $this->getJenisBarang();
         return view('Kategori', $data);
     }
 
     public function datatables()
     {
-        $data = Kategori::orderBy('nama_kategori', 'asc')->get();
+        $data = Kategori::query();
+        $jenisBarang = $this->getJenisBarang();
         return datatables()->of($data)
             ->addIndexColumn()
+            //join dengan models kategori
+           
+            ->addColumn('jenis_barang', function ($row) use ($jenisBarang) {
+                $jenis = $row->jenis_barang;
+                if ($jenis == 1) {
+                    $jenis = 'Consumable';
+                } else {
+                    $jenis = 'Aset';
+                }
+                return $jenis;
+            })
             ->addColumn('nama_kategori', function ($row) {
                 $kategori = $row->nama_kategori;
                 if ($kategori == '') {
@@ -41,14 +54,21 @@ class KategoriController extends Controller
             ->rawColumns(['action'])
             ->make(true);
     }
-
+    private function getJenisBarang(){
+        return [
+            1 => 'Consumable',
+            2 => 'Aset',
+        ];
+    }
     public function store(Request $request)
     {
         $attributes = $request->only([
             'kategori_name', // Menambahkan field kategori_barang
+            'jenis_code', // Menambahkan field jenis_barang
         ]);
         $roles = [
             'kategori_name' => 'required', // Validasi untuk kategori_barang
+            'jenis_code' => 'required', // Validasi untuk jenis_barang
         ];
         $messages = [
             'required' => trans('messages.required'),
@@ -62,6 +82,7 @@ class KategoriController extends Controller
         try {
             $data = Kategori::create([
                 'nama_kategori' => $request->kategori_name, // Menambahkan kolom kategori_barang
+                'jenis_barang' => $request->jenis_code, // Menambahkan kolom jenis_barang
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
@@ -79,7 +100,7 @@ class KategoriController extends Controller
         $attributes['id'] = $id;
 
         $roles = [
-            'id' => 'required|exists:kategori,id',
+            'id' => 'required|exists:kategoris,id',
         ];
         $messages = [
             'required' => trans('messages.required'),
@@ -88,7 +109,11 @@ class KategoriController extends Controller
 
         $this->validators($attributes, $roles, $messages);
 
-        $data = $this->findDataWhere(Kategori::class, ['id' => $id]);
+        $data =  Barang::join('kategoris', 'kategoris.id', '=', 'barangs.kategori_id')
+        ->select('barangs.jenis_barang', 'kategoris.*')
+        ->where('kategoris.id', $id)
+        ->where('barangs.delete_mark', '=', 0)
+        ->first();
         $response = responseSuccess(trans("messages.read-success"), $data);
         return response()->json($response, 200, [], JSON_PRETTY_PRINT);
         return $id;
@@ -125,6 +150,7 @@ class KategoriController extends Controller
         DB::beginTransaction();
         try {
             $data->update([
+                'jenis_barang' => $request->jenis_code, // Menambahkan kolom jenis barang
                 'nama_kategori' => $request->kategori_code, // Menambahkan kolom kategori_barang
                 'updated_at' => now(),
             ]);

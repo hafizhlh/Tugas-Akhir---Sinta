@@ -120,7 +120,7 @@
         <!--end::Entry-->
     </div>
 
-    <!--begin:Modal-->
+    <!--Modal Menu-->
     <div class="modal fade" id="modalMenu" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
          aria-hidden="true">
         <div class="modal-dialog modal-dialog-scrollable" role="document">
@@ -205,8 +205,7 @@
     </div>
     <!--end:Modal-->
 
-
-      <!--begin:Modal info-->
+    <!--Modal Preview-->
     <div class="modal fade" id="modalInfo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
          aria-hidden="true">
         <div class="modal-dialog modal-dialog-scrollable" role="document">
@@ -236,7 +235,6 @@
                                     <input type="text" class="form-control" id="kategori_barang_info" name="kategori_barang_info"
                                            placeholder="Contoh : Totolink N200RE Mini" readonly/>
                                     <span class="form-text text-muted" >Masukkan kategori Barang</span>
-                                 
                                 </div>
                             </div>
                             <div class="form-group row">

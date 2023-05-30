@@ -10,11 +10,11 @@ use OwenIt\Auditing\Contracts\Auditable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Lab404\Impersonate\Models\Impersonate;
 
-class User extends Authenticatable implements Auditable
+class User extends Authenticatable //implements Auditable
 {
     use Notifiable;
     use HasRoles;
-    use \OwenIt\Auditing\Auditable;
+    //use \OwenIt\Auditing\Auditable;
     use SoftDeletes;
     use Impersonate;
     use \App\Traits\UuidKey;

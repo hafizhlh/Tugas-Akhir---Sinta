@@ -43,7 +43,8 @@ class BarangMasukController extends Controller
         $data = DB::table('detail_barang_masuks')
             ->join('barang_masuks', 'detail_barang_masuks.barang_masuk_id', '=', 'barang_masuks.barang_masuk_id')
             ->join('barangs', 'detail_barang_masuks.barang_id', '=', 'barangs.barang_id')
-            ->select('barang_masuks.barang_masuk_id as id_barang_masuk', 'barang_masuks.*', 'detail_barang_masuks.*', 'barangs.*')
+            ->join('kategoris', 'barangs.kategori_id', '=', 'kategoris.id')
+            ->select('barang_masuks.barang_masuk_id as id_barang_masuk', 'barang_masuks.*', 'detail_barang_masuks.*', 'barangs.*', 'kategoris.*')
             ->where('barang_masuks.delete_mark', 0)
             ->get();
         return datatables()->of($data)

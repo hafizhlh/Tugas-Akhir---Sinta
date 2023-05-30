@@ -61,14 +61,12 @@ class BarangController extends Controller
     {
         $attributes = $request->only([
             'barang_name',
-            'jenis_code',
             'barcode',
             'keterangan_code',
             'kategori_id', // Menambahkan field kategori_barang
         ]);
         $roles = [
             'barang_name' => 'required',
-            'jenis_code' => 'required',
             'barcode' => 'required|unique:barangs,barcode_barang',
             'keterangan_code' => 'required',
             'kategori_id' => 'required', // Validasi untuk kategori_barang
@@ -88,7 +86,6 @@ class BarangController extends Controller
                 'nama_barang' => $request->barang_name,
                 'kategori_id' => $request->kategori_id,
                 'barcode_barang' => $request->barcode,
-                'jenis_barang' => $request->jenis_code,
                 'keterangan_barang' => $request->keterangan_code,
                 'kategori_barang' => $request->kategori_code, // Menambahkan kolom kategori_barang
                 'created_at' => now(),
@@ -136,7 +133,6 @@ class BarangController extends Controller
         $attributes = $request->only([
             'user_code',
             'barang_name',
-            'jenis_code',
             'keterangan_code',
             'kategori_id', // Menambahkan field kategori_barang
         ]);
@@ -144,7 +140,6 @@ class BarangController extends Controller
         $roles = [
             'user_code' => 'required | exists:users,id',
             'barang_name' => 'required',
-            'jenis_code' => 'required',
             'keterangan_code' => 'required',
             'kategori_id' => 'required', // Validasi untuk kategori_barang
         ];
@@ -163,7 +158,6 @@ class BarangController extends Controller
             $data->update([
                 'nama_barang' => $request->barang_name,
                 'user_id' => $request->user_code,
-                'jenis_barang' => $request->jenis_code,
                 'keterangan_barang' => $request->keterangan_code,
                 'kategori_barang' => $request->kategori_code, // Menambahkan kolom kategori_barang
                 'updated_at' => now(),

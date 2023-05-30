@@ -236,7 +236,6 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
 
                 <div class="modal-footer">
@@ -637,7 +636,7 @@
                     overflow: 'visible',
                     template: function (row) {
                         return "<center>" +
-                //semua button dalam table action
+                         //semua button dalam table action
                             @can('barangkeluar-U')
                         "<button type='button' class='edits btn btn-sm btn-icon btn-outline-warning ' title='Edit' data-toggle='tooltip' data-id=" +
                         row.barang_keluar_id + " ><i class='fa fa-edit'></i> </button>  " +
@@ -736,7 +735,7 @@
                     form.reset();
                     $(`.form-control`).removeClass('is-invalid');
                     $(`.invalid-feedback`).remove();
-                }
+                },
             }).done(function (res) {
                 let form = document.forms.formmenus; // <form name="formmenus"> element
                 console.log(res.success);

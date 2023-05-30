@@ -121,46 +121,61 @@
     </div>
 
     {{-- Tambah Kategori --}}
+    {{-- Edit Kategori --}}
     <div class="modal fade" id="modalMenu" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-         aria-hidden="true">
-        <div class="modal-dialog modal-dialog-scrollable" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modalMenuTitle">Create Kategori</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <i aria-hidden="true" class="ki ki-close"></i>
-                    </button>
-                </div>
-                <!--begin:Form-->
-                <form role="form" class="form" name="formmenus" id="formmenus" enctype="multipart/formdata" method="">
-                    <div class="modal-body" style="height: 400px;">
-                    <input type="hidden" name="user_code" id="user_code">
-                        <div class="mb-7">
-                            <div class="form-group row">
-                                <label class="col-lg-3 col-form-label">Nama Kategori</label>
-                                <div class="col-lg-9">
-                                    <input type="text" class="form-control" id="kategori_name" name="kategori_name"
-                                           placeholder="Contoh : Totolink N200RE Mini"/>
-                                    <span class="form-text text-muted">Masukkan nama kategori</span>
-                                </div>
-                            </div>
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="modalMenuTitle">Create Kategori</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <i aria-hidden="true" class="ki ki-close"></i>
+            </button>
+        </div>
+        <!--begin:Form-->
+        <form role="form" class="form" name="formmenus" id="formmenus" enctype="multipart/formdata" method="">
+            <div class="modal-body" style="height: 400px;">
+                <input type="hidden" name="user_code" id="user_code">
+                <div class="mb-7">
+                    <div class="form-group row">
+                        <label class="col-lg-3 col-form-label">Jenis Barang:</label>
+                        <div class="col-lg-9">
+                            <select class="form-control" id="jenis_code" name="jenis_code">
+                                <option value="">Pilih Jenis Barang</option>
+                                <option value="1">Consummables</option>
+                                <option value="2">Asset</option>
+                            </select>
+                            <span class="form-text text-muted">Masukkan Jenis Barang</span>
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal"><i
-                                    class="fa fa-times"></i>Cancel
-                        </button>
-                        @can(['kategori-C' , 'kategori-U'])
-                            <button type="submit" id="saveMenu" data-id="" class="btn btn-primary font-weight-bold">
-                                <i class="fa fa-save"></i> Save changes
-                            </button>
-                        @endcan
+                    <div class="form-group row">
+                        <label class="col-lg-3 col-form-label">Nama Kategori</label>
+                        <div class="col-lg-9">
+                            <input type="text" class="form-control" id="kategori_name" name="kategori_name"
+                                    placeholder="Contoh : Totolink N200RE Mini"/>
+                            <span class="form-text text-muted">Masukkan nama kategori</span>
+                        </div>
                     </div>
-                </form>
-                <!--end:Form-->
+                </div>
             </div>
-        </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal"><i
+                            class="fa fa-times"></i>Cancel
+                </button>
+                @can(['kategori-C', 'kategori-U'])
+                <button type="submit" id="saveMenu" data-id="" class="btn btn-primary font-weight-bold">
+                    <i class="fa fa-save"></i> Save changes
+                </button>
+                @endcan
+            </div>
+        </form>
+        <!--end:Form-->
     </div>
+    </div>
+    </div>
+    {{-- Tambah Kategori --}}
+{{-- Edit Kategori -- End --}}
+
     {{-- Tambah kategori -- End --}} 
     
     {{-- Edit Kategori --}}
@@ -214,10 +229,12 @@
                         field : 'DT_RowIndex',
                         title : 'No',
                     },{
+                        field: 'jenis_barang',
+                        title: 'jenis Barang',
+                    },{
                         field: 'nama_kategori',
                         title: 'Nama Kategori',
-                    },
-                    {
+                    },{
                         field: 'Actions',
                         title: 'Actions',
                         sortable: false,
@@ -225,14 +242,14 @@
                         autoHide: false,
                         overflow: 'visible',
                         template: function (row) {
-                            return "<center>" +
-                                    @can('Kategori-U')
+                            return "<left>" +
+                                            @can('barang-U')
                                         "<button type='button' class='edits btn btn-sm btn-icon btn-outline-warning ' title='Edit' data-toggle='tooltip' data-id=" + row.id + " ><i class='fa fa-edit'></i> </button>  " +
                                     @endcan
                                             @can('kategori-D')
                                         "<button type='button' class='deletes btn-sm btn btn-icon btn-outline-danger' title='Delete' data-toggle='tooltip' alt='' data-id=" + row.id+ " ><i class='fa fa-trash'></i></button>  " +
                                     @endcan
-                                        "</center>";
+                                        "</left>";
                                         
                         },
                     }
@@ -272,6 +289,7 @@
                     if (res.success) {
                         showtoastr('success', res.message);
                         $('#user_code').val(res.data.user_id);
+                        $('#jenis_code').val(res.data.jenis_barang).trigger('change');
                         $('#kategori_name').val(res.data.nama_kategori);
                         $("#saveMenu").data("id", res.data.kategori_id);
                     }
@@ -290,7 +308,7 @@
             @can(['kategori-C', 'kategori-U'])
             $('#formmenus').submit(function (e) {
                 e.preventDefault();
-                var formData = new FormData($("#formmenus")[0]);
+                // var formData = new FormData($("#formmenus"));
                 // var formData = $('#formmenus').serializeArray(); // our data object
                 var method = "POST";
                 let menuID = $("#saveMenu").data("id");
@@ -305,10 +323,12 @@
                 $.ajax({
                     type: method, // define the type of HTTP verb we want to use (POST for our form)
                     url: '/postKategori', // the url where we want to POST
-                    data: formData,
-                    dataType: 'JSON', // what type of data do we expect back from the server
-                    contentType: false,
-                    processData: false,
+                    data: {
+                        jenis_code: $('#jenis_code').val(),
+                        kategori_name: $('#kategori_name').val(),
+                        _token: '{{ csrf_token() }}',
+                    },
+                    dataType: 'JSON',
                     beforeSend: function () {
                         $(`.form-control`).removeClass('is-invalid');
                         $(`.invalid-feedback`).remove();

@@ -692,7 +692,7 @@
                 formdata.push({'name': 'uuid', 'value': uuid});
 
                 $.ajax({
-                    type: 'PUT',
+                    type: 'POST',
                     url: './usersetting/resetpassword/' + $('#saveResetPass').data('uuid'),
                     data: formdata,
                 })

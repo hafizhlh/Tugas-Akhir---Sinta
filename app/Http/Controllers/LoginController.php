@@ -24,7 +24,7 @@ class LoginController extends Controller
             'password' => 'required',
             // Hide 'g-recaptcha-response' => 'recaptcha',
         ]);
-
+// dd($validated);
         $credentials                  = $request->all('username', 'password');
         $emailCredentials['email']    = $request['username'];
         $emailCredentials['password'] = $request['password'];
@@ -37,7 +37,7 @@ class LoginController extends Controller
                 'username' => [trans("messages.username_not_match")],
                 'password' => [trans("messages.password_not_match")],
             ];
-            return redirect('/login')->withErrors($response);
+            return redirect('/')->withErrors($response);
         }
     }
 
