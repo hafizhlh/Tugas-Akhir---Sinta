@@ -25,7 +25,6 @@ class UserRequest extends FormRequest
     {
         return [
             'rolesEdit' => 'required',
-            'companyEdit' => 'required',
         ];
     }
 }

@@ -91,13 +91,12 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
-        $attributes = $request->only('email', 'username', 'roles','company','first_name','last_name');
+        $attributes = $request->only('email', 'username', 'roles','first_name','last_name');
 
         $roles = [
             'email'     => 'required|email|unique:users',
             'username'  => 'required|unique:users',
             'roles'     => 'required',
-            'company'   => 'required',
             'first_name' => 'required',
             'last_name' => 'required'
         ];
@@ -115,14 +114,20 @@ class UserController extends Controller
         try {
             //$attributes['password'] = Hash::make("randompassword123");
             //$attributes['company_code'] = "A000";
-            $user = new User();
-            $user->email = $attributes['email'];
-            $user->company_code = $attributes['company'];
-            $user->username = $attributes['username'];
-            $user->password = Hash::make("123pihc");
-            $user->first_name = $attributes['first_name'];
-            $user->last_name = $attributes['last_name'];
-            $user->save();
+            $user = User::insert([
+                'email' => $attributes['email'],
+                'username' => $attributes['username'],
+                'password' => Hash::make("petros"),
+                'first_name' => $attributes['first_name'],
+                'last_name' => $attributes['last_name'],
+            ]);
+            // $user = new User();
+            // $user->email = $attributes['email'];
+            // $user->username = $attributes['username'];
+            // $user->password = Hash::make("petros");
+            // $user->first_name = $attributes['first_name'];
+            // $user->last_name = $attributes['last_name'];
+            // $user->save();
             $user = User::where("username",$request->username)->first();
             $user->assignRole($roles);
             //$user->assignRole($request->roles);
@@ -210,7 +215,6 @@ class UserController extends Controller
 
     public function update(User $uuid,UserRequest $request)
     {
-        $uuid->company_code = $request->companyEdit;
         $uuid->first_name = $request->firstNameEdit;
         $uuid->last_name = $request->lastNameEdit;
         $uuid->save();
