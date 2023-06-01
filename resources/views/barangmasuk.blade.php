@@ -184,7 +184,7 @@
                 <div class="form-group row">
                 <label class="col-lg-3 col-form-label">Jenis Barang:</label>
                 <div class="col-lg-9">
-                    <select class="form-control select2" id="jenis_code" name="jenis_code">
+                    <select class="form-control select2" id="jenis_code" name="jenis_code" style="width: 100%>
                         <option value="">Pilih jenis barang</option>
                         <option value="1">Consumable</option>
                         <option value="2">Asset</option>
@@ -662,7 +662,7 @@
             @endcan
             function setkategori(param1, param2) {
                 $.ajax({
-                    url: './getKategori/' + param1,
+                    url: './getkategori/' + param1,
                     type: "GET",
                     dataType: "json",
                     success: function (data) {

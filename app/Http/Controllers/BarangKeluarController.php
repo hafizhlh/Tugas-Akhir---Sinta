@@ -130,6 +130,7 @@ class BarangKeluarController extends Controller
 
         $data     = DB::table('detail_barang_keluars')->where('detail_barang_keluars.barang_keluar_id', $id)
                     ->join('barangs', 'detail_barang_keluars.barang_id', '=', 'barangs.barang_id')
+                    ->join('kategoris', 'barangs.kategori_id', '=', 'kategoris.id')
                     ->join('barang_keluars', 'detail_barang_keluars.barang_keluar_id', '=', 'barang_keluars.barang_keluar_id')
                     ->get();
         $response = responseSuccess(trans("messages.read-success"), $data);
@@ -146,20 +147,20 @@ class BarangKeluarController extends Controller
     
     public function update($id, Request $request)
     {
-
+        // dd($request->all());
         $attributes = $request->only([
-            'user_code',
-            'tanggal',
-            'nodofticket',
-            'keterangan_code',  
+            // 'user_code_edit',
+            'nodofetiket_code',
+            'jumlah_edit',
+            'keterangan_code_edit',  
        
         ]);
 
         $roles = [
-            'user_code' => 'required | exists:users,id',
-            'tanggal' => 'required',
-            'nodofticket' => 'required',
-            'keterangan_code' => 'required',            
+            // 'user_code_edit' => 'required | exists:users,id',
+            'nodofetiket_code' => 'required',
+            'jumlah_edit' => 'required',
+            'keterangan_code_edit' => 'required',            
         ];
 
         $messages = [
@@ -174,16 +175,29 @@ class BarangKeluarController extends Controller
         DB::beginTransaction();
         try {
         $data->update([ 
-           
-            'user_id' => $request->user_code,
-            'tgl_pengambilan' => $request->tanggal,
+            // 'user_id' => $request->user_code_edit,
             'no_dof_etiket' => $request->nodofetiket_code,
-            'keterangan' => $request->keterangan_code,       
-            'updated_at' => now(),
+            'keterangan' => $request->keterangan_code_edit,       
         ]);
-            DB::commit();
-            $response = responseSuccess(trans("messages.update-success"), $data);
-            return response()->json($response, 200, [], JSON_PRETTY_PRINT);
+        $detailbarangkeluar = DetailBarangKeluar::where('barang_keluar_id', $id)->first();
+        $barang = Barang::where('barang_id', $detailbarangkeluar->barang_id)->first();
+        $data_old = DetailBarangKeluar::where('barang_keluar_id', $id)->first();
+        $data = DetailBarangKeluar::where('barang_keluar_id', $id)->update([
+            'jumlah_barang_keluar' => $request->jumlah_edit,
+        ]);
+        $data = Barang::where('barang_id', $detailbarangkeluar->barang_id)->update([
+            'jumlah_barang' => $barang->jumlah_barang + $data_old->jumlah_barang_keluar - $request->jumlah_edit,
+        ]);
+        $data = [
+            'barang_keluar_id' => $id,
+            // 'user_id' => $request->user_code_edit,
+            'no_dof_etiket' => $request->nodofetiket_code,
+            'jumlah_barang_keluar' => $request->jumlah_edit,
+            'keterangan' => $request->keterangan_code_edit,
+        ];
+        DB::commit();
+        $response = responseSuccess(trans("messages.update-success"), $data);
+        return response()->json($response, 200, [], JSON_PRETTY_PRINT);
         } catch (Exception $e) {
             DB::rollback();
             $response = responseFail(trans("messages.update-fail"), $e->getMessage());

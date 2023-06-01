@@ -155,8 +155,8 @@
                             <div class="form-group row">
                                 <label class="col-lg-3 col-form-label">Nama Kategori</label>
                                 <div class="col-lg-9">
-                                    <select class="form-control select2" id="kategori_id" name="kategori_id" style="width: 100%>
-                                        <option value="">Pilih Kategori</option>
+                                    <select class="form-control select2" id="kategori_id" name="kategori_id" style="width: 100%">
+                                        <option value="" disabled selected>Pilih Kategori</option>
                                         @foreach($kategori as $k)
                                             <option value="{{$k->id}}">{{$k->nama_kategori}}</option>
                                         @endforeach
@@ -164,6 +164,7 @@
                                     <span class="form-text text-muted">Masukkan Nama Kategori</span>
                                 </div>
                             </div>
+                            
                             <div class="form-group row">
                                 <label class="col-lg-3 col-form-label">Keterangan Barang:</label>
                                 <div class="col-lg-9">

@@ -66,6 +66,7 @@ class KategoriController extends Controller
     }
     public function store(Request $request)
     {
+        
         $attributes = $request->only([
             'kategori_name', // Menambahkan field kategori_barang
             'jenis_code', // Menambahkan field jenis_barang

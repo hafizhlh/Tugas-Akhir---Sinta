@@ -16,4 +16,6 @@ class BarangKeluar extends Model
         'keterangan',
         'delete_mark',
     ];
+    // timestamps false
+    public $timestamps = false;
 }

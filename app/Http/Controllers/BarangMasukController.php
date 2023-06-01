@@ -160,7 +160,7 @@ class BarangMasukController extends Controller
 
         $this->validators($attributes, $roles, $messages);
 
-        $data     = BarangMasuk::join('detail_barang_masuks', 'barang_masuks.barang_masuk_id', '=', 'detail_barang_masuks.barang_masuk_id')
+        $data = BarangMasuk::join('detail_barang_masuks', 'barang_masuks.barang_masuk_id', '=', 'detail_barang_masuks.barang_masuk_id')
             ->join('barangs', 'detail_barang_masuks.barang_id', '=', 'barangs.barang_id')
             ->join('kategoris', 'barangs.kategori_id', '=', 'kategoris.id')
             ->where('barang_masuks.barang_masuk_id', $id)
