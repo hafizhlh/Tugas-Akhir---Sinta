@@ -182,6 +182,7 @@ class RoutesTableSeeder extends Seeder
             ['permission' => 'kategori-R', 'middleware' => 'lang,authz', 'type' => 'view', 'method' => 'GET', 'url' => '/kategori', 'route' => 'KategoriController@index', 'guard' => 'web'],
             ['permission' => 'kategori-U', 'middleware' => 'lang,authz', 'type' => 'data', 'method' => 'GET', 'url' => '/kategori/{id}', 'route' => 'KategoriController@show', 'guard' => 'web'],
             ['permission' => '', 'middleware' => 'lang,authz', 'type' => 'data', 'method' => 'GET', 'url' => '/getBarang/{jenis_code}/{kategori_id}', 'route' => 'BarangKeluarController@getBarang', 'guard' => 'web'],
+            ['permission' => '', 'middleware' => 'lang,authz', 'type' => 'data', 'method' => 'GET', 'url' => '/getkategori/{id}', 'route' => 'KategoriController@getkategori', 'guard' => 'web'],
         ];
 
         foreach($data as $k_data => $v_data){
