@@ -114,11 +114,11 @@ class KategoriController extends Controller
 
         $this->validators($attributes, $roles, $messages);
 
-        $data =  Barang::join('kategoris', 'kategoris.id', '=', 'barangs.kategori_id')
-        ->select('barangs.jenis_barang', 'kategoris.*')
-        ->where('kategoris.id', $id)
-        ->where('barangs.delete_mark', '=', 0)
-        ->first();
+        $data =  Kategori::where('id', $id)->first(); // Menambahkan kolom jenis_barang
+        // ->select('kategoris.jenis_barang', 'kategoris.*')
+        // ->where('kategoris.id', $id)
+        // ->where('barangs.delete_mark', '=', 0)
+        // ->first();
         $response = responseSuccess(trans("messages.read-success"), $data);
         return response()->json($response, 200, [], JSON_PRETTY_PRINT);
         return $id;
