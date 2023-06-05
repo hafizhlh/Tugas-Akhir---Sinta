@@ -19,6 +19,7 @@ class LoginController extends Controller
 
     public function store(Request $request)
     {
+        // dd($request->all());
         $validated = $request->validate([
             'username' => 'required',
             'password' => 'required',
@@ -30,7 +31,7 @@ class LoginController extends Controller
         $emailCredentials['password'] = $request['password'];
         if (Auth::attempt($credentials)) {
             return redirect('/dashboard');
-        } elseif (Auth::attempt($emailCredentials)) {            
+        } elseif (Auth::attempt($emailCredentials)) {   
             return redirect('/dashboard');
         }else{
             $response=[
@@ -38,6 +39,7 @@ class LoginController extends Controller
                 'password' => [trans("messages.password_not_match")],
             ];
             return redirect('/')->withErrors($response);
+            
         }
     }
 

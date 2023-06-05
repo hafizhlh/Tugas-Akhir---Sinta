@@ -14,20 +14,6 @@
 use App\Models\Routes;
 use Illuminate\Support\Facades\Route;
 
-// Route::get('/', function () {
-//     return view('dashboard');
-// });
-
-// Route::get('/login', 'LoginController@index');
-// Route::POST('/login/store', 'LoginController@store');
-// Route::GET('/logout','LoginController@destroy');
-
-// Route::get('/dashboard', 'DashboardController@index')->middleware('authz');
-Route::post('/postKategori', 'KategoriController@store');
-Route::get('/getKategori', 'KategoriController@datatables');
-
-
-
 try {
     $routes= Routes::where('guard','web')->get()->toArray();
     
