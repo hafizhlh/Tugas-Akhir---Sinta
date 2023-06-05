@@ -93,6 +93,7 @@ class BarangController extends Controller
                 'barcode_barang' => $request->barcode,
                 'keterangan_barang' => $request->keterangan_code,
                 'kategori_barang' => $request->kategori_code, // Menambahkan kolom kategori_barang
+                'jumlah_barang' => 0, // Menambahkan kolom jumlah_barang dengan nilai default '0
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
