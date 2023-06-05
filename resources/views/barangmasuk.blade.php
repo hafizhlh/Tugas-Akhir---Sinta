@@ -181,7 +181,7 @@
                     <div class="modal-body" style="height: 500px;">
                         <div class="mb-7">
                                     <!--  -->
-                    <div class="form-group row">
+                    <div class="form-group row" id="input_jenis">
                         <label class="col-lg-3 col-form-label">Jenis Barang:</label>
                             <div class="col-lg-9">
                                 <select class="form-control select2" id="jenis_code" name="jenis_code" style="width: 100%">
@@ -192,7 +192,7 @@
                             <span class="form-text text-muted">Pilih jenis barang untuk menampilkan opsi barang</span>
                         </div>
                     </div>
-                    <div class="form-group row">
+                    <div class="form-group row" id="input_kategori">
                         <label class="col-lg-3 col-form-label">Nama Kategori</label>
                         <div class="col-lg-9">
                             <select class="form-control select2" id="kategori_id" name="kategori_id" style="width: 100%">
@@ -205,7 +205,7 @@
                             <span class="form-text text-muted">Masukkan Nama Kategori</span>
                         </div>
                     </div>
-                    <div class="form-group row">
+                    <div class="form-group row" id="input_barang">
                         <label class="col-lg-3 col-form-label">Barang</label>
                         <div class="col-lg-9">
                             <select class="form-control select2" id="barang_code" name="barang_code" style="width: 100%;">
@@ -618,8 +618,11 @@
             let form = document.forms.formmenus; // <form name="formmenus"> element
             form.reset();
             $('#barang_code').val('').trigger('change');
+            $('#input_barang').removeClass('d-none');
             $('#jenis_code').attr('disabled', false);
+            $('#input_jenis').val('').removeClass('d-none');
             $('#kategori_id').attr('disabled', false);
+            $('#input_kategori').val('').removeClass('d-none');
             $('#barang_code').attr('disabled', false);
         });
 
@@ -646,9 +649,12 @@
                     showtoastr('success', res.message);
                     $('#barang_masuk_id').val(res.data[0].barang_masuk_id);
                     $('#jenis_code').val(res.data[0].jenis_barang).trigger('change');
+                    $('#input_jenis').addClass('d-none');
                     $('#barang_code').val(res.data[0].barang_id).trigger('change');
+                    $('#input_barang').addClass('d-none');
                     $('#jumlah').val(res.data[0].jumlah_barang_masuk);
                     $('#kategori_id').val(res.data[0].kategori_id).trigger('change');
+                    $('#input_kategori').addClass('d-none');
                     $("#saveMenu").data("id", res.data[0].barang_masuk_id);
                     setkategori(res.data[0].jenis_barang, res.data[0].kategori_id);
                     setBarang(res.data[0].barang_id, res.data[0].kategori_id);
