@@ -136,11 +136,13 @@ class BarangController extends Controller
     public function update($id, Request $request)
     {
 
+        // dd($request->all());
         $attributes = $request->only([
             'user_code',
             'barang_name',
             'keterangan_code',
             'kategori_id', // Menambahkan field kategori_barang
+            'barcode'
         ]);
 
         $roles = [
@@ -148,6 +150,7 @@ class BarangController extends Controller
             'barang_name' => 'required',
             'keterangan_code' => 'required',
             'kategori_id' => 'required', // Validasi untuk kategori_barang
+            'barcode' => 'required|unique:barangs,barcode_barang,' . $id . ',barang_id',
         ];
 
         $messages = [
@@ -165,7 +168,8 @@ class BarangController extends Controller
                 'nama_barang' => $request->barang_name,
                 'user_id' => $request->user_code,
                 'keterangan_barang' => $request->keterangan_code,
-                'kategori_barang' => $request->kategori_code, // Menambahkan kolom kategori_barang
+                'kategori_id' => $request->kategori_id, // Menambahkan kolom kategori_barang
+                'barcode_barang' => $request->barcode,
                 'updated_at' => now(),
             ]);
             DB::commit();

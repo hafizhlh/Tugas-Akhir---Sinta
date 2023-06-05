@@ -637,6 +637,8 @@
                         dataType: "json",
                         success: function (data) {
                             $('select[name="kategori_id_edit"]').empty();
+                            $('select[name="kategori_id_edit"]').append(
+                                '<option value="">Pilih Kategori</option>');
                             $.each(data, function (key, value) {
                                 $('select[name="kategori_id_edit"]').append(
                                     '<option value="' + value.id + '">' +
@@ -660,6 +662,8 @@
                         dataType: "json",
                         success: function (data) {
                             $('select[name="kategori_id"]').empty();
+                            $('select[name="kategori_id"]').append(
+                                '<option value="">Pilih Kategori</option>');
                             $.each(data, function (key, value) {
                                 $('select[name="kategori_id"]').append(
                                     '<option value="' + value.id + '">' +
@@ -682,6 +686,8 @@
                         dataType: "json",
                         success: function (data) {
                             $('select[name="barang_code_edit"]').empty();
+                            $('select[name="barang_code_edit"]').append(
+                                '<option value="">Pilih Barang</option>');
                             $.each(data, function (key, value) {
                                 $('select[name="barang_code_edit"]').append(
                                     '<option value="' + value.barang_id + '">' +
@@ -704,6 +710,8 @@
                         dataType: "json",
                         success: function (data) {
                             $('select[name="barang_code"]').empty();
+                            $('select[name="barang_code"]').append(
+                                '<option value="">Pilih Barang</option>');
                             $.each(data, function (key, value) {
                                 $('select[name="barang_code"]').append(
                                     '<option value="' + value.barang_id + '">' +
@@ -819,6 +827,7 @@
                                 .barcode_barang + " data-jenis_barang=" + row.jenis_barang +
                                 " data-keterangan=" + row.keterangan +
                                 " data-jumlah_barang_keluar=" + row.jumlah_barang_keluar +
+                                " data-nama_kategori=" + row.nama_kategori +
                                 " ><i class='fa fa-info-circle'></i> </button>  " +
                                 @endcan "</center>";
                         },
@@ -1027,6 +1036,7 @@
                 $('#nodofetiket_code_detail').val($(this).data('no_dof_etiket'));
                 $('#nama_code_detail').val($(this).data('nama'));
                 $('#barcode_detail').val($(this).data('barcode'));
+                $('#kategori_barang').val($(this).data('nama_kategori'));
                 var jenis_barang = $(this).data('jenis_barang');
                 if (jenis_barang == 1) {
                     $('#jenis_code_detail').val('Consumable');
@@ -1174,6 +1184,8 @@
                     menuID = "";
                     let form = document.forms.formmenus; // <form name="formmenus"> element
                     form.reset();
+                    // close modal
+                    $('#modalReturn').modal('hide');
                     datatable.reload();
                 }).fail(function (data) {
                     show_toastr('error', data.responseJSON.status, data.responseJSON.message);

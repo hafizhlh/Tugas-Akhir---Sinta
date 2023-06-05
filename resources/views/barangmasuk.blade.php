@@ -197,6 +197,7 @@
                         <div class="col-lg-9">
                             <select class="form-control select2" id="kategori_id" name="kategori_id" style="width: 100%">
                                 <option value="" disabled selected>Pilih Kategori</option>
+                                <option value="" disabled selected>Pilih Kategori</option>
                                     @foreach($kategori as $k)
                                 <option value="{{$k->id}}">{{$k->nama_kategori}}</option>
                                     @endforeach
@@ -472,6 +473,8 @@
                     dataType: "json",
                     success: function (data) {
                         $('select[name="kategori_id"]').empty();
+                        $('select[name="kategori_id"]').append(
+                            '<option value="" disabled selected>Pilih Kategori</option>');
                         $.each(data, function (key, value) {
                             $('select[name="kategori_id"]').append(
                                 '<option value="' + value.id + '">' +
@@ -480,12 +483,13 @@
                     }
                 });
             } else {
-
                 $('select[name="barang_code"]').empty();
             }
         });
+
         $('#kategori_id').on('change', function () {
-            var kategori_id = $('#kategori_id').val();
+            var kategori_id = $(this).val(); // Use $(this).val() to get the selected value
+
             if (kategori_id) {
                 $.ajax({
                     url: './getBarang/' + kategori_id,
@@ -493,6 +497,8 @@
                     dataType: "json",
                     success: function (data) {
                         $('select[name="barang_code"]').empty();
+                        $('select[name="barang_code"]').append(
+                            '<option value="" disabled selected>Pilih Barang</option>');
                         $.each(data, function (key, value) {
                             $('select[name="barang_code"]').append(
                                 '<option value="' + value.barang_id + '">' +
@@ -501,10 +507,11 @@
                     }
                 });
             } else {
-
                 $('select[name="barang_code"]').empty();
             }
         });
+
+        
         var datatable = $('#kt_datatable_menu');
 
         @can('barangmasuk-R')
@@ -586,6 +593,7 @@
                             " data-jumlah_barang_masuk=" + row.jumlah_barang_masuk +
                             " data-jumlah_barang=" + row.jumlah_barang +
                             " data-keterangan_barang=" + row.keterangan_barang +
+                            " data-nama_kategori=" + row.nama_kategori +
                             
                             " ><i class='fa fa-eye'></i></button>  " +
                             @endcan
@@ -727,6 +735,18 @@
 
             if (typeof menuID == "undefined" || menuID == "") {
                 var url = `./barangmasuk`;
+                if($('#jenis_code').val() == ""){
+                toastr.warning('Jenis Barang tidak boleh kosong');
+                return false;
+            }
+            if($('#kategori_id').val() == ""){
+                toastr.warning('Kategori Barang tidak boleh kosong');
+                return false;
+            }
+            if($('#barang_code').val() == ""){
+                toastr.warning('Barang tidak boleh kosong');
+                return false;
+            }
             } else {
                 var url = `./barangmasuk/${menuID}/update`;
             }
