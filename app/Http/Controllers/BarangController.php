@@ -50,7 +50,12 @@ class BarangController extends Controller
             ->addColumn('action', function ($row) {
                 $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->barang_id . '" data-original-title="Edit" class="edit btn btn-primary btn-sm editBarang">Edit</a>';
                 $btn = $btn . ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->barang_id . '" data-original-title="Delete" class="btn btn-danger btn-sm deleteLandingPage">Delete</a>';
-                $btn = $btn . ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->barang_id . '" data-nama="' . $row->nama_barang.'" data-barcode="'.$row->barcode_barang.'" data-jenis_barang="'.$row->jenis_barang.'" data-keterangan_barang="'.$row->keterangan_barang.'" data-original-title="Detail" class="btn btn-info btn-sm detailLandingPage">Detail</a>';
+                $btn = $btn . ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . 
+                $row->barang_id . '" data-nama="' . $row->nama_barang.'" data-barcode="'.
+                $row->barcode_barang.'" data-jenis_barang="'.$row->jenis_barang.'" data-nama_kategori="'
+                .$row->nama_kategori.'"
+                data-keterangan_barang="'.$row->keterangan_barang.'" data-original-title="Detail" 
+                class="btn btn-info btn-sm detailLandingPage">Detail</a>';
                 return $btn;
             })
             ->rawColumns(['action'])

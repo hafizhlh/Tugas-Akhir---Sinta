@@ -127,7 +127,7 @@
     <div class="modal-dialog modal-dialog-scrollable" role="document">
     <div class="modal-content">
         <div class="modal-header">
-            <h5 class="modal-title" id="modalMenuTitle">Create Kategori</h5>
+            <h5 class="modal-title" id="modalMenuTitle">Tambah Kategori</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <i aria-hidden="true" class="ki ki-close"></i>
             </button>
@@ -140,14 +140,15 @@
                     <div class="form-group row">
                         <label class="col-lg-3 col-form-label">Jenis Barang:</label>
                         <div class="col-lg-9">
-                            <select class="form-control" id="jenis_code" name="jenis_code">
-                                <option value="">Pilih Jenis Barang</option>
+                            <select class="form-control select2" id="jenis_code" name="jenis_code" style="width: 100%">
+                                <option value="" disabled selected>Pilih Jenis Barang</option>
                                 <option value="1">Consummables</option>
                                 <option value="2">Asset</option>
                             </select>
                             <span class="form-text text-muted">Masukkan Jenis Barang</span>
                         </div>
                     </div>
+                    
                     <div class="form-group row">
                         <label class="col-lg-3 col-form-label">Nama Kategori</label>
                         <div class="col-lg-9">
@@ -262,7 +263,7 @@
             @can('kategori-C')
             $(document).on('click', '#addMenu', function () {
                 $("#saveMenu").data("id", "");
-                $('#modalMenuTitle').text('Create Kategori');
+                $('#modalMenuTitle').text('Tambah Kategori');
                 $('#modalMenu').modal('show');
                 $(`.form-control`).removeClass('is-invalid');
                 $(`.invalid-feedback`).remove();

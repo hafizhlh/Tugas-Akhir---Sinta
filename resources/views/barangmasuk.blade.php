@@ -180,49 +180,48 @@
                 <input type="hidden" name="barang_masuk_id" id="barang_masuk_id">
                     <div class="modal-body" style="height: 500px;">
                         <div class="mb-7">
-                            <!--  -->
-                <div class="form-group row">
-                <label class="col-lg-3 col-form-label">Jenis Barang:</label>
-                <div class="col-lg-9">
-                    <select class="form-control select2" id="jenis_code" name="jenis_code" style="width: 100%>
-                        <option value="">Pilih jenis barang</option>
-                        <option value="1">Consumable</option>
-                        <option value="2">Asset</option>
-                    </select>
-                    <span class="form-text text-muted">Pilih jenis barang untuk menampilkan opsi barang</span>
+                                    <!--  -->
+                    <div class="form-group row">
+                        <label class="col-lg-3 col-form-label">Jenis Barang:</label>
+                            <div class="col-lg-9">
+                                <select class="form-control select2" id="jenis_code" name="jenis_code" style="width: 100%">
+                                    <option value="" disabled selected>Pilih jenis barang</option>
+                                    <option value="1">Consumable</option>
+                                    <option value="2">Asset</option>
+                                </select>
+                            <span class="form-text text-muted">Pilih jenis barang untuk menampilkan opsi barang</span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-lg-3 col-form-label">Nama Kategori</label>
+                        <div class="col-lg-9">
+                            <select class="form-control select2" id="kategori_id" name="kategori_id" style="width: 100%">
+                                <option value="" disabled selected>Pilih Kategori</option>
+                                    @foreach($kategori as $k)
+                                <option value="{{$k->id}}">{{$k->nama_kategori}}</option>
+                                    @endforeach
+                            </select>
+                            <span class="form-text text-muted">Masukkan Nama Kategori</span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-lg-3 col-form-label">Barang</label>
+                        <div class="col-lg-9">
+                            <select class="form-control select2" id="barang_code" name="barang_code" style="width: 100%;">
+                                <option class="form-control" value="">Pilih barang</option>
+                            </select>
+                        </div>
+                    </div>            
+                    <div class="form-group row">
+                        <label class="col-lg-3 col-form-label">Jumlah Barang:</label>
+                        <div class="col-lg-9">
+                            <input type="number" class="form-control" id="jumlah" name="jumlah"
+                                    placeholder="Contoh : 100"/>
+                            <span class="form-text text-muted">Masukkan Jumlah Barang</span>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="form-group row">
-                <label class="col-lg-3 col-form-label">Nama Kategori</label>
-                <div class="col-lg-9">
-                    <select class="form-control select2" id="kategori_id" name="kategori_id" style="width: 100%>
-                        <option value="">Pilih Kategori</option>
-                        @foreach($kategori as $k)
-                            <option value="{{$k->id}}">{{$k->nama_kategori}}</option>
-                        @endforeach
-                    </select>
-                    <span class="form-text text-muted">Masukkan Nama Kategori</span>
                 </div>
-            </div>
-            <div class="form-group row">
-                <label class="col-lg-3 col-form-label">Barang:</label>
-                <div class="col-lg-9">
-                    <select class="form-control select2" id="barang_code" name="barang_code" style="width: 100%;">
-                        <option class="form-control"
-                                    value=''>Pilih barang</option>
-                    </select>
-                </div>
-            </div>
-            <div class="form-group row">
-                <label class="col-lg-3 col-form-label">Jumlah Barang:</label>
-                <div class="col-lg-9">
-                    <input type="number" class="form-control" id="jumlah" name="jumlah"
-                            placeholder="Contoh : 100"/>
-                    <span class="form-text text-muted">Masukkan Jumlah Barang</span>
-                </div>
-            </div>
-            </div>
-            </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal"><i
                             class="fa fa-times"></i>Cancel
@@ -254,11 +253,9 @@
             <script src="script.js"></script>
             <div class="modal-body" style="height: 500px;">
                 <div class="mb-7">
-
-
                     <!--  -->
                     <div class="form-group row">
-                        <label class="col-lg-3 col-form-label">tanggal barang masuk:</label>
+                        <label class="col-lg-3 col-form-label">Tanggal barang masuk:</label>
                         <div class="col-lg-9">
                             <input type="text" class="form-control" id="tanggal_barang_masuk"
                                 name="tanggal_barang_masuk" readonly />
@@ -606,7 +603,7 @@
         @can('barangmasuk-C')
         $(document).on('click', '#addMenu', function () {
             $("#saveMenu").data("id", "");
-            $('#modalMenuTitle').text('Create barang');
+            $('#modalMenuTitle').text('Tambah Barang Masuk');
             $('#modalMenu').modal('show');
             $(`.form-control`).removeClass('is-invalid');
             $(`.invalid-feedback`).remove();
@@ -708,6 +705,7 @@
                 $('#barang_code_detail').val($(this).data('nama_barang'));
                 $('#jumlah_barang_masuk').val($(this).data('jumlah_barang_masuk'));
                 $('#kategori_barang_info').val($(this).data('nama_kategori'));
+                
 
                 // alert($(this).data('jumlah_barang'));
                 $('#stok_detail').val($(this).data('jumlah_barang'));

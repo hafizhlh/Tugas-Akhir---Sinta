@@ -126,7 +126,7 @@
         <div class="modal-dialog modal-dialog-scrollable" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modalMenuTitle">Create Barang</h5>
+                    <h5 class="modal-title" id="modalMenuTitle">Tambah Barang</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <i aria-hidden="true" class="ki ki-close"></i>
                     </button>
@@ -145,14 +145,6 @@
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label class="col-lg-3 col-form-label">Nama Barang:</label>
-                                <div class="col-lg-9">
-                                    <input type="text" class="form-control" id="barang_name" name="barang_name"
-                                           placeholder="Contoh : Totolink N200RE Mini"/>
-                                    <span class="form-text text-muted">Masukkan nama Barang</span>
-                                </div>
-                            </div>
-                            <div class="form-group row">
                                 <label class="col-lg-3 col-form-label">Nama Kategori</label>
                                 <div class="col-lg-9">
                                     <select class="form-control select2" id="kategori_id" name="kategori_id" style="width: 100%">
@@ -164,7 +156,14 @@
                                     <span class="form-text text-muted">Masukkan Nama Kategori</span>
                                 </div>
                             </div>
-                            
+                            <div class="form-group row">
+                                <label class="col-lg-3 col-form-label">Nama Barang:</label>
+                                <div class="col-lg-9">
+                                    <input type="text" class="form-control" id="barang_name" name="barang_name"
+                                           placeholder="Contoh : Totolink N200RE Mini"/>
+                                    <span class="form-text text-muted">Masukkan nama Barang</span>
+                                </div>
+                            </div>
                             <div class="form-group row">
                                 <label class="col-lg-3 col-form-label">Keterangan Barang:</label>
                                 <div class="col-lg-9">
@@ -352,7 +351,7 @@
                                         "<button type='button' class='deletes btn-sm btn btn-icon btn-outline-danger' title='Delete' data-toggle='tooltip' alt='' data-id=" + row.barang_id+ " ><i class='fa fa-trash'></i></button>  " +
                                     @endcan                                  
                                             @can ('barang-R')
-                                        "<button type='button' class='details btn btn-sm btn-icon btn-outline-info ' title='Detail' data-toggle='tooltip' data-id=" + row.barang_id + " data-nama="+row.nama_barang+" data-barcode="+row.barcode_barang+" data-jenis_barang="+row.jenis_barang+" data-jumlah_barang="+row.jumlah_barang+" data-keterangan_barang="+row.keterangan_barang+"><i class='fa fa-eye'></i> </button>  " +
+                                        "<button type='button' class='details btn btn-sm btn-icon btn-outline-info ' title='Detail' data-toggle='tooltip' data-id=" + row.barang_id +" data-nama="+row.nama_barang+" data-barcode="+row.barcode_barang+" data-jenis_barang="+row.jenis_barang+" data-nama_kategori="+row.nama_kategori+" data-jumlah_barang="+row.jumlah_barang+" data-keterangan_barang="+row.keterangan_barang+"><i class='fa fa-eye'></i> </button>  " +
                                       
                                         @endcan
                                             "</center>";
@@ -368,14 +367,12 @@
             @can('barang-C')
             $(document).on('click', '#addMenu', function () {
                 $("#saveMenu").data("id", "");
-                $('#modalMenuTitle').text('Create barang'
-                );
+                $('#modalMenuTitle').text('Tambah barang');
                 $('#modalMenu').modal('show');
                 $(`.form-control`).removeClass('is-invalid');
                 $(`.invalid-feedback`).remove();
                 let form = document.forms.formmenus; // <form name="formmenus"> element
                 form.reset();
-                
             });
             @endcan
 
@@ -399,7 +396,7 @@
                         $('#barcode').val(res.data.barcode_barang);                        
                         $('#barang_name').val(res.data.nama_barang);
                         $('#kategori_code').val(res.data.kategori_nama)
-                        $('#jenis_code').val(res.data.jenis_barang);                       
+                        $('#kategori_id').val(res.data.kategori_id).trigger('change');;                       
                         $('#keterangan_code').val(res.data.keterangan_barang);
                         $("#saveMenu").data("id", res.data.barang_id);
                     }
@@ -465,7 +462,7 @@
 
                 $('#kategori_code_detail').val($(this).data('kategori'));
                 $('#keterangan_code_detail').val($(this).data('keterangan_barang'));
-
+                $('#kategori_barang_info').val($(this).data('nama_kategori'));
                 // show modal
                 $('#modalInfo').modal('show');
             })

@@ -515,13 +515,6 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-lg-3 col-form-label">Jenis Barang:</label>
-                            <div class="col-lg-9">
-                                <input type="text" class="form-control" id="jenis_code_detail" name="jenis_code_detail"
-                                    readonly />
-                            </div>
-                        </div>
-                        <div class="form-group row">
                             <label class="col-lg-3 col-form-label">Keterangan Barang:</label>
                             <div class="col-lg-9">
                                 <input type="text" class="form-control" id="keterangan_code_detail"
