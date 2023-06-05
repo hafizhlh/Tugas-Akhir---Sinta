@@ -81,7 +81,7 @@
 
 @section('js_page')
 
-{{-- <script>
+<script>
     $(document).ready(function() {
         // Jenis Barang
         var pie = [];
@@ -190,7 +190,7 @@
         
         },
         title: {
-          text: 'Monthly Inflation in Argentina, 2002',
+          // text: 'Monthly Inflation in Argentina, 2002',
           floating: true,
           offsetY: 330,
           align: 'center',
@@ -280,7 +280,7 @@
         
         },
         title: {
-          text: 'Monthly Inflation in Argentina, 2002',
+          // text: 'Monthly Inflation in Argentina, 2002',
           floating: true,
           offsetY: 330,
           align: 'center',
@@ -324,7 +324,7 @@
           curve: 'straight'
         },
         title: {
-          text: 'Product Trends by Month',
+          text: 'Produk Populer Perbulan',
           align: 'left'
         },
         grid: {
@@ -349,5 +349,5 @@
         chartb.render();
 
     });
-</script> --}}
+</script>
 @endsection
