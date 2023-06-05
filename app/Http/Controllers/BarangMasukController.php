@@ -269,12 +269,15 @@ class BarangMasukController extends Controller
     public function exportTanggalBarangMasuk(Request $request)
     {
         $data = DB::table('detail_barang_masuks')
-            ->join('barang_masuks', 'detail_barang_masuks.barang_masuk_id', '=', 'barang_masuks.barang_masuk_id')
-            ->join('barangs', 'detail_barang_masuks.barang_id', '=', 'barangs.barang_id')
-            ->whereBetween('tanggal_barang_masuk', [$request->tanggal_awal, $request->tanggal_akhir])
-            ->where('barangs.jenis_barang', $request->jenis_barang)
-            ->select("barang_masuks.tanggal_barang_masuk","barangs.nama_barang", "barangs.jenis_barang","detail_barang_masuks.jumlah_barang_masuk","barangs.jumlah_barang","barangs.keterangan_barang")
-            ->get();
+        ->join('barang_masuks', 'detail_barang_masuks.barang_masuk_id', '=', 'barang_masuks.barang_masuk_id')
+        ->join('barangs', 'detail_barang_masuks.barang_id', '=', 'barangs.barang_id')
+        ->join('kategoris', 'barangs.kategori_id', '=', 'kategoris.id')
+        ->whereBetween('barang_masuks.tanggal_barang_masuk', [$request->tanggal_awal, $request->tanggal_akhir])
+
+        ->select('barang_masuks.tanggal_barang_masuk', 'barangs.nama_barang', 'kategoris.jenis_barang', 'kategoris.nama_kategori', 'detail_barang_masuks.jumlah_barang_masuk', 'barangs.jumlah_barang', 'barangs.keterangan_barang')
+        ->get();
+    
+        
     
         $collect = $data->map(function ($item) {
             $item->jenis_barang = $item->jenis_barang == 1 ? "consummable" : "asset";
@@ -282,13 +285,15 @@ class BarangMasukController extends Controller
         });
     
         $column = [
-            'tanggal barang masuk',
-            'nama barang',
-            'jenis barang',
-            'jumlah barang masuk',
-            'jumlah stok barang saat ini',
-            'keterangan barang'
-        ];
+            'Tanggal Barang Masuk',           
+             'Nama Barang',          
+             'Jenis Barang',
+             'Kategori Barang',
+             'Jumlah Barang Masuk',
+             'Jumlah Stok barang saat ini',
+             'Keterangan barang'
+ 
+         ];
     
         return Excel::download((new Exportxls($data, $column)), 'Laporan BarangMasuk bulanan.xlsx');
     }
@@ -299,9 +304,12 @@ class BarangMasukController extends Controller
         $data = DB::table('detail_barang_masuks')
             ->join('barang_masuks', 'detail_barang_masuks.barang_masuk_id', '=', 'barang_masuks.barang_masuk_id')
             ->join('barangs', 'detail_barang_masuks.barang_id', '=', 'barangs.barang_id')
+            ->join('kategoris', 'barangs.kategori_id', '=', 'kategoris.id')
+
+            
             // ->select('barang_masuks.barang_masuk_id as id_barang_masuk', 'barang_masuks.*', 'detail_barang_masuks.*', 'barangs.*')
             ->where('tanggal_barang_masuk', 'like','%'.$year_now .'%')          
-            ->select("barang_masuks.tanggal_barang_masuk","barangs.nama_barang", "barangs.jenis_barang","detail_barang_masuks.jumlah_barang_masuk","barangs.jumlah_barang","barangs.keterangan_barang")
+            ->select("barang_masuks.tanggal_barang_masuk","barangs.nama_barang", "kategoris.jenis_barang","kategoris.nama_kategori","detail_barang_masuks.jumlah_barang_masuk","barangs.jumlah_barang","barangs.keterangan_barang")
             ->get();
 
         $collect = $data->map(function ($item) {
@@ -313,14 +321,15 @@ class BarangMasukController extends Controller
         
 
         $column = [
-            'tanggal barang masuk',
-            'nama barang',
-            'jenis barang',
-            'jumlah barang masuk',
-            'jumlah stok barang saat ini',
-            'keterangan barang'
-
-        ];
+            'Tanggal Barang Masuk',           
+             'Nama Barang',          
+             'Jenis Barang',
+             'Kategori Barang',
+             'Jumlah Barang Masuk',
+             'Jumlah Stok barang saat ini',
+             'Keterangan barang'
+ 
+         ];
         return Excel::download((new Exportxls($data, $column)), 'Laporan BarangMasuk tahunan.xlsx');
     }
 }
