@@ -253,11 +253,9 @@
             <script src="script.js"></script>
             <div class="modal-body" style="height: 500px;">
                 <div class="mb-7">
-
-
                     <!--  -->
                     <div class="form-group row">
-                        <label class="col-lg-3 col-form-label">tanggal barang masuk:</label>
+                        <label class="col-lg-3 col-form-label">Tanggal barang masuk:</label>
                         <div class="col-lg-9">
                             <input type="text" class="form-control" id="tanggal_barang_masuk"
                                 name="tanggal_barang_masuk" readonly />
