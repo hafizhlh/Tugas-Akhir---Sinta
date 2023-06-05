@@ -136,13 +136,13 @@ class KategoriController extends Controller
     {
 
         $attributes = $request->only([
-            'kategori_code', // Menambahkan field kategori_barang
+            'kategori_name', // Menambahkan field kategori_barang
+            'jenis_code', // Menambahkan field jenis_barang
         ]);
-
         $roles = [
-            'kategori_code' => 'required', // Validasi untuk kategori_barang
+            'kategori_name' => 'required', // Validasi untuk kategori_barang
+            'jenis_code' => 'required', // Validasi untuk jenis_barang
         ];
-
         $messages = [
             'required' => trans('messages.required'),
             'unique' => trans('messages.unique'),
@@ -156,7 +156,7 @@ class KategoriController extends Controller
         try {
             $data->update([
                 'jenis_barang' => $request->jenis_code, // Menambahkan kolom jenis barang
-                'nama_kategori' => $request->kategori_code, // Menambahkan kolom kategori_barang
+                'nama_kategori' => $request->kategori_name, // Menambahkan kolom kategori_barang
                 'updated_at' => now(),
             ]);
             DB::commit();

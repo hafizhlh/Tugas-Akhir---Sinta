@@ -137,6 +137,7 @@
             <div class="modal-body" style="height: 400px;">
                 <input type="hidden" name="user_code" id="user_code">
                 <div class="mb-7">
+                    <input type="hidden" name="id_kategori" id="id_kategori" value="">
                     <div class="form-group row">
                         <label class="col-lg-3 col-form-label">Jenis Barang:</label>
                         <div class="col-lg-9">
@@ -262,7 +263,7 @@
 
             @can('kategori-C')
             $(document).on('click', '#addMenu', function () {
-                $("#saveMenu").data("id", "");
+                $("#id_kategori").val("");
                 $('#modalMenuTitle').text('Tambah Kategori');
                 $('#modalMenu').modal('show');
                 $(`.form-control`).removeClass('is-invalid');
@@ -288,11 +289,12 @@
                     let form = document.forms.formmenus; // <form name="formmenus"> element
                     console.log(res.success);
                     if (res.success) {
+                        console.log(res.data);
                         showtoastr('success', res.message);
                         $('#user_code').val(res.data.user_id);
                         $('#jenis_code').val(res.data.jenis_barang).trigger('change');
                         $('#kategori_name').val(res.data.nama_kategori);
-                        $("#saveMenu").data("id", res.data.kategori_id);
+                        $("#id_kategori").val(res.data.id);
                     }
                 }).fail(function (data) {
                     show_toastr('error', data.responseJSON.status, data.responseJSON.message);
@@ -312,7 +314,7 @@
                 // var formData = new FormData($("#formmenus"));
                 // var formData = $('#formmenus').serializeArray(); // our data object
                 var method = "POST";
-                let menuID = $("#saveMenu").data("id");
+                let menuID = $("#id_kategori").val();
                 
                 if (typeof menuID == "undefined" || menuID == "") {
                     var url = `./kategori`;
@@ -323,7 +325,7 @@
 
                 $.ajax({
                     type: method, // define the type of HTTP verb we want to use (POST for our form)
-                    url: '/postKategori', // the url where we want to POST
+                    url: url, // the url where we want to POST
                     data: {
                         jenis_code: $('#jenis_code').val(),
                         kategori_name: $('#kategori_name').val(),
