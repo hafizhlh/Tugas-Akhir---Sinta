@@ -15,8 +15,7 @@ class CreateBarangsTable extends Migration
     {
         Schema::create('barangs', function (Blueprint $table) {
             $table->bigIncrements('barang_id');
-            $table->uuid('user_id');
-            $table->string('barcode_barang', 100);
+            $table->uuid('user_id');          
             $table->string('nama_barang', 100);
             $table->string('barcode_barang', 255);
             $table->integer('jumlah_barang');
