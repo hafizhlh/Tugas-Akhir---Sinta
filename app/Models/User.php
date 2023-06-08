@@ -17,7 +17,7 @@ class User extends Authenticatable
     // use \OwenIt\Auditing\Auditable;
     use SoftDeletes;
     use Impersonate;
-    use \App\Traits\UuidKey;
+    // use \App\Traits\UuidKey;
     /**
      * The attributes that are mass assignable.
      *
