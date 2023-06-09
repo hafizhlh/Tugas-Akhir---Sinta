@@ -27,6 +27,7 @@
         ::-webkit-scrollbar-thumb:hover {
             background: #555;
         }
+        /* */
     </style>
     <!-- END Page Level CSS-->
 @endsection
