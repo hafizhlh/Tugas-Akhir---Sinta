@@ -27,7 +27,7 @@ class BarangKeluarController extends Controller
         $data['menu']  = Menu::select('id', 'name')->get();
         $data['barang']= Barang::select('barang_id', 'nama_barang')->get();
         $data['kategori'] = DB::table('kategoris')->get();
-        return view('Barangkeluar', $data);
+        return view('barangkeluar', $data);
     }
 
     public function datatables()
