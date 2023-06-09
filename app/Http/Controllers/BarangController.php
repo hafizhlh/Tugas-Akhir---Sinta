@@ -17,7 +17,7 @@ class BarangController extends Controller
         $data['menus'] = $this->getDashboardMenu();
         $data['menu']  = Menu::select('id', 'name')->get();
         $data['kategori'] = DB::table('kategoris')->get();
-        return view('barang', $data);
+        return view('Barang', $data);
     }
 
     public function datatables()

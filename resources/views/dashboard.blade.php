@@ -2,6 +2,28 @@
 
 @section('title', 'Dashboard')
 @section('content')
+<style>
+  .chart-container {
+    position: relative;
+    width: 100%;
+    padding-bottom: 75%; /* Adjust this value to maintain the desired aspect ratio of the chart */
+  }
+
+  .chart-container #chart {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  @media (max-width: 768px) {
+    /* Adjust the max-width value as needed for your responsive breakpoints */
+    .chart-container {
+      padding-bottom: 100%; /* Adjust this value for smaller screens if needed */
+    }
+  }
+</style>
     <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
         <!--begin::Subheader-->
         <div class="subheader py-2 py-lg-4 subheader-solid" id="kt_subheader">
@@ -37,7 +59,9 @@
                     <div class="card">
                       <div class="card-body">
                         <h3 class="card-title">Jenis Barang</h3>
+                        <div class="chart-container">
                           <div id="chart"></div>
+                        </div>
                       </div>
                     </div>
                   </div>

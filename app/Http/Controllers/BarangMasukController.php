@@ -26,7 +26,7 @@ class BarangMasukController extends Controller
         $data['menu']  = Menu::select('id', 'name')->get();
         $data['barang'] = Barang::select('barang_id', 'nama_barang')->get();
         $data['kategori'] = DB::table('kategoris')->get();
-        return view('barangmasuk', $data);
+        return view('BarangMasuk', $data);
 
         // Menambahkan parameter jenis_barang pada query untuk menyortir berdasarkan jenis barang yang dipilih
     if (isset($_GET['jenis_barang'])) {

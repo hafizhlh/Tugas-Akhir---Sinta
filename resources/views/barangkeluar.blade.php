@@ -117,40 +117,30 @@
                             <!--end::Button-->
                         </div>
                     </div>
-                    <div class="card-body">
-                        {{-- <div class="table-responsive">
-                        <table class="datatable datatable-bordered datatable-head-custom" id="kt_datatable_menu"> --}}
-                        <!--begin: Search Form-->
-                        <!--begin::Search Form-->
-                        <div class="mb-7">
-                            <div class="row align-items-center">
-                                <div class="col-lg-9 col-xl-8">
-                                    <div class="row align-items-center">
-                                        <div class="col-md-4 my-2 my-md-0">
-                                            <div class="input-icon">
-                                                <input type="text" class="form-control" placeholder="Search..."
-                                                    id="kt_datatable_search_query" />
-                                                <span>
-                                                    <i class="flaticon2-search-1 text-muted"></i>
-                                                </span>
-                                            </div>
+                </div>
+
+                <div class="card-body">
+                    <div class="mb-7">
+                        <div class="row align-items-center">
+                            <div class="col-lg-9 col-xl-8">
+                                <div class="row align-items-center">
+                                    <div class="col-md-4 my-2 my-md-0">
+                                        <div class="input-icon">
+                                            <input type="text" class="form-control" placeholder="Search..."
+                                                id="kt_datatable_search_query" />
+                                            <span>
+                                                <i class="flaticon2-search-1 text-muted"></i>
+                                            </span>
                                         </div>
-                                        <div class="col-md-2">
-                                            <a href="#" class="btn btn-light-primary px-6 font-weight-bold">Search</a>
-                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <a href="#" class="btn btn-light-primary px-6 font-weight-bold">Search</a>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        {{-- </table>
-                    </div> --}}
-                        <!--end::Search Form-->
-                        <!--end: Search Form-->
-                        <!--begin: Datatable-->
-                        <!-- Table content goes here -->
-                        <div class="datatable datatable-bordered datatable-head-custom" id="kt_datatable_menu"></div>
-                        <!--end: Datatable-->
                     </div>
+                    <div class="datatable datatable-bordered datatable-head-custom" id="kt_datatable_menu"></div>
                 </div>
 
                 <!--end::Card-->
@@ -229,7 +219,7 @@
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label class="col-lg-3 col-form-label">Keterangan Barang:</label>
+                                <label class="col-lg-3 col-form-label" id="keterangan_label">Keterangan Barang:</label>
                                 <div class="col-lg-9">
                                     <input type="text" class="form-control" id="keterangan_code" name="keterangan_code"
                                         placeholder="Contoh : untuk router" />
@@ -327,7 +317,7 @@
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label class="col-lg-3 col-form-label">Keterangan Barang:</label>
+                                <label class="col-lg-3 col-form-label" id="keterangan_label_edit">Keterangan Barang:</label>
                                 <div class="col-lg-9">
                                     <input type="text" class="form-control" id="keterangan_code_edit"
                                         name="keterangan_code_edit" placeholder="Contoh : untuk router" />
@@ -627,6 +617,13 @@
 
             //select data dari barang 
             $('.select2').select2();
+            $('#jenis_code').on('change', function () {
+                if ($(this).val() == '1') {
+                    $('#keterangan_label').text('Keterangan Barang:');
+                } else {
+                    $('#keterangan_label').text('Keterangan Lokasi:');
+                }
+            })
             $('#jenis_code_edit').on('change', function () {
                 var jenis_code = $('#jenis_code_edit').val();
                 var kategori_id = $('#kategori_id').val();
@@ -743,7 +740,7 @@
                 },
                 // layout definition
                 layout: {
-                    scroll: false, // enable/disable datatable scroll both horizontal and vertical when needed.
+                    scroll: true, // enable/disable datatable scroll both horizontal and vertical when needed.
                     footer: false // display/hide footer
                 },
                 // column sorting
@@ -759,39 +756,37 @@
                     {
                         field: 'DT_RowIndex',
                         title: 'No',
+                        autoHide: false,
                     }, {
                         field: 'nama_barang',
                         title: 'nama barang',
                         textAlign: 'center',
+                        autoHide: false,
 
                     },
-                    // {
-                    //     field: 'barang_keluar_id',
-                    //     title: 'id barang keluar',
-                    //     // make center aligment.
-                    //     textAlign: 'center',
-
-                    // },
                     {
                         field: 'jumlah_barang_keluar',
                         title: 'jumlah',
                         textAlign: 'center',
+                        autoHide: false,
                     },
                     {
                         field: 'no_dof_etiket',
                         title: 'nodof/eticket',
                         textAlign: 'center',
+                        autoHide: false,
                     },
                     {
                         field: 'tgl_pengambilan',
                         title: 'tanggal pengambilan',
                         textAlign: 'center',
+                        autoHide: false,
                     },
                     {
                         field: 'keterangan',
                         title: 'keterangan',
-                        autoHide: false,
                         overflow: 'visible',
+                        autoHide: false,
                         textAlign: 'center',
                     },
                     {
@@ -802,34 +797,31 @@
                         autoHide: false,
                         overflow: 'visible',
                         template: function (row) {
-                            return "<center>" +
-                                //semua button dalam table action
-                                @can('barangkeluar-U')
-                            "<button type='button' class='edits btn btn-sm btn-icon btn-outline-warning ' title='Edit' data-toggle='tooltip' data-id=" +
-                            row.barang_keluar_id + " ><i class='fa fa-edit'></i> </button>  " +
-                                @endcan
-                            @can('barangkeluar-D')
-                            "<button type='button' class='deletes btn-sm btn btn-icon btn-outline-danger' title='Delete' data-toggle='tooltip' alt='' data-id=" +
-                            row.barang_keluar_id + " ><i class='fa fa-trash'></i></button>  " +
-                                @endcan
-
+                            var actions = "<center>";
+                            // Edit button
                             @can('barangkeluar-U')
-                            "<button type='button' class='returns btn btn-sm btn-icon btn-outline-info ' title='Return' data-toggle='tooltip' data-id=" +
-                            row.barang_keluar_id +
-                                " ><i class='fa fa-reply-all'></i> </button>  " +
+                            actions += "<button type='button' class='edits btn btn-sm btn-icon btn-outline-warning' title='Edit' data-toggle='tooltip' data-id=" + row.barang_keluar_id + " ><i class='fa fa-edit'></i> </button>  ";
+                            @endcan
+
+                            // Delete button
+                            @can('barangkeluar-D')
+                            actions += "<button type='button' class='deletes btn-sm btn btn-icon btn-outline-danger' title='Delete' data-toggle='tooltip' alt='' data-id=" + row.barang_keluar_id + " ><i class='fa fa-trash'></i></button>  ";
+                            @endcan
+
+                            // Return button (added condition)
+                            if (row.jenis_barang == 1) {
+                                @can('barangkeluar-U')
+                                actions += "<button type='button' class='returns btn btn-sm btn-icon btn-outline-info' title='Return' data-toggle='tooltip' data-id=" + row.barang_keluar_id + " ><i class='fa fa-reply-all'></i> </button>  ";
                                 @endcan
+                            }
+
+                            // Detail button
                             @can('barangkeluar-R')
-                            "<button type='button' class='details btn btn-sm btn-icon btn-outline-info ' title='Detail' data-toggle='tooltip' data-id=" +
-                            row.barang_keluar_id + " data-user_id=" + row.user_id +
-                                " data-tgl_pengambilan=" + row.tgl_pengambilan +
-                                " data-no_dof_etiket=" + row.no_dof_etiket +
-                                " data-nama=" + row.nama_barang + " data-barcode=" + row
-                                .barcode_barang + " data-jenis_barang=" + row.jenis_barang +
-                                " data-keterangan=" + row.keterangan +
-                                " data-jumlah_barang_keluar=" + row.jumlah_barang_keluar +
-                                " data-nama_kategori=" + row.nama_kategori +
-                                " ><i class='fa fa-info-circle'></i> </button>  " +
-                                @endcan "</center>";
+                            actions += "<button type='button' class='details btn btn-sm btn-icon btn-outline-info' title='Detail' data-toggle='tooltip' data-id=" + row.barang_keluar_id + " data-user_id=" + row.user_id + " data-tgl_pengambilan=" + row.tgl_pengambilan + " data-no_dof_etiket=" + row.no_dof_etiket + " data-nama=" + row.nama_barang + " data-barcode=" + row.barcode_barang + " data-jenis_barang=" + row.jenis_barang + " data-keterangan=" + row.keterangan + " data-jumlah_barang_keluar=" + row.jumlah_barang_keluar + " data-nama_kategori=" + row.nama_kategori + " ><i class='fa fa-info-circle'></i> </button>  ";
+                            @endcan
+
+                            actions += "</center>";
+                            return actions;
                         },
                     }
                 ],
@@ -880,6 +872,11 @@
                         //jika berhasil mengambil data untuk mengedit
                         showtoastr('success', res.message);
                         console.log(res.data);
+                        if(res.data[0].jenis_barang == 1){
+                            $('#keterangan_label_edit').text('Keterangan Barang:');
+                        }else{
+                            $('#keterangan_label_edit').text('Keterangan Lokasi:');
+                        }
                         $('#nodofetiket_code_edit').val(res.data[0].no_dof_etiket);
                         $('#jumlah_edit').val(res.data[0].jumlah_barang_keluar);
                         $('#jenis_code_edit').val(res.data[0].jenis_barang).trigger('change');

@@ -35,6 +35,16 @@
             margin-top: 10px;
         }
     </style>
+    <style>
+        @media (max-width: 1000px) {
+            .login-aside{
+                display: none !important;
+            }
+            .untuk-kotak-tengh{
+                padding: 100px;
+            }
+        }
+    </style>
 </head>
 <!--end::Head-->
 <!--begin::Body-->

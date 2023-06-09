@@ -1,6 +1,10 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use App\Exports\BarangAssetsSheet;
+use App\Exports\BarangConsummableSheet;
+use App\Exports\ExportMultipleSheets;
 use App\Exports\Exportxls;
 use App\Models\Barang;
 use Illuminate\Http\Request;
@@ -12,6 +16,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+// use Maatwebsite\Excel\Excel;
+use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 
 class BarangKeluarController extends Controller
 {
@@ -21,7 +27,7 @@ class BarangKeluarController extends Controller
         $data['menu']  = Menu::select('id', 'name')->get();
         $data['barang']= Barang::select('barang_id', 'nama_barang')->get();
         $data['kategori'] = DB::table('kategoris')->get();
-        return view('barangkeluar', $data);
+        return view('BarangKeluar', $data);
     }
 
     public function datatables()
@@ -229,107 +235,102 @@ class BarangKeluarController extends Controller
 
     public function exportTanggalBarangKeluar(Request $request)
     {
-
-        $data =  DB::table('barang_keluars')  
-                ->join('detail_barang_keluars', 'barang_keluars.barang_keluar_id', '=', 'detail_barang_keluars.barang_keluar_id')
-                ->join('barangs', 'detail_barang_keluars.barang_id', '=', 'barangs.barang_id')
-                ->leftJoin('return_barangs', 'barang_keluars.barang_keluar_id', '=', 'return_barangs.barang_keluar_id')
-                ->leftJoin('detail_return_barangs', 'return_barangs.return_id', '=', 'detail_return_barangs.return_id')          
-                ->join('users', 'barang_keluars.user_id', '=', 'users.id')
-                ->join('kategoris', 'barangs.kategori_id', '=', 'kategoris.id')
-            ->whereBetween('barang_keluars.tgl_pengambilan', [$request->tanggal_awal, $request->tanggal_akhir])
-            ->select("barang_keluars.tgl_pengambilan",
-            "return_barangs.waktu_return",
-            "users.first_name",
-            "barang_keluars.no_dof_etiket",
-            "barangs.nama_barang",
-            "kategoris.jenis_barang",
-            "kategoris.nama_kategori",
-            "detail_barang_keluars.jumlah_barang_keluar",
-            "detail_return_barangs.jumlah_barang_return",
-            "barangs.jumlah_barang",            
-            "barang_keluars.keterangan")
+        // dd($request->all());
+        
+    
+        $data =  DB::table('barang_keluars')
+            ->join('detail_barang_keluars', 'barang_keluars.barang_keluar_id', '=', 'detail_barang_keluars.barang_keluar_id')
+            ->join('barangs', 'detail_barang_keluars.barang_id', '=', 'barangs.barang_id')
+            ->join('users', 'barang_keluars.user_id', '=', 'users.id')
+            ->join('kategoris', 'barangs.kategori_id', '=', 'kategoris.id')
+            ->leftJoin('return_barangs', 'barang_keluars.barang_keluar_id', '=', 'return_barangs.barang_keluar_id')
+            ->leftJoin('detail_return_barangs', 'return_barangs.return_id', '=', 'detail_return_barangs.return_id')
+            ->whereBetween('tgl_pengambilan', [$request->tanggal_awal, $request->tanggal_akhir])
+            ->select(
+                "barang_keluars.tgl_pengambilan",
+                "return_barangs.waktu_return",
+                "users.first_name",
+                "barang_keluars.no_dof_etiket",
+                "barangs.nama_barang",
+                "kategoris.jenis_barang",
+                "kategoris.nama_kategori",
+                "detail_barang_keluars.jumlah_barang_keluar",
+                "detail_return_barangs.jumlah_barang_return",
+                "barangs.jumlah_barang",
+                "barang_keluars.keterangan"
+            )
             ->get();
 
-        $collect = $data->map(function ($item) {
-            $item->jenis_barang = $item->jenis_barang == 1 ? "consummable" : "asset";
-            return $item;
-        });
-
-        // dd($collect);
-
-        $column = [
-            'tanggal barang keluar',
-            'tanggal barang return',
-            'nama user',
-            'no dof etiket',
-            'nama barang',
-            'jenis barang',
-            'nama kategori',
-            'jumlah barang keluar',
-            'jumlah barang return',
-            'jumlah stok barang saat ini',
-            'keterangan barang'
-
+            
+            $collect = $data->map(function ($item) {
+                $item->jenis_barang = $item->jenis_barang == 1 ? "consummable" : "asset";
+                return $item;
+            });
+            
+            $consummableData = $data->filter(function ($item) {
+                return $item->jenis_barang == "consummable";
+            });
+            
+            $assetData = $data->filter(function ($item) {
+                return $item->jenis_barang == "asset";
+            });
+            
+        $sheets = [
+            new BarangConsummableSheet($consummableData),
+            new BarangAssetsSheet($assetData),
         ];
-        return Excel::download((new Exportxls($data, $column)), 'Laporan Barangkeluar.xlsx');
-
+    
+        return Excel::download(new ExportMultipleSheets($sheets), 'Laporan Barangkeluar.xlsx');
     }
-    public function exportTahunBarangKeluar():BinaryFileResponse
+    
+    public function exportTahunBarangKeluar(): BinaryFileResponse
     {
         $year_now = date('Y');
-
-        $data =  DB::table('barang_keluars')  
-                ->join('detail_barang_keluars', 'barang_keluars.barang_keluar_id', '=', 'detail_barang_keluars.barang_keluar_id')
-                ->join('barangs', 'detail_barang_keluars.barang_id', '=', 'barangs.barang_id')
-                // ->join('return_barangs', 'barang_keluars.barang_keluar_id', '=', 'return_barangs.barang_keluar_id')
-                // ->join('detail_return_barangs', 'return_barangs.return_id', '=', 'detail_return_barangs.return_id')
-                ->join('users', 'barang_keluars.user_id', '=', 'users.id')
-                ->join('kategoris', 'barangs.kategori_id', '=', 'kategoris.id')
-                ->leftJoin('return_barangs', 'barang_keluars.barang_keluar_id', '=', 'return_barangs.barang_keluar_id')
-                ->leftJoin('detail_return_barangs', 'return_barangs.return_id', '=', 'detail_return_barangs.return_id')
-
-
-                // ->join('barangs', 'detail_return_barangs.barang_id', '=', 'barangs.barang_id')
-            //  ->select('barang_keluars.barang_keluar_id as id_barang_keluar', 'barang_keluars.*', 'detail_barang_keluars.*', 'barangs.*','detail_return_barangs.*','return_barangs.*')
-            ->where('tgl_pengambilan', 'like' ,'%'.$year_now .'%')
-            ->select("barang_keluars.tgl_pengambilan",
-            "return_barangs.waktu_return",
-            "users.first_name",
-            "barang_keluars.no_dof_etiket",
-            "barangs.nama_barang",
-            "kategoris.jenis_barang",
-            "kategoris.nama_kategori",
-            "detail_barang_keluars.jumlah_barang_keluar",
-            "detail_return_barangs.jumlah_barang_return",
-            "barangs.jumlah_barang",            
-            "barang_keluars.keterangan")
+    
+        $data =  DB::table('barang_keluars')
+            ->join('detail_barang_keluars', 'barang_keluars.barang_keluar_id', '=', 'detail_barang_keluars.barang_keluar_id')
+            ->join('barangs', 'detail_barang_keluars.barang_id', '=', 'barangs.barang_id')
+            ->join('users', 'barang_keluars.user_id', '=', 'users.id')
+            ->join('kategoris', 'barangs.kategori_id', '=', 'kategoris.id')
+            ->leftJoin('return_barangs', 'barang_keluars.barang_keluar_id', '=', 'return_barangs.barang_keluar_id')
+            ->leftJoin('detail_return_barangs', 'return_barangs.return_id', '=', 'detail_return_barangs.return_id')
+            ->where('tgl_pengambilan', 'like', '%' . $year_now . '%')
+            ->select(
+                "barang_keluars.tgl_pengambilan",
+                "return_barangs.waktu_return",
+                "users.first_name",
+                "barang_keluars.no_dof_etiket",
+                "barangs.nama_barang",
+                "kategoris.jenis_barang",
+                "kategoris.nama_kategori",
+                "detail_barang_keluars.jumlah_barang_keluar",
+                "detail_return_barangs.jumlah_barang_return",
+                "barangs.jumlah_barang",
+                "barang_keluars.keterangan"
+            )
             ->get();
 
-        $collect = $data->map(function ($item) {
-            $item->jenis_barang = $item->jenis_barang == 1 ? "consummable" : "asset";
-            return $item;
-        });
-
-        // dd($collect);
-
-        $column = [
-            'tanggal barang keluar',
-            'tanggal barang return',
-            'nama user',
-            'no dof etiket',
-            'nama barang',
-            'jenis barang',
-            'nama kategori',
-            'jumlah barang keluar',
-            'jumlah barang return',
-            'jumlah stok barang saat ini',
-            'keterangan barang'
-
-
+            
+            $collect = $data->map(function ($item) {
+                $item->jenis_barang = $item->jenis_barang == 1 ? "consummable" : "asset";
+                return $item;
+            });
+            
+            $consummableData = $data->filter(function ($item) {
+                return $item->jenis_barang == "consummable";
+            });
+            
+            $assetData = $data->filter(function ($item) {
+                return $item->jenis_barang == "asset";
+            });
+            
+        $sheets = [
+            new BarangConsummableSheet($consummableData),
+            new BarangAssetsSheet($assetData),
         ];
-        return Excel::download((new Exportxls($data, $column)), 'Laporan Barangkeluar.xlsx');
-
+    
+        return Excel::download(new ExportMultipleSheets($sheets), 'Laporan Barangkeluar.xlsx');
     }
+    
 
 }

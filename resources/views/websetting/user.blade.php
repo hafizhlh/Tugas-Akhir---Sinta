@@ -49,15 +49,7 @@
                             <h3 class="card-label">Data User
                                 <span class="d-block text-muted pt-2 font-size-sm"></span></h3>
                         </div>
-                        <div class="card-toolbar">
-                            <!--begin::Dropdown-->
-                            <div class="dropdown dropdown-inline mr-2">
-                                <button type="button" class="btn btn-light-primary font-weight-bolder"
-                                    data-toggle="modal" data-target="#importModal" aria-haspopup="true" aria-expanded="false">
-                                    Import
-                                </button>
-                            </div>
-                            <!--end::Dropdown-->
+                        <div class="card-toolbar">                            
                             <!--begin::Button-->
                             @can('rolesetting-C')
                                 <button id="addUser" name="addUser" class="btn btn-primary font-weight-bolder">

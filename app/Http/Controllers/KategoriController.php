@@ -17,7 +17,7 @@ class KategoriController extends Controller
         $data['menus'] = $this->getDashboardMenu();
         $data['menu']  = Menu::select('id', 'name')->get();
         $data['jenis_barang'] = $this->getJenisBarang();
-        return view('kategori', $data);
+        return view('Kategori', $data);
     }
 
     public function datatables()

@@ -1,45 +1,55 @@
 <?php
-
 namespace App\Exports;
-
-use Illuminate\Contracts\Support\Arrayable;
-use Illuminate\Support\Collection;
-use Maatwebsite\Excel\Concerns\FromCollection;
-use Maatwebsite\Excel\Concerns\ShouldAutoSize;
-use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Concerns\WithEvents;
+use Maatwebsite\Excel\Events\AfterSheet;
 use Maatwebsite\Excel\Sheet;
+use Maatwebsite\Excel\Concerns\FromCollection;
+use Maatwebsite\Excel\Concerns\Exportable;
+use Maatwebsite\Excel\Concerns\ShouldAutoSize;
+use Maatwebsite\Excel\Concerns\withHeadings;
 
-class Exportxls implements FromCollection,WithHeadings,ShouldAutoSize
-
+class Exportxls implements FromCollection, WithEvents, ShouldAutoSize,withHeadings
 {
-    /**
-    * @return \Illuminate\Support\Collection
-    */
-    public function __construct(Collection $items,$columns=[])
-	{
-		$this->items=$items;
-		$this->columns=$columns;
-	}
+    use Exportable;
 
-    /**
-    * @return \Illuminate\Support\Collection
-    */
+    protected $data;
+    protected $columns;
+
+    public function __construct($data, $columns)
+    {
+        $this->data = $data;
+        $this->columns = $columns;
+    }
+
     public function collection()
     {
-        //
-        return $this->items;
+        return $this->data;
+    }
+
+    public function registerEvents(): array
+    {
+        return [
+            AfterSheet::class => function (AfterSheet $event) {
+                $event->sheet->getStyle('A1:' . $event->sheet->getHighestColumn() . '1')->applyFromArray([
+                    'font' => [
+                        'bold' => true,
+                    ],
+                    'alignment' => [
+                        'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+                    ],
+                ]);
+            },
+        ];
     }
 
     public function headings(): array
     {
-        if ($this->columns) return $this->columns;
+        return $this->columns;
+    }
 
-        $firstRow = $this->items->first();
+    public function store(string $filePath, string $disk = null, string $writerType = null)
+    {
 
-        if ($firstRow instanceof Arrayable || \is_object($firstRow)) {
-            return array_keys(Sheet::mapArraybleRow($firstRow));
-        }
-
-        return $this->items->collapse()->keys()->all();
+        return $this->download($filePath, $writerType)->store($filePath, $disk);
     }
 }
