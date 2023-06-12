@@ -48,7 +48,7 @@ class KategoriController extends Controller
             })
             ->addColumn('action', function ($row) {
                 $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->id . '" data-original-title="Edit" class="edit btn btn-primary btn-sm editBarang">Edit</a>';
-                $btn = $btn . ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->id . '" data-original-title="Delete" class="btn btn-danger btn-sm deletes">Delete</a>';
+                // $btn = $btn . ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->id . '" data-original-title="Delete" class="btn btn-danger btn-sm deletes">Delete</a>';
                 return $btn;
             })
             ->rawColumns(['action'])
@@ -64,6 +64,11 @@ class KategoriController extends Controller
             2 => 'Aset',
         ];
     }
+    public function getStok($id)
+    {
+        $data = Barang::where('barang_id', $id)->get();
+        return response()->json($data);
+    }
     public function store(Request $request)
     {
         
@@ -72,7 +77,7 @@ class KategoriController extends Controller
             'jenis_code', // Menambahkan field jenis_barang
         ]);
         $roles = [
-            'kategori_name' => 'required', // Validasi untuk kategori_barang
+            'kategori_name' => 'required|unique:kategori,nama_kategori', // Validasi untuk kategori_barang
             'jenis_code' => 'required', // Validasi untuk jenis_barang
         ];
         $messages = [
@@ -141,7 +146,7 @@ class KategoriController extends Controller
             'jenis_code', // Menambahkan field jenis_barang
         ]);
         $roles = [
-            'kategori_name' => 'required', // Validasi untuk kategori_barang
+            'kategori_name' => 'required|unique:kategori,nama_kategori', // Validasi untuk kategori_barang
             'jenis_code' => 'required', // Validasi untuk jenis_barang
         ];
         $messages = [

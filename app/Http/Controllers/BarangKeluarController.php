@@ -227,7 +227,7 @@ class BarangKeluarController extends Controller
     }
 
     public function getBarang($kategori_id){
-        $data = Barang::where('kategori_id', $kategori_id)
+        $data = Barang::where('kategori_id', $kategori_id,)
                 ->where('delete_mark', 0)
                 ->get();
         return response()->json($data);

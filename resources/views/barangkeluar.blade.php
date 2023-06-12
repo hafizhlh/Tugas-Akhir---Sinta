@@ -156,7 +156,7 @@
         <div class="modal-dialog modal-dialog-scrollable" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modalMenuTitle">barang keluar</h5>
+                    <h5 class="modal-title" id="modalMenuTitle">barang </h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <i aria-hidden="true" class="ki ki-close"></i>
                     </button>
@@ -209,6 +209,14 @@
                                     </select>
                                 </div>
                             </div>
+
+                            <div class="form-group row">
+                                <label class="col-lg-3 col-form-label">Stok Barang:</label>
+                                <div class="col-lg-9">
+                                    <input type="number" class="form-control" id="jumlah_stok" name="jumlah_stok"readonly />
+                                    <span class="form-text text-muted">barang yang tersedia saat ini</span>
+                                </div>
+                            </div>
                             
                             <div class="form-group row">
                                 <label class="col-lg-3 col-form-label">Jumlah Barang:</label>
@@ -218,6 +226,7 @@
                                     <span class="form-text text-muted">Masukkan Jumlah Barang</span>
                                 </div>
                             </div>
+
                             <div class="form-group row">
                                 <label class="col-lg-3 col-form-label" id="keterangan_label">Keterangan Barang:</label>
                                 <div class="col-lg-9">
@@ -651,7 +660,7 @@
 
             $('#jenis_code').on('change', function () {
                 var jenis_code = $('#jenis_code').val();
-                var kategori_id = $('#kategori_id').val();
+                var kategori_id = $('#kategori_id').val();                
                 if (jenis_code) {
                     $.ajax({
                         url: './getkategori/' + jenis_code,
@@ -664,7 +673,8 @@
                             $.each(data, function (key, value) {
                                 $('select[name="kategori_id"]').append(
                                     '<option value="' + value.id + '">' +
-                                    value.nama_kategori + '</option>');
+                                    value.nama_kategori + '</option>');                          
+
                             });
                         }
                     });
@@ -676,6 +686,7 @@
 
             $('#kategori_id_edit').on('change', function () {
                 var kategori_id = $('#kategori_id_edit').val();
+                
                 if (kategori_id) {
                     $.ajax({
                         url: './getBarang/' + kategori_id,
@@ -700,6 +711,7 @@
 
             $('#kategori_id').on('change', function () {
                 var kategori_id = $('#kategori_id').val();
+               
                 if (kategori_id) {
                     $.ajax({
                         url: './getBarang/' + kategori_id,
@@ -712,13 +724,31 @@
                             $.each(data, function (key, value) {
                                 $('select[name="barang_code"]').append(
                                     '<option value="' + value.barang_id + '">' +
-                                    value.nama_barang + '</option>');
+                                    value.nama_barang + '</option>');               
                             });
                         }
                     });
                 } else {
 
                     $('select[name="barang_code"]').empty();
+                }
+            });
+
+            $('#barang_code').on('change', function () {
+                var barang_id = $('#barang_code').val();
+                if (barang_id) {
+                    $.ajax({
+                        url: './getStok/' + barang_id,
+                        type: "GET",
+                        dataType: "json",
+                        success: function (data) {
+                            $('#jumlah_stok').empty();
+                            $('#jumlah_stok').val(data[0].jumlah_barang);
+                        }
+                    });
+                } else {
+
+                    $('#jumlah_stok').empty();
                 }
             });
             //datatable menampilkan data
@@ -1012,8 +1042,10 @@
                     type: "GET",
                     dataType: "json",
                     success: function (data) {
+                        $('#jumlah_stok').empty();
+                        $('#jumlah_stok').attr('max',data[0].jumlah_barang);                      
                         $('#barang_code').empty();
-                        $('#barang_code').append('<option value="">Pilih Barang</option>');
+                        $('#barang_code').append('<option value="">Pilih Barang</option>');                       
                         $.each(data, function (key, value) {
                             if (value.barang_id == param1) {
                                 $('#barang_code').append('<option value="' + value
@@ -1022,7 +1054,11 @@
                             } else {
                                 $('#barang_code').append('<option value="' + value
                                     .barang_id + '">' + value.nama_barang + '</option>');
+
                             }
+                        $('#jumlah_stok').val(data[0].jumlah_barang);   
+                   alert(data[0].jumlah_barang);
+                                         
                         });
                     }
                 });
