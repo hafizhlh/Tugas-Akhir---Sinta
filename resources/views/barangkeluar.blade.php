@@ -210,20 +210,16 @@
                                 </div>
                             </div>
 
-                            <div class="form-group row">
-                                <label class="col-lg-3 col-form-label">Stok Barang:</label>
-                                <div class="col-lg-9">
-                                    <input type="number" class="form-control" id="jumlah_stok" name="jumlah_stok"readonly />
-                                    <span class="form-text text-muted">barang yang tersedia saat ini</span>
-                                </div>
-                            </div>
+                       
                             
                             <div class="form-group row">
                                 <label class="col-lg-3 col-form-label">Jumlah Barang:</label>
                                 <div class="col-lg-9">
                                     <input type="number" class="form-control" id="jumlah" name="jumlah"
                                         placeholder="Contoh : 100" />
-                                    <span class="form-text text-muted">Masukkan Jumlah Barang</span>
+                                        <span class="form-text text-muted" >barang yang tersedia saat ini
+                                        <span id="jumlah_stok"> </span>
+                                        </span>
                                 </div>
                             </div>
 
@@ -743,7 +739,7 @@
                         dataType: "json",
                         success: function (data) {
                             $('#jumlah_stok').empty();
-                            $('#jumlah_stok').val(data[0].jumlah_barang);
+                            $('#jumlah_stok').html(data[0].jumlah_barang);
                         }
                     });
                 } else {
