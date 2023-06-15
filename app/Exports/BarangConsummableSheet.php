@@ -27,6 +27,7 @@ class BarangConsummableSheet implements FromCollection, WithHeadings, WithTitle
             'Tanggal Barang Return',
             'Nama User',
             'No DOF Etiket',
+            'PIC',
             'Nama Barang',
             'Jenis Barang',
             'Nama Kategori',

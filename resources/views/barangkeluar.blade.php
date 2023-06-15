@@ -175,6 +175,14 @@
                                     <span class="form-text text-muted">masukan DOF(Deep Of Field)/ E-Ticket</span>
                                 </div>
                             </div>
+                            <div class="form-group row">
+                                <label class="col-lg-3 col-form-label">PIC:</label>
+                                <div class="col-lg-9">
+                                    <input type="text" class="form-control" id="pic_code" name="pic_code"
+                                        placeholder="Contoh :mr andy dermawan BGT/Department Keamanan"  />
+                                    <span class="form-text text-muted">masukan Nama PIC (</span>
+                                </div>
+                            </div>
                             <!--  -->
                             <div class="form-group row">
                                 <label class="col-lg-3 col-form-label">Jenis Barang:</label>
@@ -215,7 +223,7 @@
                             <div class="form-group row">
                                 <label class="col-lg-3 col-form-label">Jumlah Barang:</label>
                                 <div class="col-lg-9">
-                                    <input type="number" class="form-control" id="jumlah" name="jumlah"
+                                    <input type="number" class="form-control" min="1" id="jumlah" name="jumlah"
                                         placeholder="Contoh : 100" />
                                         <span class="form-text text-muted" >barang yang tersedia saat ini
                                         <span id="jumlah_stok"> </span>
@@ -279,6 +287,14 @@
                                     <span class="form-text text-muted">masukan DOF(Deep Of Field)/ E-Ticket</span>
                                 </div>
                             </div>
+                            <div class="form-group row">
+                                <label class="col-lg-3 col-form-label">PIC:</label>
+                                <div class="col-lg-9">
+                                    <input type="text" class="form-control" id="pic_code_edit" name="pic_code_edit"
+                                        placeholder="Contoh :mr andy dermawan BGT/Department Keamanan"  />
+                                    <span class="form-text text-muted">masukan Nama PIC (</span>
+                                </div>
+                            </div>
                             <!--  -->
                             {{-- <div class="form-group row">
                                 <label class="col-lg-3 col-form-label">Jenis Barang:</label>
@@ -316,7 +332,7 @@
                             <div class="form-group row">
                                 <label class="col-lg-3 col-form-label">Jumlah Barang:</label>
                                 <div class="col-lg-9">
-                                    <input type="number" class="form-control" id="jumlah_edit" name="jumlah_edit"
+                                    <input type="number" class="form-control" min="1" id="jumlah_edit" name="jumlah_edit"
                                         placeholder="Contoh : 100" />
                                     <span class="form-text text-muted">Masukkan Jumlah Barang</span>
                                 </div>
@@ -376,7 +392,7 @@
                                         placeholder="Contoh : 10451 /GS-10571" disabled />
                                     <span class="form-text text-muted">masukan DOF(Deep Of Field)/ E-Ticket(</span>
                                 </div>
-                            </div>
+                            </div>                          
                             <!--  -->
                             <div class="form-group row">
                                 <label class="col-lg-3 col-form-label">Jenis Barang:</label>
@@ -475,6 +491,14 @@
                                 <input type="text" class="form-control" id="nodofetiket_code_detail"
                                     name="nodofetiket_code_detail" readonly />
                                 <span class="form-text text-muted">masukan DOF(Deep Of Field)/ E-Ticket</span>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-lg-3 col-form-label">PIC:</label>
+                            <div class="col-lg-9">
+                                <input type="text" class="form-control" id="pic_code_detail" name="pic_code_detail"
+                                    readonly />
+                     
                             </div>
                         </div>
                         <div class="form-group row">
@@ -843,7 +867,7 @@
 
                             // Detail button
                             @can('barangkeluar-R')
-                            actions += "<button type='button' class='details btn btn-sm btn-icon btn-outline-info' title='Detail' data-toggle='tooltip' data-id=" + row.barang_keluar_id + " data-user_id=" + row.user_id + " data-tgl_pengambilan=" + row.tgl_pengambilan + " data-no_dof_etiket=" + row.no_dof_etiket + " data-nama=" + row.nama_barang + " data-barcode=" + row.barcode_barang + " data-jenis_barang=" + row.jenis_barang + " data-keterangan=" + row.keterangan + " data-jumlah_barang_keluar=" + row.jumlah_barang_keluar + " data-nama_kategori=" + row.nama_kategori + " ><i class='fa fa-info-circle'></i> </button>  ";
+                            actions += "<button type='button' class='details btn btn-sm btn-icon btn-outline-info' title='Detail' data-toggle='tooltip' data-id=" + row.barang_keluar_id + " data-user_id=" + row.user_id + " data-tgl_pengambilan=" + row.tgl_pengambilan + " data-no_dof_etiket=" + row.no_dof_etiket + " data-pic=" + row.pic + " data-nama=" + row.nama_barang + " data-barcode=" + row.barcode_barang + " data-jenis_barang=" + row.jenis_barang + " data-keterangan=" + row.keterangan + " data-jumlah_barang_keluar=" + row.jumlah_barang_keluar + " data-nama_kategori=" + row.nama_kategori + " ><i class='fa fa-info-circle'></i> </button>  ";
                             @endcan
 
                             actions += "</center>";
@@ -870,6 +894,7 @@
                 $('#jenis_code').attr('disabled', false);
                 $('#kategori_id').attr('disabled', false);
                 $('#barang_code').attr('disabled', false);
+             
             });
 
             @endcan
@@ -909,6 +934,7 @@
                         $('#kategori_id_edit').val(res.data[0].kategori_id).trigger('change');
                         $('#barang_code_id_edit').val(res.data[0].barang_id).trigger('change');
                         $('#keterangan_code_edit').val(res.data[0].keterangan);
+                        $('pic_code_edit').val(res.data[0].pic);
                         $("#saveMenuedit").attr("data-id", res.data[0].barang_keluar_id);
                         // alert(res.data[0].barang_id);
                         setkategoriedit(res.data[0].jenis_barang, res.data[0].kategori_id);
@@ -1066,6 +1092,7 @@
                 $('#nama_code_detail').val($(this).data('nama'));
                 $('#barcode_detail').val($(this).data('barcode'));
                 $('#kategori_barang').val($(this).data('nama_kategori'));
+                $('#pic_code_detail').val($(this).data('pic'));
                 var jenis_barang = $(this).data('jenis_barang');
                 if (jenis_barang == 1) {
                     $('#jenis_code_detail').val('Consumable');

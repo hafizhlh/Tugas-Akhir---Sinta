@@ -74,12 +74,41 @@
                         <div class="card-toolbar">
                             <!--begin::Button-->
                             @can('barang-C')
-                                <button id="addMenu" name="addMenu" class="btn btn-primary font-weight-bolder">
+                                <button  class="btn btn-primary font-weight-bolder  dropdown-toggle" 
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <span class="svg-icon svg-icon-md">
                                         <!--begin::Svg Icon | path:assets/media/svg/icons/Design/Flatten.svg-->
                                         <!--end::Svg Icon-->
                                     </span>Barang Baru</a>
                                 </button>
+                                
+                                <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
+                                    <!--begin::Navigation-->
+                                    <ul class="navi flex-column navi-hover py-2">
+                                        <li
+                                            class="navi-header font-weight-bolder text-uppercase font-size-sm text-primary pb-2">
+                                            Choose an option:
+                                        </li>
+                                        <li class="navi-item">
+                                            <a id="addMenu" name="addMenu" class="navi-link">
+                                                <span class="navi-icon">
+                                                    <i class="la la-file-excel-o"></i>
+                                                </span>
+                                                <span class="navi-text">Manual</span>
+                                            </a>
+                                        </li>
+                                        </li>
+                                        <li class="navi-item">
+                                        <a id="modalimportbarang" class="navi-link">
+                                                <span class="navi-icon">
+                                                    <i class="la la-file-pdf-o"></i>
+                                                </span>
+                                                <span class="navi-text">otomatis</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                    <!--end::Navigation-->
+                                </div>
                         @endcan
                         <!--end::Button-->
                         </div>
@@ -120,6 +149,9 @@
         </div>
         <!--end::Entry-->
     </div>
+
+
+
 
     <!--Modal Menu-->
     <div class="modal fade" id="modalMenu" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -269,6 +301,60 @@
     </div>
 
     <!--end:Modal-->
+      <!--Modal Import-->
+      <div class="modal fade" id="modalimportbarangadd" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+      aria-hidden="true">
+     <div class="modal-dialog modal-dialog-scrollable" role="document">
+         <div class="modal-content">
+             <div class="modal-header">
+                 <h5 class="modal-title" id="modalMenuimportTitle">Import data Barang</h5>
+                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                     <i aria-hidden="true" class="ki ki-close"></i>
+                 </button>
+             </div>
+             <!--begin:Form-->
+             <form role="form" class="form" name="formmenusimport" id="imports" enctype="multipart/formdata" method="">
+                 <div class="modal-body" style="height: 400px;">
+                     <div class="mb-7">
+                         <div class="row">
+                             <label class="col-lg-3 col-form-label">File import isian:</label>
+                             <div class="col-lg-9 text-center">
+                                <button type="button" class="btn btn-primary" id="importdummy" style="width: 100%">Download File isi import</button>
+                             </div>
+                         </div>
+                         <div class="form-group row">
+                            <label class="col-lg-3 col-form-label">File import:</label>
+                            <div class="col-lg-9">
+                                <div class="custom-file">
+                                    <input type="file" class="custom-file-input" id="fileimportupload">
+                                    <label class="custom-file-label" for="customFile">Choose file</label>
+                                  </div>
+                                <span class="form-text text-muted"> Download file untuk entri data </span>
+                            </div>
+                        </div>
+                        
+                        
+                     </div>
+
+                 </div>
+
+                 <div class="modal-footer">
+                     <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal"><i
+                                 class="fa fa-times"></i>Cancel
+                     </button>
+                     @can(['barang-C' , 'barang-U'])
+                         <button type="submit" id="saveMenuimport" data-id="" class="btn btn-primary font-weight-bold">
+                             <i class="fa fa-save"></i> Save changes
+                         </button>
+                     @endcan
+                 </div>
+             </form>
+             <!--end:Form-->
+         </div>
+     </div>
+ </div>
+ <!--end:Modal-->
+    
 
 @endsection
 
@@ -558,6 +644,34 @@
                 ;
             });
             @endcan
+
+            $(document).on('click', '#importdummy', function () {
+                // download file
+                $.ajax({
+                    xhrFields: {responseType: 'blob',
+        },
+                    type: 'GET', // define the type of HTTP verb we want to use (POST for our form)
+                    url: './templatebarang', // the url where we want to POST
+                    success: function(result, status, xhr) {
+                    var disposition = xhr.getResponseHeader('content-disposition');
+                    var filename = ('Laporan Masuk Bulanan.xlsx');
+
+                    var blob = new Blob([result], {
+                        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+                    });
+                    var link = document.createElement('a');
+                    link.href = window.URL.createObjectURL(blob);
+                    link.download = filename;
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    }
+                })
+            })
+
+            $(document).on('click', '#modalimportbarang', function () {
+                $('#modalimportbarangadd').modal('show');
+            });
 
         });
 

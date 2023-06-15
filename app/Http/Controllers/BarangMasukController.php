@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\BarangAssetsSheet;
+use App\Exports\BarangConsummableSheet;
 use App\Exports\BarangmasukExport;
+use App\Exports\ExportMultipleSheets;
 use App\Exports\Exportxls;
+use App\Imports\BarangmasukImport;
 use App\Models\DetailBarangMasuk;
 use App\Models\Barang;
 use App\Models\BarangMasuk;
@@ -317,6 +321,19 @@ class BarangMasukController extends Controller
             return $item;
         });
 
+        
+        $consummableData = $data->filter(function ($item) {
+            return $item->jenis_barang == "consummable";
+        });
+        
+        $assetData = $data->filter(function ($item) {
+            return $item->jenis_barang == "asset";
+        });
+        
+    $sheets = [
+        new BarangConsummableSheet($consummableData),
+        new BarangAssetsSheet($assetData),
+    ];
         // dd($collect);
         
 
@@ -330,6 +347,11 @@ class BarangMasukController extends Controller
              'Keterangan barang'
  
          ];
-        return Excel::download((new Exportxls($data, $column)), 'Laporan BarangMasuk tahunan.xlsx');
+         return Excel::download(new ExportMultipleSheets($sheets), 'Laporan BarangMasuk tahunan.xlsx');
+    }
+    public function import()
+    {
+        Excel::import(new BarangmasukImport, request()->file('file'));
+        return back();
     }
 }

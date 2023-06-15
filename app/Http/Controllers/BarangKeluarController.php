@@ -44,7 +44,7 @@ class BarangKeluarController extends Controller
                 $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->barang_keluar_id . '" data-original-title="Edit" class="edit btn btn-primary btn-sm editBarang">Edit</a>';
                 $btn = $btn . ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->barang_keluar_id . '" data-original-title="Delete" class="btn btn-danger btn-sm deleteLandingPage">Delete</a>';
                 $btn = $btn . ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->barang_keluar_id . '" data-original-title="return" class="return btn btn-info btn-sm returnBarang">Return Barang</a>';
-                $btn = $btn . ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->barang_keluar_id . '" data-user_id="'.$row->user_id .'" data-tgl_pengambilan="'.$row->tgl_pengambilan.'"data-no_dof_etiket="'.$row->no_dof_etiket.'"data-nama="' . $row->nama_barang.'" data-barcode="'.$row->barcode_barang.'" data-jenis_barang="'.$row->jenis_barang.'"data-keterangan="'.$row->keterangan.'"data-jumlah_barang_keluar="'.$row->jumlah_barang_keluar.'" data-keterangan_barang="'.$row->keterangan_barang.'" data-nama_kategori="'.$row->nama_kategori.'" data-original-title="Detail" class="btn btn-info btn-sm detailLandingPage">Detail</a>';
+                $btn = $btn . ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->barang_keluar_id . '" data-user_id="'.$row->user_id .'" data-tgl_pengambilan="'.$row->tgl_pengambilan.'"data-no_dof_etiket="'.$row->no_dof_etiket. '"data-pic= "'.$row->pic.'" data-nama="' . $row->nama_barang.'" data-barcode="'.$row->barcode_barang.'" data-jenis_barang="'.$row->jenis_barang.'"data-keterangan="'.$row->keterangan.'"data-jumlah_barang_keluar="'.$row->jumlah_barang_keluar.'" data-keterangan_barang="'.$row->keterangan_barang.'" data-nama_kategori="'.$row->nama_kategori.'" data-original-title="Detail" class="btn btn-info btn-sm detailLandingPage">Detail</a>';
                 return $btn;
             })
             
@@ -66,13 +66,15 @@ class BarangKeluarController extends Controller
             'nodofetiket_code',
             'keterangan_code',   
             'barang_code',
-            'jumlah',        
+            'jumlah',  
+            'pic_code',      
         ]);
         $roles = [
             'nodofetiket_code' => 'required',
             'keterangan_code' => 'required',
             'barang_code' => 'required',
             'jumlah' => 'required',
+            'pic_code' => 'required',
         ];
         $messages = [
             'required' => trans('messages.required'),
@@ -87,6 +89,7 @@ class BarangKeluarController extends Controller
                 'no_dof_etiket' => $request->nodofetiket_code,
                 'tgl_pengambilan' => date('Y-m-d'),
                 'keterangan' => $request->keterangan_code,
+                'pic' => $request->pic_code,
                 'delete_mark' => 0,
             ]);
             if($data){
@@ -159,6 +162,7 @@ class BarangKeluarController extends Controller
             'nodofetiket_code',
             'jumlah_edit',
             'keterangan_code_edit',  
+            'pic_code_edit',
        
         ]);
 
@@ -166,7 +170,8 @@ class BarangKeluarController extends Controller
             // 'user_code_edit' => 'required | exists:users,id',
             'nodofetiket_code' => 'required',
             'jumlah_edit' => 'required',
-            'keterangan_code_edit' => 'required',            
+            'keterangan_code_edit' => 'required',        
+            'pic_code_edit' => 'required',       
         ];
 
         $messages = [
@@ -183,7 +188,8 @@ class BarangKeluarController extends Controller
         $data->update([ 
             // 'user_id' => $request->user_code_edit,
             'no_dof_etiket' => $request->nodofetiket_code,
-            'keterangan' => $request->keterangan_code_edit,       
+            'keterangan' => $request->keterangan_code_edit,
+            'pic' => $request->pic_code_edit,       
         ]);
         $detailbarangkeluar = DetailBarangKeluar::where('barang_keluar_id', $id)->first();
         $barang = Barang::where('barang_id', $detailbarangkeluar->barang_id)->first();
@@ -200,6 +206,7 @@ class BarangKeluarController extends Controller
             'no_dof_etiket' => $request->nodofetiket_code,
             'jumlah_barang_keluar' => $request->jumlah_edit,
             'keterangan' => $request->keterangan_code_edit,
+            'pic' => $request->pic_code_edit,
         ];
         DB::commit();
         $response = responseSuccess(trans("messages.update-success"), $data);
@@ -257,7 +264,8 @@ class BarangKeluarController extends Controller
                 "detail_barang_keluars.jumlah_barang_keluar",
                 "detail_return_barangs.jumlah_barang_return",
                 "barangs.jumlah_barang",
-                "barang_keluars.keterangan"
+                "barang_keluars.keterangan",
+                "barang_keluars.pic"
             )
             ->get();
 
@@ -300,13 +308,15 @@ class BarangKeluarController extends Controller
                 "return_barangs.waktu_return",
                 "users.first_name",
                 "barang_keluars.no_dof_etiket",
+                "barang_keluars.pic",
                 "barangs.nama_barang",
                 "kategoris.jenis_barang",
                 "kategoris.nama_kategori",
                 "detail_barang_keluars.jumlah_barang_keluar",
                 "detail_return_barangs.jumlah_barang_return",
                 "barangs.jumlah_barang",
-                "barang_keluars.keterangan"
+                "barang_keluars.keterangan",
+                
             )
             ->get();
 

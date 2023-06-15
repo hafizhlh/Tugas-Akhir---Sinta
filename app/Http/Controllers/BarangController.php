@@ -8,6 +8,9 @@ use App\Models\Menu;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use App\Imports\BarangImport;
+use Maatwebsite\Excel\Facades\Excel;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class BarangController extends Controller
 {
@@ -197,4 +200,18 @@ class BarangController extends Controller
             return response()->json($e->getMessage(), 500);
         }
     }
+    public function Import(Request $request)
+    {
+        $file = $request->file('file');
+        $nama_file = rand() . $file->getClientOriginalName();
+        $file->move('file_barang', $nama_file);
+        Excel::import(new BarangImport, public_path('/file_barang/' . $nama_file));
+        return redirect('/barang')->with('sukses', 'Data Berhasil Diimport!');
+    }
+
+    public function downloadTemplate(): BinaryFileResponse
+    {
+        return response()->download(public_path('templatebarang.xlsx'));
+    }
+    
 }
