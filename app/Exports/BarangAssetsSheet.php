@@ -26,8 +26,7 @@ class BarangAssetsSheet implements FromCollection, WithHeadings, WithTitle
             'Tanggal Barang Keluar',
             'Tanggal Barang Return',
             'Nama User',
-            'No DOF Etiket',
-            'PIC',
+            'No DOF Etiket',           
             'Nama Barang',
             'Jenis Barang',
             'Nama Kategori',
@@ -35,6 +34,7 @@ class BarangAssetsSheet implements FromCollection, WithHeadings, WithTitle
             'Jumlah Barang Return',
             'Jumlah Stok Barang Saat Ini',
             'Keterangan Barang',
+            'PIC',
         ];
     }
 
