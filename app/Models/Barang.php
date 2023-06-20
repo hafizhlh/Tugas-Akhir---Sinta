@@ -16,5 +16,6 @@ class Barang extends Model
         'kategori_id',
         'keterangan_barang',
         'barcode_barang',
+        'gambar',
     ];
 }

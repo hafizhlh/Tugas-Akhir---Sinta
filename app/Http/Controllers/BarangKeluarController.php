@@ -25,7 +25,7 @@ class BarangKeluarController extends Controller
     {
         $data['menus'] = $this->getDashboardMenu();
         $data['menu']  = Menu::select('id', 'name')->get();
-        $data['barang']= Barang::select('barang_id', 'nama_barang')->get();
+        $data['barang'] = Barang::select('barang_id', 'nama_barang')->get();
         $data['kategori'] = DB::table('kategoris')->get();
         return view('barangkeluar', $data);
     }
@@ -33,21 +33,21 @@ class BarangKeluarController extends Controller
     public function datatables()
     {
         $data = DB::table('barang_keluars')
-        ->join('detail_barang_keluars', 'barang_keluars.barang_keluar_id', '=', 'detail_barang_keluars.barang_keluar_id')
-        ->join('barangs', 'detail_barang_keluars.barang_id', '=', 'barangs.barang_id')
-        ->join('kategoris', 'barangs.kategori_id', '=', 'kategoris.id')
-                ->where('barang_keluars.delete_mark', 0)
-                ->get();
+            ->join('detail_barang_keluars', 'barang_keluars.barang_keluar_id', '=', 'detail_barang_keluars.barang_keluar_id')
+            ->join('barangs', 'detail_barang_keluars.barang_id', '=', 'barangs.barang_id')
+            ->join('kategoris', 'barangs.kategori_id', '=', 'kategoris.id')
+            ->where('barang_keluars.delete_mark', 0)
+            ->get();
         return datatables()->of($data)
             ->addIndexColumn()
             ->addColumn('action', function ($row) {
                 $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->barang_keluar_id . '" data-original-title="Edit" class="edit btn btn-primary btn-sm editBarang">Edit</a>';
                 $btn = $btn . ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->barang_keluar_id . '" data-original-title="Delete" class="btn btn-danger btn-sm deleteLandingPage">Delete</a>';
                 $btn = $btn . ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->barang_keluar_id . '" data-original-title="return" class="return btn btn-info btn-sm returnBarang">Return Barang</a>';
-                $btn = $btn . ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->barang_keluar_id . '" data-user_id="'.$row->user_id .'" data-tgl_pengambilan="'.$row->tgl_pengambilan.'"data-no_dof_etiket="'.$row->no_dof_etiket. '"data-pic= "'.$row->pic.'" data-nama="' . $row->nama_barang.'" data-barcode="'.$row->barcode_barang.'" data-jenis_barang="'.$row->jenis_barang.'"data-keterangan="'.$row->keterangan.'"data-jumlah_barang_keluar="'.$row->jumlah_barang_keluar.'" data-keterangan_barang="'.$row->keterangan_barang.'" data-nama_kategori="'.$row->nama_kategori.'" data-original-title="Detail" class="btn btn-info btn-sm detailLandingPage">Detail</a>';
+                $btn = $btn . ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->barang_keluar_id . '" data-user_id="' . $row->user_id . '" data-tgl_pengambilan="' . $row->tgl_pengambilan . '" data-no_dof_etiket="' . $row->no_dof_etiket . '" data-pic= "' . $row->pic . '" data-nama="' . $row->nama_barang . '" data-barcode="' . $row->barcode_barang . '" data-jenis_barang="' . $row->jenis_barang . '" data-keterangan="' . $row->keterangan . '" data-jumlah_barang_keluar="' . $row->jumlah_barang_keluar . '" data-keterangan_barang="' . $row->keterangan_barang . '" data-nama_kategori="' . $row->nama_kategori . '" data-original-title="Detail" class="btn btn-info btn-sm detailLandingPage">Detail</a>';
                 return $btn;
             })
-            
+
             ->rawColumns(['action'])
             ->make(true);
     }
@@ -55,7 +55,7 @@ class BarangKeluarController extends Controller
     public function store(Request $request)
     {
         $barang = Barang::where('barang_id', $request->barang_code)->first();
-        if($barang->jumlah_barang < $request->jumlah){
+        if ($barang->jumlah_barang < $request->jumlah) {
             return response()->json([
                 'status' => 'error',
                 'message' => 'Jumlah barang tidak mencukupi',
@@ -64,10 +64,10 @@ class BarangKeluarController extends Controller
 
         $attributes = $request->only([
             'nodofetiket_code',
-            'keterangan_code',   
+            'keterangan_code',
             'barang_code',
-            'jumlah',  
-            'pic_code',      
+            'jumlah',
+            'pic_code',
         ]);
         $roles = [
             'nodofetiket_code' => 'required',
@@ -83,7 +83,7 @@ class BarangKeluarController extends Controller
         $this->validators($attributes, $roles, $messages);
 
         DB::beginTransaction();
-        try {        
+        try {
             $data = DB::table('barang_keluars')->insert([
                 'user_id' => Auth::user()->id,
                 'no_dof_etiket' => $request->nodofetiket_code,
@@ -92,12 +92,12 @@ class BarangKeluarController extends Controller
                 'pic' => $request->pic_code,
                 'delete_mark' => 0,
             ]);
-            if($data){
+            if ($data) {
                 $barang_keluar_id = DB::getPdo()->lastInsertId();
                 $data = DB::table('detail_barang_keluars')->insert([
                     'barang_keluar_id' => $barang_keluar_id,
                     'barang_id' => $request->barang_code,
-                    'jumlah_barang_keluar' => $request->jumlah, 
+                    'jumlah_barang_keluar' => $request->jumlah,
                     'delete_mark' => 0,
                     'created_at' => date('Y-m-d H:i:s'),
                     'updated_at' => date('Y-m-d H:i:s'),
@@ -105,8 +105,8 @@ class BarangKeluarController extends Controller
                 $data = DB::table('barangs')->where('barang_id', $request->barang_code)->update([
                     'jumlah_barang' => $barang->jumlah_barang - $request->jumlah,
                 ]);
-                
-                $data=array([
+
+                $data = array([
                     'barang_keluar_id' => $barang_keluar_id,
                     'barang_id' => $request->barang_code,
                     'jumlah_barang_keluar' => $request->jumlah,
@@ -138,10 +138,10 @@ class BarangKeluarController extends Controller
         $this->validators($attributes, $roles, $messages);
 
         $data     = DB::table('detail_barang_keluars')->where('detail_barang_keluars.barang_keluar_id', $id)
-                    ->join('barangs', 'detail_barang_keluars.barang_id', '=', 'barangs.barang_id')
-                    ->join('kategoris', 'barangs.kategori_id', '=', 'kategoris.id')
-                    ->join('barang_keluars', 'detail_barang_keluars.barang_keluar_id', '=', 'barang_keluars.barang_keluar_id')
-                    ->get();
+            ->join('barangs', 'detail_barang_keluars.barang_id', '=', 'barangs.barang_id')
+            ->join('kategoris', 'barangs.kategori_id', '=', 'kategoris.id')
+            ->join('barang_keluars', 'detail_barang_keluars.barang_keluar_id', '=', 'barang_keluars.barang_keluar_id')
+            ->get();
         $response = responseSuccess(trans("messages.read-success"), $data);
         return response()->json($response, 200, [], JSON_PRETTY_PRINT);
     }
@@ -153,7 +153,7 @@ class BarangKeluarController extends Controller
         return response()->json($response, 200, [], JSON_PRETTY_PRINT);
         //
     }
-    
+
     public function update($id, Request $request)
     {
         // dd($request->all());
@@ -161,17 +161,17 @@ class BarangKeluarController extends Controller
             // 'user_code_edit',
             'nodofetiket_code',
             'jumlah_edit',
-            'keterangan_code_edit',  
+            'keterangan_code_edit',
             'pic_code_edit',
-       
+
         ]);
 
         $roles = [
             // 'user_code_edit' => 'required | exists:users,id',
             'nodofetiket_code' => 'required',
             'jumlah_edit' => 'required',
-            'keterangan_code_edit' => 'required',        
-            'pic_code_edit' => 'required',       
+            'keterangan_code_edit' => 'required',
+            'pic_code_edit' => 'required',
         ];
 
         $messages = [
@@ -185,32 +185,32 @@ class BarangKeluarController extends Controller
 
         DB::beginTransaction();
         try {
-        $data->update([ 
-            // 'user_id' => $request->user_code_edit,
-            'no_dof_etiket' => $request->nodofetiket_code,
-            'keterangan' => $request->keterangan_code_edit,
-            'pic' => $request->pic_code_edit,       
-        ]);
-        $detailbarangkeluar = DetailBarangKeluar::where('barang_keluar_id', $id)->first();
-        $barang = Barang::where('barang_id', $detailbarangkeluar->barang_id)->first();
-        $data_old = DetailBarangKeluar::where('barang_keluar_id', $id)->first();
-        $data = DetailBarangKeluar::where('barang_keluar_id', $id)->update([
-            'jumlah_barang_keluar' => $request->jumlah_edit,
-        ]);
-        $data = Barang::where('barang_id', $detailbarangkeluar->barang_id)->update([
-            'jumlah_barang' => $barang->jumlah_barang + $data_old->jumlah_barang_keluar - $request->jumlah_edit,
-        ]);
-        $data = [
-            'barang_keluar_id' => $id,
-            // 'user_id' => $request->user_code_edit,
-            'no_dof_etiket' => $request->nodofetiket_code,
-            'jumlah_barang_keluar' => $request->jumlah_edit,
-            'keterangan' => $request->keterangan_code_edit,
-            'pic' => $request->pic_code_edit,
-        ];
-        DB::commit();
-        $response = responseSuccess(trans("messages.update-success"), $data);
-        return response()->json($response, 200, [], JSON_PRETTY_PRINT);
+            $data->update([
+                // 'user_id' => $request->user_code_edit,
+                'no_dof_etiket' => $request->nodofetiket_code,
+                'keterangan' => $request->keterangan_code_edit,
+                'pic' => $request->pic_code_edit,
+            ]);
+            $detailbarangkeluar = DetailBarangKeluar::where('barang_keluar_id', $id)->first();
+            $barang = Barang::where('barang_id', $detailbarangkeluar->barang_id)->first();
+            $data_old = DetailBarangKeluar::where('barang_keluar_id', $id)->first();
+            $data = DetailBarangKeluar::where('barang_keluar_id', $id)->update([
+                'jumlah_barang_keluar' => $request->jumlah_edit,
+            ]);
+            $data = Barang::where('barang_id', $detailbarangkeluar->barang_id)->update([
+                'jumlah_barang' => $barang->jumlah_barang + $data_old->jumlah_barang_keluar - $request->jumlah_edit,
+            ]);
+            $data = [
+                'barang_keluar_id' => $id,
+                // 'user_id' => $request->user_code_edit,
+                'no_dof_etiket' => $request->nodofetiket_code,
+                'jumlah_barang_keluar' => $request->jumlah_edit,
+                'keterangan' => $request->keterangan_code_edit,
+                'pic' => $request->pic_code_edit,
+            ];
+            DB::commit();
+            $response = responseSuccess(trans("messages.update-success"), $data);
+            return response()->json($response, 200, [], JSON_PRETTY_PRINT);
         } catch (Exception $e) {
             DB::rollback();
             $response = responseFail(trans("messages.update-fail"), $e->getMessage());
@@ -226,25 +226,26 @@ class BarangKeluarController extends Controller
             ]);
             $response = responseSuccess(trans('message.delete-success'));
             DB::commit();
-            return response()->json($response,200);
+            return response()->json($response, 200);
         } catch (Exception $e) {
             DB::rollback();
-            return response()->json($e->getMessage(),500);
+            return response()->json($e->getMessage(), 500);
         }
     }
 
-    public function getBarang($kategori_id){
+    public function getBarang($kategori_id)
+    {
         $data = Barang::where('kategori_id', $kategori_id,)
-                ->where('delete_mark', 0)
-                ->get();
+            ->where('delete_mark', 0)
+            ->get();
         return response()->json($data);
     }
 
     public function exportTanggalBarangKeluar(Request $request)
     {
         // dd($request->all());
-        
-    
+
+
         $data =  DB::table('barang_keluars')
             ->join('detail_barang_keluars', 'barang_keluars.barang_keluar_id', '=', 'detail_barang_keluars.barang_keluar_id')
             ->join('barangs', 'detail_barang_keluars.barang_id', '=', 'barangs.barang_id')
@@ -269,32 +270,32 @@ class BarangKeluarController extends Controller
             )
             ->get();
 
-            
-            $collect = $data->map(function ($item) {
-                $item->jenis_barang = $item->jenis_barang == 1 ? "consummable" : "asset";
-                return $item;
-            });
-            
-            $consummableData = $data->filter(function ($item) {
-                return $item->jenis_barang == "consummable";
-            });
-            
-            $assetData = $data->filter(function ($item) {
-                return $item->jenis_barang == "asset";
-            });
-            
+
+        $collect = $data->map(function ($item) {
+            $item->jenis_barang = $item->jenis_barang == 1 ? "consummable" : "asset";
+            return $item;
+        });
+
+        $consummableData = $data->filter(function ($item) {
+            return $item->jenis_barang == "consummable";
+        });
+
+        $assetData = $data->filter(function ($item) {
+            return $item->jenis_barang == "asset";
+        });
+
         $sheets = [
             new BarangConsummableSheet($consummableData),
             new BarangAssetsSheet($assetData),
         ];
-    
+
         return Excel::download(new ExportMultipleSheets($sheets), 'Laporan Barangkeluar.xlsx');
     }
-    
+
     public function exportTahunBarangKeluar(): BinaryFileResponse
     {
         $year_now = date('Y');
-    
+
         $data =  DB::table('barang_keluars')
             ->join('detail_barang_keluars', 'barang_keluars.barang_keluar_id', '=', 'detail_barang_keluars.barang_keluar_id')
             ->join('barangs', 'detail_barang_keluars.barang_id', '=', 'barangs.barang_id')
@@ -316,31 +317,29 @@ class BarangKeluarController extends Controller
                 "detail_return_barangs.jumlah_barang_return",
                 "barangs.jumlah_barang",
                 "barang_keluars.keterangan",
-                
+
             )
             ->get();
 
-            
-            $collect = $data->map(function ($item) {
-                $item->jenis_barang = $item->jenis_barang == 1 ? "consummable" : "asset";
-                return $item;
-            });
-            
-            $consummableData = $data->filter(function ($item) {
-                return $item->jenis_barang == "consummable";
-            });
-            
-            $assetData = $data->filter(function ($item) {
-                return $item->jenis_barang == "asset";
-            });
-            
+
+        $collect = $data->map(function ($item) {
+            $item->jenis_barang = $item->jenis_barang == 1 ? "consummable" : "asset";
+            return $item;
+        });
+
+        $consummableData = $data->filter(function ($item) {
+            return $item->jenis_barang == "consummable";
+        });
+
+        $assetData = $data->filter(function ($item) {
+            return $item->jenis_barang == "asset";
+        });
+
         $sheets = [
             new BarangConsummableSheet($consummableData),
             new BarangAssetsSheet($assetData),
         ];
-    
+
         return Excel::download(new ExportMultipleSheets($sheets), 'Laporan Barangkeluar.xlsx');
     }
-    
-
 }

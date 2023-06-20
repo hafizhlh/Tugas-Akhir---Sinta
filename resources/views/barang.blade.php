@@ -150,8 +150,7 @@
         <!--end::Entry-->
     </div>
 
-
-
+  
 
     <!--Modal Menu-->
     <div class="modal fade" id="modalMenu" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -198,6 +197,13 @@
                                 </div>
                             </div>
                             <div class="form-group row">
+                                <label class="col-lg-3 col-form-label">Gambar:</label>
+                                <div class="col-lg-9">
+                                    <input type="file" class="form-control-file" id="gambar" name="gambar">
+                                    <span class="form-text text-muted">Unggah gambar Barang</span>
+                                </div>
+                            </div>                        
+                            <div class="form-group row">
                                 <label class="col-lg-3 col-form-label">Keterangan Barang:</label>
                                 <div class="col-lg-9">
                                     <input type="text" class="form-control" id="keterangan_code" name="keterangan_code"
@@ -209,7 +215,6 @@
                         </div>
 
                     </div>
-
                     <div class="modal-footer">
                         <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal"><i
                                     class="fa fa-times"></i>Cancel
@@ -276,7 +281,13 @@
                                     <span class="form-text text-muted">Masukkan kode</span>
                                 </div>
                             </div>
-                            
+                            <div class="form-group row">
+                                <label class="col-lg-3 col-form-label">Gambar:</label>
+                                <div class="col-lg-9">
+                                    <input type="file" class="form-control-file" id="gambar_detail" name="gambar">
+                                    <span class="form-text text-muted">Unggah gambar Barang</span>
+                                </div>
+                            </div>      
                             <div class="form-group row">
                                 <label class="col-lg-3 col-form-label">Keterangan Barang:</label>
                                 <div class="col-lg-9">
@@ -326,7 +337,7 @@
                             <label class="col-lg-3 col-form-label">File import:</label>
                             <div class="col-lg-9">
                                 <div class="custom-file">
-                                    <input type="file" class="custom-file-input" id="fileimportupload">
+                                    <input type="file" class="custom-file-input" id="fileimportupload" required>
                                     <label class="custom-file-label" for="customFile">Choose file</label>
                                   </div>
                                 <span class="form-text text-muted"> Download file untuk entri data </span>
@@ -418,6 +429,11 @@
                         title: 'nama barang',
                         textAlign: 'center',
                     }, 
+                    {
+                        field: 'gambar',
+                        title: 'gambar',
+                        textAlign: 'center',
+                    },
                     // {
                     //     field: 'jumlah_barang',
                     //     title: 'jumlah barang',
@@ -483,7 +499,8 @@
                         $('#barcode').val(res.data.barcode_barang);                        
                         $('#barang_name').val(res.data.nama_barang);
                         $('#kategori_code').val(res.data.kategori_nama)
-                        $('#kategori_id').val(res.data.kategori_id).trigger('change');;                       
+                        $('#kategori_id').val(res.data.kategori_id).trigger('change');   
+                        $('#gambar').val(res.data.gambar);                   
                         $('#keterangan_code').val(res.data.keterangan_barang);
                         $("#saveMenu").data("id", res.data.barang_id);
                     }
@@ -550,6 +567,7 @@
                 $('#kategori_code_detail').val($(this).data('kategori'));
                 $('#keterangan_code_detail').val($(this).data('keterangan_barang'));
                 $('#kategori_barang_info').val($(this).data('nama_kategori'));
+                $('#gambar_detail').val($(this).data('gambar'));
                 // show modal
                 $('#modalInfo').modal('show');
             })

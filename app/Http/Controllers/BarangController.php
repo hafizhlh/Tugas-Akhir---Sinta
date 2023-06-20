@@ -50,6 +50,15 @@ class BarangController extends Controller
                 }
                 return $kategori;
             })
+            ->addColumn('gambar', function ($row) {
+                $gambar = $row->gambar;
+                if ($gambar == '') {
+                    $gambar = 'Belum ada gambar';
+                } else {
+                    $gambar = '<img src="file_barang/' . $row->gambar . '" width="100px" height="100px">';
+                }
+                return $gambar;
+            })
             ->addColumn('action', function ($row) {
                 $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->barang_id . '" data-original-title="Edit" class="edit btn btn-primary btn-sm editBarang">Edit</a>';
                 $btn = $btn . ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->barang_id . '" data-original-title="Delete" class="btn btn-danger btn-sm deleteLandingPage">Delete</a>';
@@ -61,7 +70,7 @@ class BarangController extends Controller
                 class="btn btn-info btn-sm detailLandingPage">Detail</a>';
                 return $btn;
             })
-            ->rawColumns(['action'])
+            ->rawColumns(['action', 'gambar'    ])
             ->make(true);
     }
 
@@ -72,12 +81,14 @@ class BarangController extends Controller
             'barcode',
             'keterangan_code',
             'kategori_id', // Menambahkan field kategori_barang
+            'gambar'
         ]);
         $roles = [
             'barang_name' => 'required',
             'barcode' => 'required|unique:barangs,barcode_barang',
             'keterangan_code' => 'required',
             'kategori_id' => 'required', // Validasi untuk kategori_barang
+            
         ];
         $messages = [
             'required' => trans('messages.required'),
@@ -85,7 +96,9 @@ class BarangController extends Controller
         ];
 
         $this->validators($attributes, $roles, $messages);
-
+        $file = $request->file('gambar');
+        $nama_file = rand() . $file->getClientOriginalName();
+        $file->move('file_barang', $nama_file);
 
         DB::beginTransaction();
         try {
@@ -94,6 +107,7 @@ class BarangController extends Controller
                 'nama_barang' => $request->barang_name,
                 'kategori_id' => $request->kategori_id,
                 'barcode_barang' => $request->barcode,
+                'gambar' => $nama_file, 
                 'keterangan_barang' => $request->keterangan_code,
                 'kategori_barang' => $request->kategori_code, // Menambahkan kolom kategori_barang
                 'jumlah_barang' => 0, // Menambahkan kolom jumlah_barang dengan nilai default '0
@@ -145,7 +159,8 @@ class BarangController extends Controller
             'barang_name',
             'keterangan_code',
             'kategori_id', // Menambahkan field kategori_barang
-            'barcode'
+            'barcode',
+            'gambar'
         ]);
 
         $roles = [
@@ -165,6 +180,10 @@ class BarangController extends Controller
 
         $data = $this->findDataWhere(Barang::class, ['barang_id' => $id]);
 
+        $file = $request->file('gambar');
+        $nama_file = rand() . $file->getClientOriginalName();
+        $file->move('file_barang', $nama_file);
+
         DB::beginTransaction();
         try {
             $data->update([
@@ -173,6 +192,7 @@ class BarangController extends Controller
                 'keterangan_barang' => $request->keterangan_code,
                 'kategori_id' => $request->kategori_id, // Menambahkan kolom kategori_barang
                 'barcode_barang' => $request->barcode,
+                'gambar' => $nama_file,
                 'updated_at' => now(),
             ]);
             DB::commit();
@@ -200,15 +220,16 @@ class BarangController extends Controller
             return response()->json($e->getMessage(), 500);
         }
     }
-    public function Import(Request $request)
-    {
-        $file = $request->file('file');
+
+    public function images(Request $request){
+        $file = $request->file('gambar');
         $nama_file = rand() . $file->getClientOriginalName();
         $file->move('file_barang', $nama_file);
-        Excel::import(new BarangImport, public_path('/file_barang/' . $nama_file));
-        return redirect('/barang')->with('sukses', 'Data Berhasil Diimport!');
+        return response()->json(['location' => asset('file_barang/' . $nama_file)]);
     }
 
+  
+  
     public function downloadTemplate(): BinaryFileResponse
     {
         return response()->download(public_path('templatebarang.xlsx'));

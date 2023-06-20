@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Exports\BarangAssetsSheet;
-use App\Exports\BarangConsummableSheet;
+use App\Exports\BarangAssetMasukSheet;
+use App\Exports\BarangConsummableMasukSheet;
 use App\Exports\BarangmasukExport;
 use App\Exports\ExportMultipleSheets;
 use App\Exports\Exportxls;
@@ -287,6 +287,18 @@ class BarangMasukController extends Controller
             $item->jenis_barang = $item->jenis_barang == 1 ? "consummable" : "asset";
             return $item;
         });
+        $consummableData = $data->filter(function ($item) {
+            return $item->jenis_barang == "consummable";
+        });
+        
+        $assetData = $data->filter(function ($item) {
+            return $item->jenis_barang == "asset";
+        });
+        
+        $sheets = [
+        new BarangConsummableMasukSheet($consummableData),
+        new BarangAssetMasukSheet($assetData),
+    ];
     
         $column = [
             'Tanggal Barang Masuk',           
@@ -299,7 +311,7 @@ class BarangMasukController extends Controller
  
          ];
     
-        return Excel::download((new Exportxls($data, $column)), 'Laporan BarangMasuk bulanan.xlsx');
+         return Excel::download(new ExportMultipleSheets($sheets), 'Laporan Barang Masuk bulanan.xlsx');
     }
     
     public function exportTahunBarangMasuk():BinaryFileResponse
@@ -331,8 +343,8 @@ class BarangMasukController extends Controller
         });
         
     $sheets = [
-        new BarangConsummableSheet($consummableData),
-        new BarangAssetsSheet($assetData),
+        new BarangConsummableMasukSheet($consummableData),
+        new BarangAssetMasukSheet($assetData),
     ];
         // dd($collect);
         
@@ -347,7 +359,7 @@ class BarangMasukController extends Controller
              'Keterangan barang'
  
          ];
-         return Excel::download(new ExportMultipleSheets($sheets), 'Laporan BarangMasuk tahunan.xlsx');
+         return Excel::download(new ExportMultipleSheets($sheets), 'Laporan Barang Masuk tahunan.xlsx');
     }
     public function import()
     {

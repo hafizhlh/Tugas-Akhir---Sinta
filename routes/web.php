@@ -13,11 +13,13 @@
 
 use App\Models\Routes;
 use Illuminate\Support\Facades\Route;
-use Maatwebsite\Excel\Row;
+
+
 
 Route::post('/postKategori', 'KategoriController@store');
 Route::get('/getKategori', 'KategoriController@datatables');
 Route::get('/getStok/{id}', 'KategoriController@getStok');
+
 
 try {
     $routes= Routes::where('guard','web')->get()->toArray();

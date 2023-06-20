@@ -866,8 +866,8 @@
                             }
 
                             // Detail button
-                            @can('barangkeluar-R')
-                            actions += "<button type='button' class='details btn btn-sm btn-icon btn-outline-info' title='Detail' data-toggle='tooltip' data-id=" + row.barang_keluar_id + " data-user_id=" + row.user_id + " data-tgl_pengambilan=" + row.tgl_pengambilan + " data-no_dof_etiket=" + row.no_dof_etiket + " data-pic=" + row.pic + " data-nama=" + row.nama_barang + " data-barcode=" + row.barcode_barang + " data-jenis_barang=" + row.jenis_barang + " data-keterangan=" + row.keterangan + " data-jumlah_barang_keluar=" + row.jumlah_barang_keluar + " data-nama_kategori=" + row.nama_kategori + " ><i class='fa fa-info-circle'></i> </button>  ";
+                            @can('barangkeluar-R')                          
+                            actions += '<button type="button" class="details btn btn-sm btn-icon btn-outline-info" data-id="'  + row.barang_keluar_id + '" data-user_id="' + row.user_id + '" data-tgl_pengambilan="' + row.tgl_pengambilan + '" data-no_dof_etiket="' + row.no_dof_etiket + '" data-pic="' + row.pic + '" data-barcode="' + row.barcode_barang +'" data-jenis_barang="' + row.jenis_barang + '" data-keterangan="' + row.keterangan + '" data-jumlah_barang_keluar="' + row.jumlah_barang_keluar +  '"  data-nama_kategori="'  + row.nama_kategori + '"  data-nama="'  + row.nama_barang + '" ><i class="fa fa-info-circle"></i> </button>' 
                             @endcan
 
                             actions += "</center>";
@@ -934,7 +934,8 @@
                         $('#kategori_id_edit').val(res.data[0].kategori_id).trigger('change');
                         $('#barang_code_id_edit').val(res.data[0].barang_id).trigger('change');
                         $('#keterangan_code_edit').val(res.data[0].keterangan);
-                        $('pic_code_edit').val(res.data[0].pic);
+                        $('#pic_code_edit').val(res.data[0].pic);
+                        
                         $("#saveMenuedit").attr("data-id", res.data[0].barang_keluar_id);
                         // alert(res.data[0].barang_id);
                         setkategoriedit(res.data[0].jenis_barang, res.data[0].kategori_id);
@@ -1086,6 +1087,7 @@
                 });
             }
             $(document).on('click', '.details', function () {
+                console.log($(this).data('pic'));
                 $('#user_code_detail').val($(this).data('user_id'));
                 $('#tgl_pengambilan').val($(this).data('tgl_pengambilan'));
                 $('#nodofetiket_code_detail').val($(this).data('no_dof_etiket'));
