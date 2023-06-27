@@ -3,43 +3,25 @@
 namespace App\Imports;
 
 use App\Models\Barang;
-use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Maatwebsite\Excel\Concerns\ToCollection;
+use Maatwebsite\Excel\Concerns\ShouldAutoSize;
+use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-class BarangImport implements ToCollection
+class BarangImport implements ToModel, WithHeadingRow, ShouldAutoSize
 {
-    /**
-    * @param Collection $collection
-    */
-    public function collection(Collection $collection)
+    public function model(array $row)
     {
-        foreach($collection as $row){
-        DB::table('barangs')
-            ->join('kategoris', 'barangs.kategori_id', '=', 'kategoris.id')
-            ([
-                'jenis_barang' => $row[0], // Sesuaikan nama kolomnya, bila lebih dari 1 tinggal copy aja di bawahnya terus ganti [1] nya jadi [2] dst
-                'nama_katagori' => $row[1],
-                'nama_barang' => $row[2],
-                'foto_barang' => $row[3],
-                'keterangan_barang' => $row[4],
-
-            ]);
-        }
-    }
-    public function model(array $row){
+        $kategori = DB::table('kategoris')->where('nama_kategori', $row['kategori_barang'])->first();
         return new Barang([
-            'jenis_barang' => $row[0], // Sesuaikan nama kolomnya, bila lebih dari 1 tinggal copy aja di bawahnya terus ganti [1] nya jadi [2] dst
-            'nama_katagori' => $row[1],
-            'nama_barang' => $row[2],
-            'foto_barang' => $row[3],
-         'keterangan_barang' => $row[4],
+            'nama_barang' => strtoupper($row['nama_barang']),
+            'kategori_id' => $kategori->id,
+            'barcode_barang' => $row['kode_barang'],
+            'keterangan_barang' => $row['keterangan_barang'],
+            'user_id' => Auth::user()->id,
+            'delete_mark' => 0,
+            'created_at' => date('Y-m-d H:i:s')
         ]);
-        
     }
-    public function headingRow(): int
-        {
-            return 1;
-        }
-
 }

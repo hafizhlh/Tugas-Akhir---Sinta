@@ -7,6 +7,7 @@ use App\Exports\BarangConsummableMasukSheet;
 use App\Exports\BarangmasukExport;
 use App\Exports\ExportMultipleSheets;
 use App\Exports\Exportxls;
+use App\Exports\TemplateMasukExport;
 use App\Imports\BarangmasukImport;
 use App\Models\DetailBarangMasuk;
 use App\Models\Barang;
@@ -361,9 +362,24 @@ class BarangMasukController extends Controller
          ];
          return Excel::download(new ExportMultipleSheets($sheets), 'Laporan Barang Masuk tahunan.xlsx');
     }
-    public function import()
+    // public function downloadTemplate(): BinaryFileResponse
+    // {
+    //     return response()->download(public_path('templatebarangmasuk.xlsx'));
+    // }
+    public function DownloadTemplate(): BinaryFileResponse
     {
-        Excel::import(new BarangmasukImport, request()->file('file'));
-        return back();
+        return Excel::download(new TemplateMasukExport, 'templatebarang.xlsx');
+    }
+    public function import(Request $request)
+    {
+        $request->validate([
+            'fileimportuploadmasuk' => 'required|mimes:xls,xlsx'
+        ]);
+        $file = $request->file('fileimportuploadmasuk');
+        $nama_file = rand() . $file->getClientOriginalName();
+        // move to public folder
+        $file->move('file_barang', $nama_file);
+        Excel::import(new BarangmasukImport, public_path('/file_barang/' . $nama_file));
+        return response()->json(['message' => 'Import successfully'], 200);
     }
 }

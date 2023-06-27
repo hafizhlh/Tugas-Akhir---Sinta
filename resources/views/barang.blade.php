@@ -87,7 +87,7 @@
                                     <ul class="navi flex-column navi-hover py-2">
                                         <li
                                             class="navi-header font-weight-bolder text-uppercase font-size-sm text-primary pb-2">
-                                            Choose an option:
+                                             Pilih cara input:
                                         </li>
                                         <li class="navi-item">
                                             <a id="addMenu" name="addMenu" class="navi-link">
@@ -312,6 +312,8 @@
     </div>
 
     <!--end:Modal-->
+
+
       <!--Modal Import-->
       <div class="modal fade" id="modalimportbarangadd" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
       aria-hidden="true">
@@ -324,7 +326,7 @@
                  </button>
              </div>
              <!--begin:Form-->
-             <form role="form" class="form" name="formmenusimport" id="imports" enctype="multipart/formdata" method="">
+             <form role="form" class="form" name="formmenusimport" id="formimports" enctype="multipart/formdata" method="">
                  <div class="modal-body" style="height: 400px;">
                      <div class="mb-7">
                          <div class="row">
@@ -478,6 +480,31 @@
                 form.reset();
             });
             @endcan
+            $(document).on('click','#saveMenuimport', function(e){
+                e.preventDefault();
+                var fileimportupload = $('#fileimportupload').prop('files')[0];
+                var form_data = new FormData();
+                form_data.append('fileimportupload', fileimportupload);
+                $.ajax({
+                    type: 'POST', // define the type of HTTP verb we want to use (POST for our form)
+                    url: './barang/import', // the url where we want to POST
+                    data: form_data,
+                    dataType: 'JSON', // what type of data do we expect back from the server
+                    contentType: false,
+                    processData: false,
+                }).done(function(res) {
+                   // reset form
+                     $('#modalimportbarangadd').modal('hide');
+                        showtoastr('success', res.message);
+                        $("#saveMenuimport").data("id", "");
+                        $("#formimports")[0].reset();
+                        menuID = "";
+                        let form = document.forms.formimports; // <form name="formmenus"> element
+                        form.reset();
+                        datatable.reload();
+                })
+                
+            })
 
             @can('barang-U')
             $(document).on('click', '.edits', function () {
@@ -672,7 +699,7 @@
                     url: './templatebarang', // the url where we want to POST
                     success: function(result, status, xhr) {
                     var disposition = xhr.getResponseHeader('content-disposition');
-                    var filename = ('Laporan Masuk Bulanan.xlsx');
+                    var filename = ('Template Barang.xlsx');
 
                     var blob = new Blob([result], {
                         type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'

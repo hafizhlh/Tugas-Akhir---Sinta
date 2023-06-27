@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\TemplateExport;
 use Illuminate\Http\Request;
 use App\Models\Barang;
 use App\Models\Menu;
@@ -230,9 +231,32 @@ class BarangController extends Controller
 
   
   
+    // public function downloadTemplate(): BinaryFileResponse
+    // {
+    //     return response()->download(public_path('templatebarang.xlsx'));
+    // }
+    
     public function downloadTemplate(): BinaryFileResponse
     {
-        return response()->download(public_path('templatebarang.xlsx'));
+        //export templateEXport
+        return Excel::download(new TemplateExport, 'templatebarang.xlsx');
+       
     }
+
+
+    public function import(Request $request)
+    {
+        $request->validate([
+            'fileimportupload' => 'required|mimes:xls,xlsx'
+        ]);
+        $file = $request->file('fileimportupload');
+        $nama_file = rand() . $file->getClientOriginalName();
+        // move to public folder
+        $file->move('file_barang', $nama_file);
+        Excel::import(new BarangImport, public_path('/file_barang/' . $nama_file));
+        return response()->json(['message' => 'Import successfully'], 200);
+    }
+
+
     
 }

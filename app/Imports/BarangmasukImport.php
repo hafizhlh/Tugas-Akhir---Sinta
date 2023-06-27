@@ -2,31 +2,44 @@
 
 namespace App\Imports;
 
-use CreateBarangMasuksTable;
-use Illuminate\Support\Collection;
+use App\Models\BarangMasuk;
+use App\Models\DetailBarangMasuk;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Maatwebsite\Excel\Concerns\ToCollection;
+use Maatwebsite\Excel\Concerns\ShouldAutoSize;
+use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-class BarangmasukImport implements ToCollection
+class BarangmasukImport implements ToModel, WithHeadingRow, ShouldAutoSize
 {
-    /**
-    * @param Collection $collection
-    */
-    public function collection(Collection $collection)
+    public function model(array $row)
     {
-        foreach($collection as $row){
-        DB::table('detail_barang_masuks')
-            ->join('barang_masuks', 'detail_barang_masuks.barang_masuk_id', '=', 'barang_masuks.barang_masuk_id')
-            ->join('barangs', 'detail_barang_masuks.barang_id', '=', 'barangs.barang_id')
-            ->join('kategoris', 'barangs.kategori_id', '=', 'kategoris.id')
-            ([
-                'jenis_barang' => $row[0], // Sesuaikan nama kolomnya, bila lebih dari 1 tinggal copy aja di bawahnya terus ganti [1] nya jadi [2] dst
-                'nama_katagori' => $row[1],
-                'nama_barang' => $row[2],
-                'jumlah_barang' => $row[3],
-                
-
-            ]);
+        // dd($row);
+        $nama_barang = DB::table(
+            'barangs'
+        )->join('kategoris', 'barangs.kategori_id', '=', 'kategoris.id')
+            ->where('nama_barang', $row['nama_barang'])
+            ->where('nama_kategori', $row['kategori_barang'])
+            ->first();
+        if ($nama_barang == null) {
+            return null;
         }
+        $barang_masuk = BarangMasuk::create([
+            'tanggal_barang_masuk' => $row['tanggal_barang_masuk'],
+            'delete_mark' => 0,
+            'created_at' => date('Y-m-d H:i:s')
+        ]);
+        DB::table('barangs')->where('nama_barang', $row['nama_barang'])->update([
+            'jumlah_barang' => $nama_barang->jumlah_barang + $row['jumlah_barang_masuk']
+        ]);
+
+        return new DetailBarangMasuk([
+            'barang_masuk_id' => $barang_masuk->barang_masuk_id,
+            'barang_id' => $nama_barang->barang_id,
+            'jumlah_barang_masuk' => $row['jumlah_barang_masuk'],
+            'user_id' => Auth::user()->id,
+            'delete_mark' => 0,
+            'created_at' => date('Y-m-d H:i:s')
+        ]);
     }
 }
