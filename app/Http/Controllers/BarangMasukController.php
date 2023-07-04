@@ -7,6 +7,7 @@ use App\Exports\BarangConsummableMasukSheet;
 use App\Exports\BarangmasukExport;
 use App\Exports\ExportMultipleSheets;
 use App\Exports\Exportxls;
+use App\Exports\TemplateBarangMasukExport;
 use App\Exports\TemplateMasukExport;
 use App\Imports\BarangmasukImport;
 use App\Models\DetailBarangMasuk;
@@ -34,12 +35,12 @@ class BarangMasukController extends Controller
         return view('barangmasuk', $data);
 
         // Menambahkan parameter jenis_barang pada query untuk menyortir berdasarkan jenis barang yang dipilih
-    if (isset($_GET['jenis_barang'])) {
-        $jenisBarang = $_GET['jenis_barang'];
-        $data['barang'] = Barang::select('barang_id', 'nama_barang')->where('jenis_barang', $jenisBarang)->get();
-    }
-    
-    return view('BarangMasuk', $data);
+        if (isset($_GET['jenis_barang'])) {
+            $jenisBarang = $_GET['jenis_barang'];
+            $data['barang'] = Barang::select('barang_id', 'nama_barang')->where('jenis_barang', $jenisBarang)->get();
+        }
+
+        return view('BarangMasuk', $data);
     }
 
 
@@ -66,7 +67,7 @@ class BarangMasukController extends Controller
             ->addColumn('action', function ($row) {
                 $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->id_barang_masuk . '" data-original-title="Edit" class="edit btn btn-primary btn-sm editBarang">Edit</a>';
                 $btn = $btn . ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->id_barang_masuk . '" data-original-title="Delete" class="btn btn-danger btn-sm deleteLandingPage">Delete</a>';
-                $btn = $btn . ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->id_barang_masuk . '" data-tanggal_barang_masuk="' . $row->tanggal_barang_masuk . '"data-nama_barang="' . $row->nama_barang . '"data-jenis_barang="' . $row->jenis_barang . '"data-jumlah_barang_masuk="' . $row->jumlah_barang_masuk . '" data-jumlah_barang="' . $row->jumlah_barang . '"data-keterangan_barang="' . $row->keterangan_barang . '" data-nama_kategori="'.$row->nama_kategori.'" data-original-title="Detail" class="btn btn-info btn-sm detailBarang">Detail</a>';
+                $btn = $btn . ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->id_barang_masuk . '" data-tanggal_barang_masuk="' . $row->tanggal_barang_masuk . '"data-nama_barang="' . $row->nama_barang . '"data-jenis_barang="' . $row->jenis_barang . '"data-jumlah_barang_masuk="' . $row->jumlah_barang_masuk . '" data-jumlah_barang="' . $row->jumlah_barang . '"data-keterangan_barang="' . $row->keterangan_barang . '" data-nama_kategori="' . $row->nama_kategori . '" data-original-title="Detail" class="btn btn-info btn-sm detailBarang">Detail</a>';
                 return $btn;
             })
 
@@ -250,7 +251,7 @@ class BarangMasukController extends Controller
             return response()->json($e->getMessage(), 500);
         }
     }
-    
+
     public function getBarang($jenis_code)
     {
         $data = Barang::where('jenis_barang', $jenis_code)->get();
@@ -274,16 +275,16 @@ class BarangMasukController extends Controller
     public function exportTanggalBarangMasuk(Request $request)
     {
         $data = DB::table('detail_barang_masuks')
-        ->join('barang_masuks', 'detail_barang_masuks.barang_masuk_id', '=', 'barang_masuks.barang_masuk_id')
-        ->join('barangs', 'detail_barang_masuks.barang_id', '=', 'barangs.barang_id')
-        ->join('kategoris', 'barangs.kategori_id', '=', 'kategoris.id')
-        ->whereBetween('barang_masuks.tanggal_barang_masuk', [$request->tanggal_awal, $request->tanggal_akhir])
+            ->join('barang_masuks', 'detail_barang_masuks.barang_masuk_id', '=', 'barang_masuks.barang_masuk_id')
+            ->join('barangs', 'detail_barang_masuks.barang_id', '=', 'barangs.barang_id')
+            ->join('kategoris', 'barangs.kategori_id', '=', 'kategoris.id')
+            ->whereBetween('barang_masuks.tanggal_barang_masuk', [$request->tanggal_awal, $request->tanggal_akhir])
 
-        ->select('barang_masuks.tanggal_barang_masuk', 'barangs.nama_barang', 'kategoris.jenis_barang', 'kategoris.nama_kategori', 'detail_barang_masuks.jumlah_barang_masuk', 'barangs.jumlah_barang', 'barangs.keterangan_barang')
-        ->get();
-    
-        
-    
+            ->select('barang_masuks.tanggal_barang_masuk', 'barangs.nama_barang', 'kategoris.jenis_barang', 'kategoris.nama_kategori', 'detail_barang_masuks.jumlah_barang_masuk', 'barangs.jumlah_barang', 'barangs.keterangan_barang')
+            ->get();
+
+
+
         $collect = $data->map(function ($item) {
             $item->jenis_barang = $item->jenis_barang == 1 ? "consummable" : "asset";
             return $item;
@@ -291,31 +292,31 @@ class BarangMasukController extends Controller
         $consummableData = $data->filter(function ($item) {
             return $item->jenis_barang == "consummable";
         });
-        
+
         $assetData = $data->filter(function ($item) {
             return $item->jenis_barang == "asset";
         });
-        
+
         $sheets = [
-        new BarangConsummableMasukSheet($consummableData),
-        new BarangAssetMasukSheet($assetData),
-    ];
-    
+            new BarangConsummableMasukSheet($consummableData),
+            new BarangAssetMasukSheet($assetData),
+        ];
+
         $column = [
-            'Tanggal Barang Masuk',           
-             'Nama Barang',          
-             'Jenis Barang',
-             'Kategori Barang',
-             'Jumlah Barang Masuk',
-             'Jumlah Stok barang saat ini',
-             'Keterangan barang'
- 
-         ];
-    
-         return Excel::download(new ExportMultipleSheets($sheets), 'Laporan Barang Masuk bulanan.xlsx');
+            'Tanggal Barang Masuk',
+            'Nama Barang',
+            'Jenis Barang',
+            'Kategori Barang',
+            'Jumlah Barang Masuk',
+            'Jumlah Stok barang saat ini',
+            'Keterangan barang'
+
+        ];
+
+        return Excel::download(new ExportMultipleSheets($sheets), 'Laporan Barang Masuk bulanan.xlsx');
     }
-    
-    public function exportTahunBarangMasuk():BinaryFileResponse
+
+    public function exportTahunBarangMasuk(): BinaryFileResponse
     {
         $year_now = date('Y');
         $data = DB::table('detail_barang_masuks')
@@ -323,10 +324,10 @@ class BarangMasukController extends Controller
             ->join('barangs', 'detail_barang_masuks.barang_id', '=', 'barangs.barang_id')
             ->join('kategoris', 'barangs.kategori_id', '=', 'kategoris.id')
 
-            
+
             // ->select('barang_masuks.barang_masuk_id as id_barang_masuk', 'barang_masuks.*', 'detail_barang_masuks.*', 'barangs.*')
-            ->where('tanggal_barang_masuk', 'like','%'.$year_now .'%')          
-            ->select("barang_masuks.tanggal_barang_masuk","barangs.nama_barang", "kategoris.jenis_barang","kategoris.nama_kategori","detail_barang_masuks.jumlah_barang_masuk","barangs.jumlah_barang","barangs.keterangan_barang")
+            ->where('tanggal_barang_masuk', 'like', '%' . $year_now . '%')
+            ->select("barang_masuks.tanggal_barang_masuk", "barangs.nama_barang", "kategoris.jenis_barang", "kategoris.nama_kategori", "detail_barang_masuks.jumlah_barang_masuk", "barangs.jumlah_barang", "barangs.keterangan_barang")
             ->get();
 
         $collect = $data->map(function ($item) {
@@ -334,42 +335,43 @@ class BarangMasukController extends Controller
             return $item;
         });
 
-        
+
         $consummableData = $data->filter(function ($item) {
             return $item->jenis_barang == "consummable";
         });
-        
+
         $assetData = $data->filter(function ($item) {
             return $item->jenis_barang == "asset";
         });
-        
-    $sheets = [
-        new BarangConsummableMasukSheet($consummableData),
-        new BarangAssetMasukSheet($assetData),
-    ];
+
+        $sheets = [
+            new BarangConsummableMasukSheet($consummableData),
+            new BarangAssetMasukSheet($assetData),
+        ];
         // dd($collect);
-        
+
 
         $column = [
-            'Tanggal Barang Masuk',           
-             'Nama Barang',          
-             'Jenis Barang',
-             'Kategori Barang',
-             'Jumlah Barang Masuk',
-             'Jumlah Stok barang saat ini',
-             'Keterangan barang'
- 
-         ];
-         return Excel::download(new ExportMultipleSheets($sheets), 'Laporan Barang Masuk tahunan.xlsx');
+            'Tanggal Barang Masuk',
+            'Nama Barang',
+            'Jenis Barang',
+            'Kategori Barang',
+            'Jumlah Barang Masuk',
+            'Jumlah Stok barang saat ini',
+            'Keterangan barang'
+
+        ];
+        return Excel::download(new ExportMultipleSheets($sheets), 'Laporan Barang Masuk tahunan.xlsx');
     }
     // public function downloadTemplate(): BinaryFileResponse
     // {
     //     return response()->download(public_path('templatebarangmasuk.xlsx'));
     // }
-    public function DownloadTemplate(): BinaryFileResponse
+    public function downloadTemplate(): BinaryFileResponse
     {
         return Excel::download(new TemplateMasukExport, 'templatebarang.xlsx');
     }
+
     public function import(Request $request)
     {
         $request->validate([

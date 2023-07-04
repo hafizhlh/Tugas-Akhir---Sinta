@@ -146,7 +146,7 @@ class KategoriController extends Controller
             'jenis_code', // Menambahkan field jenis_barang
         ]);
         $roles = [
-            'kategori_name' => 'required|unique:kategori,nama_kategori', // Validasi untuk kategori_barang
+            'kategori_name' => 'required|unique:kategoris,nama_kategori', // Validasi untuk kategori_barang
             'jenis_code' => 'required', // Validasi untuk jenis_barang
         ];
         $messages = [

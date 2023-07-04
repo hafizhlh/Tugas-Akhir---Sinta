@@ -27,6 +27,21 @@
         ::-webkit-scrollbar-thumb:hover {
             background: #555;
         }
+        .image-container {
+          position: relative;
+          width: 500px;
+          height: 500px;
+          overflow: hidden;
+        }
+        
+        .image-container img {
+          transition: transform 0.2s;
+        }
+        
+        .image-container.zoomed img {
+          transform: scale(1.5);
+          cursor: zoom-out;
+        }
         /* */
     </style>
     <!-- END Page Level CSS-->
@@ -94,7 +109,7 @@
                                                 <span class="navi-icon">
                                                     <i class="la la-file-excel-o"></i>
                                                 </span>
-                                                <span class="navi-text">Manual</span>
+                                                <span class="navi-text">Form</span>
                                             </a>
                                         </li>
                                         </li>
@@ -103,7 +118,7 @@
                                                 <span class="navi-icon">
                                                     <i class="la la-file-pdf-o"></i>
                                                 </span>
-                                                <span class="navi-text">otomatis</span>
+                                                <span class="navi-text">Import</span>
                                             </a>
                                         </li>
                                     </ul>
@@ -281,13 +296,13 @@
                                     <span class="form-text text-muted">Masukkan kode</span>
                                 </div>
                             </div>
-                            <div class="form-group row">
-                                <label class="col-lg-3 col-form-label">Gambar:</label>
-                                <div class="col-lg-9">
-                                    <input type="file" class="form-control-file" id="gambar_detail" name="gambar">
-                                    <span class="form-text text-muted">Unggah gambar Barang</span>
-                                </div>
-                            </div>      
+                         {{-- show detail gambar images --}}
+                        <div class="form-group row">
+                            <label class="col-lg-3 col-form-label">Gambar:</label>
+                            <div class="col-lg-9">
+                                <img id="gambar_detail"  width="250" height="250"/>
+                              </div>
+                        </div>
                             <div class="form-group row">
                                 <label class="col-lg-3 col-form-label">Keterangan Barang:</label>
                                 <div class="col-lg-9">
@@ -432,7 +447,7 @@
                         textAlign: 'center',
                     }, 
                     {
-                        field: 'gambar',
+                        field: 'gambark',
                         title: 'gambar',
                         textAlign: 'center',
                     },
@@ -448,6 +463,7 @@
                         autoHide: false,
                         overflow: 'visible',
                         template: function (row) {
+                            console.log(row);
                             return "<center>" +
                                     @can('barang-U')
                                         "<button type='button' class='edits btn btn-sm btn-icon btn-outline-warning ' title='Edit' data-toggle='tooltip' data-id=" + row.barang_id + " ><i class='fa fa-edit'></i> </button>  " +
@@ -456,7 +472,7 @@
                                         "<button type='button' class='deletes btn-sm btn btn-icon btn-outline-danger' title='Delete' data-toggle='tooltip' alt='' data-id=" + row.barang_id+ " ><i class='fa fa-trash'></i></button>  " +
                                     @endcan                                  
                                             @can ('barang-R')
-                                        "<button type='button' class='details btn btn-sm btn-icon btn-outline-info ' title='Detail' data-toggle='tooltip' data-id=" + row.barang_id +" data-nama="+row.nama_barang+" data-barcode="+row.barcode_barang+" data-jenis_barang="+row.jenis_barang+" data-nama_kategori="+row.nama_kategori+" data-jumlah_barang="+row.jumlah_barang+" data-keterangan_barang="+row.keterangan_barang+"><i class='fa fa-eye'></i> </button>  " +
+                                        "<button type='button' class='details btn btn-sm btn-icon btn-outline-info ' title='Detail' data-toggle='tooltip' data-id=" + row.barang_id +" data-nama="+row.nama_barang+" data-barcode="+row.barcode_barang+" data-jenis_barang="+row.jenis_barang+" data-nama_kategori="+row.nama_kategori+" data-jumlah_barang="+row.jumlah_barang+" data-keterangan_barang="+row.keterangan_barang+" data-gambar="+encodeURI(row.gambar)+"><i class='fa fa-eye'></i> </button>  " +
                                       
                                         @endcan
                                             "</center>";
@@ -508,6 +524,7 @@
 
             @can('barang-U')
             $(document).on('click', '.edits', function () {
+                console.log($(this).data('id'));
                 $.ajax({
                     type: 'GET', // define the type of HTTP verb we want to use (POST for our form)
                     url: './barang/' + $(this).data('id'), // the url where we want to POST
@@ -526,10 +543,10 @@
                         $('#barcode').val(res.data.barcode_barang);                        
                         $('#barang_name').val(res.data.nama_barang);
                         $('#kategori_code').val(res.data.kategori_nama)
-                        $('#kategori_id').val(res.data.kategori_id).trigger('change');   
-                        $('#gambar').val(res.data.gambar);                   
+                        $('#kategori_id').val(res.data.kategori_id).trigger('change');                  
                         $('#keterangan_code').val(res.data.keterangan_barang);
                         $("#saveMenu").data("id", res.data.barang_id);
+                        $('#gambar').attr('src', encodeURI('file_barang/' + res.data.gambar));
                     }
                 }).fail(function (data) {
                     show_toastr('error', data.responseJSON.status, data.responseJSON.message);
@@ -590,14 +607,17 @@
                     $('#jenis_code_detail').val('Asset');
                 }  
                 $('#jenis_code_detail').val();  
+                console.log($(this).data('keterangan_barang'));
 
                 $('#kategori_code_detail').val($(this).data('kategori'));
                 $('#keterangan_code_detail').val($(this).data('keterangan_barang'));
                 $('#kategori_barang_info').val($(this).data('nama_kategori'));
-                $('#gambar_detail').val($(this).data('gambar'));
+                $('#gambar_detail').attr('src', 'file_barang/' + $(this).data('gambar'));
                 // show modal
                 $('#modalInfo').modal('show');
             })
+            
+  
 
             @can(['barang-C', 'barang-U'])
             $('#formmenus').submit(function (e) {
@@ -719,6 +739,7 @@
             });
 
         });
+
 
 
     </script>

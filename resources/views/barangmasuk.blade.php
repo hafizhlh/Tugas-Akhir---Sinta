@@ -97,7 +97,7 @@
                                         <span class="navi-icon">
                                             <i class="la la-file-excel-o"></i>
                                         </span>
-                                        <span class="navi-text">Manual</span>
+                                        <span class="navi-text">Form</span>
                                     </a>
                                 </li>
                                 </li>
@@ -106,7 +106,7 @@
                                         <span class="navi-icon">
                                             <i class="la la-file-pdf-o"></i>
                                         </span>
-                                        <span class="navi-text">otomatis</span>
+                                        <span class="navi-text">Import</span>
                                     </a>
                                 </li>
                             </ul>
@@ -976,7 +976,7 @@
                             success: function (result, status, xhr) {
                                 var disposition = xhr.getResponseHeader(
                                     'content-disposition');
-                                var filename = ('template masuk.xlsx');
+                                var filename = ('template barang masuk.xlsx');
 
                                 var blob = new Blob([result], {
                                     type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'

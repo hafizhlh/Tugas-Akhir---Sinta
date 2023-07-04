@@ -51,7 +51,7 @@ class BarangController extends Controller
                 }
                 return $kategori;
             })
-            ->addColumn('gambar', function ($row) {
+            ->addColumn('gambark', function ($row) {
                 $gambar = $row->gambar;
                 if ($gambar == '') {
                     $gambar = 'Belum ada gambar';
@@ -66,12 +66,12 @@ class BarangController extends Controller
                 $btn = $btn . ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . 
                 $row->barang_id . '" data-nama="' . $row->nama_barang.'" data-barcode="'.
                 $row->barcode_barang.'" data-jenis_barang="'.$row->jenis_barang.'" data-nama_kategori="'
-                .$row->nama_kategori.'"
+                .$row->nama_kategori.'" data-gambar="file_barang/'.$row->gambar.'"
                 data-keterangan_barang="'.$row->keterangan_barang.'" data-original-title="Detail" 
                 class="btn btn-info btn-sm detailLandingPage">Detail</a>';
                 return $btn;
             })
-            ->rawColumns(['action', 'gambar'    ])
+            ->rawColumns(['action', 'gambark'    ])
             ->make(true);
     }
 
@@ -82,7 +82,7 @@ class BarangController extends Controller
             'barcode',
             'keterangan_code',
             'kategori_id', // Menambahkan field kategori_barang
-            'gambar'
+            'gambar',
         ]);
         $roles = [
             'barang_name' => 'required',
@@ -98,8 +98,16 @@ class BarangController extends Controller
 
         $this->validators($attributes, $roles, $messages);
         $file = $request->file('gambar');
-        $nama_file = rand() . $file->getClientOriginalName();
-        $file->move('file_barang', $nama_file);
+        if ($file == '') {
+            return response()->json(['message' => 'File tidak boleh kosong'], 500);
+        } else {
+            $nama_file = rand() . $file->getClientOriginalName();
+            $file->move('file_barang', $nama_file);
+        }
+        
+
+       
+        
 
         DB::beginTransaction();
         try {
