@@ -358,7 +358,7 @@ class BarangMasukController extends Controller
             'Kategori Barang',
             'Jumlah Barang Masuk',
             'Jumlah Stok barang saat ini',
-            'Keterangan barang'
+            'Keterangan barang',
 
         ];
         return Excel::download(new ExportMultipleSheets($sheets), 'Laporan Barang Masuk tahunan.xlsx');
