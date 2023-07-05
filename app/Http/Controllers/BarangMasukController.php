@@ -367,7 +367,7 @@ class BarangMasukController extends Controller
     // {
     //     return response()->download(public_path('templatebarangmasuk.xlsx'));
     // }
-    public function downloadTemplate(): BinaryFileResponse
+    public function DownloadTemplateMasuk(): BinaryFileResponse
     {
         return Excel::download(new TemplateMasukExport, 'templatebarang.xlsx');
     }

@@ -96,14 +96,22 @@ class BarangController extends Controller
             'unique' => trans('messages.unique'),
         ];
 
+        
         $this->validators($attributes, $roles, $messages);
         $file = $request->file('gambar');
-        if ($file == '') {
+        
+        if (empty($file)) {
             return response()->json(['message' => 'File tidak boleh kosong'], 500);
         } else {
-            $nama_file = rand() . $file->getClientOriginalName();
-            $file->move('file_barang', $nama_file);
+            $nama_file = null;
+        
+            if (!is_null($file) && $file->isValid()) {
+                $nama_file = rand() . $file->getClientOriginalName();
+                $file->move('file_barang', $nama_file);
+            }
         }
+        
+        
         
 
        

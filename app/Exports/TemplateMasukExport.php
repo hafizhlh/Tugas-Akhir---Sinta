@@ -41,22 +41,44 @@ class TemplateMasukExport implements WithHeadings, WithStyles, ShouldAutoSize
                 'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER
             ]
         ];
-        $kategori = DB::table('kategoris')->get()->pluck('nama_kategori')->toArray();
+        $kategori=DB::table('kategoris')->get()->pluck('nama_kategori')->toArray();
+        $sheet->getStyle('A2')->applyFromArray($styleContentCenteredBold)->getAlignment()->setWrapText(true);
+        //get datavalidation entire column a
+        $lstKategori=$sheet->getDataValidation('A2:A1000');
 
-        $Nama_barang = DB::table('barangs')
-            ->join('kategoris', 'barangs.kategori_id', '=', 'kategoris.id')
-            ->get()->pluck('nama_barang')->toArray();
+        //set dropdown list
+        $lstKategori->setType(\PhpOffice\PhpSpreadsheet\Cell\DataValidation::TYPE_LIST);
+        $lstKategori->setErrorStyle(\PhpOffice\PhpSpreadsheet\Cell\DataValidation::STYLE_INFORMATION);
+        $lstKategori->setAllowBlank(false);
+        $lstKategori->setShowInputMessage(true);
+        $lstKategori->setShowErrorMessage(true);
+        $lstKategori->setShowDropDown(true);
+        $lstKategori->setErrorTitle('Input error');
+        $lstKategori->setError('Value is not in list.');
+        $lstKategori->setPromptTitle('Pick from list');
+        $lstKategori->setPrompt('Please pick a value from the drop-down list.');
+        $lstKategori->setFormula1('"'.implode(',',$kategori).'"');
 
-        $sheet->getStyle('A2:A1000')->applyFromArray($styleContentCenteredBold)->getAlignment()->setWrapText(true);
-        //get datavalidation entire column A
-        $lstKategori = $sheet->getDataValidation('A2:A10');
-        $lstKategori->setType(\PhpOffice\PhpSpreadsheet\Cell\DataValidation::TYPE_LIST)->setShowDropDown(true);
-        $lstKategori->setFormula1('"' . implode(',', $kategori) . '"');
+       
 
-        $sheet->getStyle('B2:B1000')->applyFromArray($styleContentCenteredBold)->getAlignment()->setWrapText(true);
-        //get datavalidation entire column B
-        $lstNamaBarang = $sheet->getDataValidation('B2:B10');
-        $lstNamaBarang->setType(\PhpOffice\PhpSpreadsheet\Cell\DataValidation::TYPE_LIST)->setShowDropDown(true);
-        $lstNamaBarang->setFormula1('"' . implode(',', $Nama_barang) . '"');
+        
+
+
+        
+
+         
+                $styleContentCenteredBold = [
+                    'font' => [
+                        'bold' => true,
+                    ],
+                    'alignment' => [
+                        'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER
+                    ]
+                ];
+               
+               
+
+               
+            
     }
 }
