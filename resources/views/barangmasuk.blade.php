@@ -928,13 +928,13 @@
                     @can('barangmasuk-D')
                     $(document).on('click', '.deletes', function () {
                         Swal.fire({
-                                title: 'Are you sure?',
-                                text: "You won't be able to revert this!",
+                                title: 'Apakah anda ingin menghapus data ini?',
+                                text: "Data yang dihapus tidak dapat dikembalikan!",
                                 icon: 'warning',
                                 showCancelButton: true,
                                 confirmButtonColor: '#3085d6',
                                 cancelButtonColor: '#d33',
-                                confirmButtonText: 'Yes, delete it!'
+                                confirmButtonText: 'ya, hapus data!'
                             })
                             .then(isConfirm => {
                                 if (isConfirm.isConfirmed) {
