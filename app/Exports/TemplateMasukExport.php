@@ -60,6 +60,9 @@ class TemplateMasukExport implements WithHeadings, WithStyles, ShouldAutoSize
         $lstKategori->setFormula1('"'.implode(',',$kategori).'"');
 
        
+       
+
+       
 
         
 
