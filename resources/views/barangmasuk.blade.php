@@ -259,11 +259,11 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal"><i
-                            class="fa fa-times"></i>Cancel
+                            class="fa fa-times"></i>membatalkan
                     </button>
                     @can(['barangmasuk-C' , 'barangmasuk-U'])
                     <button type="submit" id="saveMenu" data-id="" class="btn btn-primary font-weight-bold">
-                        <i class="fa fa-save"></i> Save changes
+                        <i class="fa fa-save"></i> Simpan
                     </button>
                     @endcan
                 </div>
@@ -393,11 +393,11 @@
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal"><i
-                            class="fa fa-times"></i>Cancel
+                            class="fa fa-times"></i>membatalkan
                     </button>
                     @can(['barangmasuk-C' , 'barangmasuk-U'])
                     <button type="submit" id="saveMenuimportmasuk" data-id="" class="btn btn-primary font-weight-bold">
-                        <i class="fa fa-save"></i> Save changes
+                        <i class="fa fa-save"></i> Simpan
                     </button>
                     @endcan
                 </div>
@@ -442,7 +442,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <button type="submit" class="btn btn-primary btn-export_excel">Save changes</button>
+                            <button type="submit" class="btn btn-primary btn-export_excel">Simpan</button>
                         </div>
                     </div>
                 </div>

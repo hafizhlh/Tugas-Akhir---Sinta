@@ -162,11 +162,11 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal"><i
-                            class="fa fa-times"></i>Cancel
+                            class="fa fa-times"></i>membatalkan
                 </button>
                 @can(['kategori-C', 'kategori-U'])
                 <button type="submit" id="saveMenu" data-id="" class="btn btn-primary font-weight-bold">
-                    <i class="fa fa-save"></i> Save changes
+                    <i class="fa fa-save"></i> Simpan
                 </button>
                 @endcan
             </div>

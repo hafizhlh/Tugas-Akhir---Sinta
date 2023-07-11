@@ -232,11 +232,11 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal"><i
-                                    class="fa fa-times"></i>Cancel
+                                    class="fa fa-times"></i>membatalkan
                         </button>
                         @can(['barang-C' , 'barang-U'])
                             <button type="submit" id="saveMenu" data-id="" class="btn btn-primary font-weight-bold">
-                                <i class="fa fa-save"></i> Save changes
+                                <i class="fa fa-save"></i> Simpan
                             </button>
                         @endcan
                     </div>
@@ -368,11 +368,11 @@
 
                  <div class="modal-footer">
                      <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal"><i
-                                 class="fa fa-times"></i>Cancel
+                                 class="fa fa-times"></i>membatalkan
                      </button>
                      @can(['barang-C' , 'barang-U'])
                          <button type="submit" id="saveMenuimport" data-id="" class="btn btn-primary font-weight-bold">
-                             <i class="fa fa-save"></i> Save changes
+                             <i class="fa fa-save"></i> Simpan
                          </button>
                      @endcan
                  </div>

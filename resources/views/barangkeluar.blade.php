@@ -244,11 +244,11 @@
 
                     <div class="modal-footer">
                         <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal"><i
-                                class="fa fa-times"></i>Cancel
+                                class="fa fa-times"></i>Membatalkan
                         </button>
                         @can(['barangkeluar-C' , ])
                         <button type="submit" id="saveMenu" data-id="" class="btn btn-primary font-weight-bold">
-                            <i class="fa fa-save"></i> Save changes
+                            <i class="fa fa-save"></i> Simpan
                         </button>
                         @endcan
                     </div>
@@ -350,11 +350,11 @@
 
                     <div class="modal-footer">
                         <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal"><i
-                                class="fa fa-times"></i>Cancel
+                                class="fa fa-times"></i>Membatalkan
                         </button>
                         @can(['barangkeluar-U'])
                         <button type="submit" id="saveMenuedit" data-id="" class="btn btn-primary font-weight-bold">
-                            <i class="fa fa-save"></i> Save changes
+                            <i class="fa fa-save"></i> Simpan
                         </button>
                         @endcan
                     </div>
@@ -435,12 +435,12 @@
 
                     <div class="modal-footer">
                         <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal"><i
-                                class="fa fa-times"></i>Cancel
+                                class="fa fa-times"></i>Membatalkan
                         </button>
                         @can(['barangkeluar-C' , 'barangkeluar-U'])
                         <button type="submit" id="btn_return_barang" data-id=""
                             class="btn btn-primary font-weight-bold">
-                            <i class="fa fa-reply"></i> Save changes
+                            <i class="fa fa-reply"></i> Simpan
                         </button>
                         @endcan
                     </div>
@@ -553,7 +553,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">
-                            <i class="fa fa-times"></i>Cancel
+                            <i class="fa fa-times"></i>Membatalkan
                         </button>
                     </div>
                 </div>
