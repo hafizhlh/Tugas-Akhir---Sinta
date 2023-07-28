@@ -53,10 +53,11 @@ class BarangController extends Controller
             })
             ->addColumn('gambark', function ($row) {
                 $gambar = $row->gambar;
+                $location = public_path().'/file_barang';
                 if ($gambar == '') {
                     $gambar = 'Belum ada gambar';
                 } else {
-                    $gambar = '<img src="file_barang/' . $row->gambar . '" width="100px" height="100px">';
+                    $gambar = '<img src="'.$location.'/' . $row->gambar . '" width="100px" height="100px">';
                 }
                 return $gambar;
             })
