@@ -807,7 +807,9 @@
                         field: 'DT_RowIndex',
                         title: 'No',
                         autoHide: false,
-                    }, {
+                    }, 
+                   
+                    {
                         field: 'nama_barang',
                         title: 'nama barang',
                         textAlign: 'center',
@@ -820,6 +822,7 @@
                         textAlign: 'center',
                         autoHide: false,
                     },
+                   
                     {
                         field: 'no_dof_etiket',
                         title: 'nodof/eticket',
@@ -839,6 +842,8 @@
                         autoHide: false,
                         textAlign: 'center',
                     },
+                    
+
                     {
                         field: 'Actions',
                         title: 'Actions',

@@ -4,7 +4,7 @@
 <head>
     {{--<base href="../../../../">--}}
     <meta charset="utf-8"/>
-    <title> PETROPORT | Forget Password </title>
+    <title> Sinta | Forget Password </title>
     <meta name="description" content="Singin page example"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
     <!--begin::Fonts-->

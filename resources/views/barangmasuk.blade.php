@@ -620,7 +620,13 @@
                                 field: 'DT_RowIndex',
                                 title: 'No',
 
-                            }, {
+                            },
+                            {
+                                field: 'tanggal_barang_masuk',
+                                title: 'tanggal barang masuk',
+                                textAlign: 'center',
+                            },
+                            {
                                 field: 'jenis_barang',
                                 title: 'jenis barang',
                                 textAlign: 'center',
