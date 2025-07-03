@@ -46,6 +46,9 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
     apt-get install -y nodejs
 
+# Set environment variable to avoid OpenSSL 3.0 issues with Node.js
+ENV NODE_OPTIONS=--openssl-legacy-provider
+
 # Check Node.js and NPM versions
 RUN node -v && npm -v
 
