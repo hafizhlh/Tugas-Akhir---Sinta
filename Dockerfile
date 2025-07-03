@@ -21,9 +21,9 @@ RUN apt-get update && apt-get install -y \
     ca-certificates \
     lsb-release \
     && docker-php-ext-configure gd --with-jpeg=/usr/include/ --with-freetype=/usr/include/ \
-    && docker-php-ext-install gd \
+    && docker-php-ext-install gd zip \
     && docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql \
-    && docker-php-ext-install pdo pdo_pgsql pgsql 
+    && docker-php-ext-install pdo pdo_pgsql pgsql pdo_sqlite
 
 # Clear apt-get cache untuk mengurangi ukuran image
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
