@@ -45,6 +45,10 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 # Install Node.js dependencies and Laravel Mix (for Metronic)
 RUN npm install -g npm@latest
 
+# Add user for laravel application
+RUN groupadd -g 1005 www && \
+    useradd -u 1005 -ms /bin/bash -g www www
+
 # Set working directory to the Laravel app folder
 WORKDIR /var/www
 
