@@ -19,7 +19,7 @@ RUN apt-get update && apt-get install -y \
     libpq-dev \
     libonig-dev \
     libsqlite3-dev \
-    ca-certificates \  # Instalasi ca-certificates
+    ca-certificates \
     lsb-release \
     && docker-php-ext-configure gd --with-jpeg=/usr/include/ --with-freetype=/usr/include/ \
     && docker-php-ext-install gd zip \
