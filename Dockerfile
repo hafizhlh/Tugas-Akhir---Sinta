@@ -18,8 +18,8 @@ RUN apt-get update && apt-get install -y \
     bash \
     libpq-dev \
     libonig-dev \
-    nodejs \
-    npm \
+    ca-certificates \
+    lsb-release \
     && docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql \
     && docker-php-ext-install pdo pdo_pgsql pgsql
 
@@ -42,8 +42,12 @@ RUN docker-php-ext-install opcache
 # Install Composer (PHP package manager)
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-# Install Node.js dependencies and Laravel Mix (for Metronic)
-RUN npm install -g npm@latest
+# Install Node.js (latest LTS version, for compatibility with Metronic)
+RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
+    apt-get install -y nodejs
+
+# Check Node.js and NPM versions
+RUN node -v && npm -v
 
 # Add user for laravel application
 RUN groupadd -g 1005 www && \
