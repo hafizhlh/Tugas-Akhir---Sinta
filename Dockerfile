@@ -1,5 +1,5 @@
-# Use PHP 7.4 FPM image
-FROM php:7.4-fpm
+# Use PHP 8.2 FPM image instead of 7.4
+FROM php:8.2-fpm
 
 # Install dependencies for PHP, Node.js, and Composer
 RUN apt-get update && apt-get install -y \
