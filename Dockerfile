@@ -24,7 +24,11 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-configure gd --with-jpeg=/usr/include/ --with-freetype=/usr/include/ \
     && docker-php-ext-install gd zip \
     && docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql \
-    && docker-php-ext-install pdo pdo_pgsql pgsql pdo_sqlite
+    && docker-php-ext-install pdo pdo_pgsql pgsql pdo_sqlite \
+    && docker-php-ext-enable gd pdo_pgsql pdo_sqlite pgsql
+
+# Menyalin php.ini yang sudah disesuaikan ke dalam container
+COPY php.ini /usr/local/etc/php/
 
 # Clear apt-get cache untuk mengurangi ukuran image
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
