@@ -89,7 +89,10 @@ RUN npm run prod
 # Cache konfigurasi Laravel
 RUN php artisan config:cache && \
     php artisan route:cache && \
-    php artisan view:cache
+    php artisan view:cache && \
+    php artisan route:clear && \
+    php artisan config:clear && \
+    php artisan cache:clear
 
 # Expose port
 EXPOSE 8080
