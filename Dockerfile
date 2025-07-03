@@ -20,8 +20,10 @@ RUN apt-get update && apt-get install -y \
     libonig-dev \
     ca-certificates \
     lsb-release \
+    && docker-php-ext-configure gd --with-jpeg=/usr/include/ --with-freetype=/usr/include/ \
+    && docker-php-ext-install gd \
     && docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql \
-    && docker-php-ext-install pdo pdo_pgsql pgsql
+    && docker-php-ext-install pdo pdo_pgsql pgsql 
 
 # Clear apt-get cache untuk mengurangi ukuran image
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
@@ -35,6 +37,9 @@ RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
 
 # Set environment variable untuk menghindari masalah OpenSSL 3.0 di Node.js
 ENV NODE_OPTIONS=--openssl-legacy-provider
+
+# Cek versi Node.js dan npm
+RUN node -v && npm -v
 
 # Tambahkan user untuk aplikasi Laravel
 RUN groupadd -g 1005 www && \
