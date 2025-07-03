@@ -15,6 +15,7 @@ RUN apt-get update && apt-get install -y \
     git \
     libzip-dev \
     curl \
+    libcurl4-openssl-dev \
     bash \
     libpq-dev \
     libonig-dev \
