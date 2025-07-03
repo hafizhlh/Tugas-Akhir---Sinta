@@ -18,7 +18,7 @@ class ReturnBarangController extends Controller
         $data['menus'] = $this->getDashboardMenu();
         $data['menu']  = Menu::select('id', 'name')->get();
         $data['barang']= Barang::select('barang_id', 'nama_barang')->get();
-        return view('returnBarang', $data);
+        return view('returnbarang', $data);
     }
 
     public function datatables()
