@@ -71,10 +71,10 @@ class BarangKeluarController extends Controller
         ]);
         $roles = [
             'nodofetiket_code' => 'required',
-            'keterangan_code' => 'required',
+            'keterangan_code' => 'required|nullable',
             'barang_code' => 'required',
             'jumlah' => 'required',
-            'pic_code' => 'required',
+            'pic_code' => 'required ',
         ];
         $messages = [
             'required' => trans('messages.required'),

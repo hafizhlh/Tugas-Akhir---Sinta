@@ -131,7 +131,7 @@
 		<script src="{{ asset('assets/js/matchAccount.js') }}"></script>
 		<!--end::Global Theme Bundle-->
 
-		<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/apexcharts/3.44.0/apexcharts.min.js"></script>
 		<script src="{{ asset('assets/plugins/custom/toastr/toastr.min.js')}}"></script>
 		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 

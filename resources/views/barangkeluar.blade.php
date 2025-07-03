@@ -8,27 +8,82 @@
 {{--  --}}
 <!-- BEGIN Page Level CSS-->
 <style>
-    /* width */
+    .datatable.datatable-default.datatable-head-custom > .datatable-table > .datatable-head .datatable-row > .datatable-cell > span, .datatable.datatable-default.datatable-head-custom > .datatable-table > .datatable-foot .datatable-row > .datatable-cell > span{
+        color: #ffffff !important;
+    }
+    
     ::-webkit-scrollbar {
         width: 5px;
     }
-
-    /* Track */
-    ::-webkit-scrollbar-track {
+    
+    ::-webkit-scrollbar {
         background: #f1f1f1;
     }
-
-    /* Handle */
-    ::-webkit-scrollbar-thumb {
+    
+    ::-webkit-scrollbar-thumb:hover {
         background: #c8c8c8;
     }
-
-    /* Handle on hover */
-    ::-webkit-scrollbar-thumb:hover {
+    
+    ::-webkit-scrollbar-thumb {
         background: #555;
     }
 
-</style>
+    
+    
+    #kt_datatable_menu td,
+    #kt_datatable_menu th {
+        padding: 1rem;
+        text-align: center;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    
+    th, td {
+        border: 1px solid #ddd;
+        padding: 1rem;
+        text-align: center;
+    }
+    
+    tbody tr:nth-child(odd) {
+        background-color: #f2f2f2; 
+    }
+    
+    tbody tr:nth-child(even) {
+        background-color: #ffffff; 
+    }
+    
+    thead {
+        background-color: #333;
+        color: #ffffff;
+    }
+    
+    
+    
+    #kt_datatable_menu td:first-child { 
+        width: 0.5rem; /* ID input */
+    }
+    
+    #kt_datatable_menu thead {
+        background-color: #28a745; 
+        color: white !important;
+    }
+    
+    #kt_datatable_menu td:first-child {
+        background-color: #d4edda; 
+        color: #155724; 
+    }
+    
+    #kt_datatable_menu th:first-child {
+        background-color: #28a745; 
+        color: #ffffff; 
+    }
+    
+    
+    
+    </style>
+
 <!-- END Page Level CSS-->
 @endsection
 
@@ -78,7 +133,7 @@
                             <span class="svg-icon svg-icon-md">
                                 <!--begin::Svg Icon | path:assets/media/svg/icons/Design/Flatten.svg-->
                                 <!--end::Svg Icon-->
-                            </span>keluarkan barang</a>
+                            </span>Keluarkan Barang</a>
                         </button>
                         @endcan
                         <button type="button" class="btn btn-light-primary font-weight-bolder dropdown-toggle"
@@ -100,7 +155,7 @@
                                         <span class="navi-icon">
                                             <i class="la la-file-excel-o"></i>
                                         </span>
-                                        <span class="navi-text">bulanan</span>
+                                        <span class="navi-text">Bulanan</span>
                                     </a>
                                 </li>
                                 </li>
@@ -389,7 +444,7 @@
                                 <label class="col-lg-3 col-form-label">NomorDOF/ E-Ticket:</label>
                                 <div class="col-lg-9">
                                     <input type="text" class="form-control" id="nodof_code" name="nodofetiket_code"
-                                        placeholder="Contoh : 10451 /GS-10571" disabled />
+                                        placeholder="Contoh : 10451 /GS-10571" pattern="^[a-zA-Z0-9/.-]+$" />
                                     <span class="form-text text-muted">masukan DOF(Deep Of Field)/ E-Ticket(</span>
                                 </div>
                             </div>                          
@@ -807,6 +862,8 @@
                         field: 'DT_RowIndex',
                         title: 'No',
                         autoHide: false,
+                        textAlign: 'center',
+                        width: 50,
                     }, 
                    
                     {
@@ -814,7 +871,6 @@
                         title: 'nama barang',
                         textAlign: 'center',
                         autoHide: false,
-
                     },
                     {
                         field: 'jumlah_barang_keluar',
@@ -863,8 +919,10 @@
                             actions += "<button type='button' class='deletes btn-sm btn btn-icon btn-outline-danger' title='Delete' data-toggle='tooltip' alt='' data-id=" + row.barang_keluar_id + " ><i class='fa fa-trash'></i></button>  ";
                             @endcan
 
+                            console.log(row.jenis_barang);
+
                             // Return button (added condition)
-                            if (row.jenis_barang == 1) {
+                            if (row.jenis_barang == 2) {
                                 @can('barangkeluar-U')
                                 actions += "<button type='button' class='returns btn btn-sm btn-icon btn-outline-info' title='Return' data-toggle='tooltip' data-id=" + row.barang_keluar_id + " ><i class='fa fa-reply-all'></i> </button>  ";
                                 @endcan
@@ -907,7 +965,7 @@
             @can('barangkeluar-U')
             $(document).on('click', '.edits', function () {
                 $.ajax({
-                    type: 'GET', // define the type of HTTP verb we want to use (POST for our form)
+                    type: 'GET', 
                     url: './barangkeluar/' + $(this).data(
                         'id'), // the url where we want to POST
                     beforeSend: function () {

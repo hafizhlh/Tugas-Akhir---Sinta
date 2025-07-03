@@ -52,14 +52,8 @@ class BarangController extends Controller
                 return $kategori;
             })
             ->addColumn('gambark', function ($row) {
-                $gambar = $row->gambar;
-                $location = public_path().'/file_barang';
-                if ($gambar == '') {
-                    $gambar = 'Belum ada gambar';
-                } else {
-                    $gambar = '<img src="'.$location.'/' . $row->gambar . '" width="100px" height="100px">';
-                }
-                return $gambar;
+                $url = asset('file_barang/' . $row->gambar);
+                return '<img src="' . $url . '" border="0" width="40" class="img-rounded" align="center" />';
             })
             ->addColumn('action', function ($row) {
                 $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->barang_id . '" data-original-title="Edit" class="edit btn btn-primary btn-sm editBarang">Edit</a>';
@@ -72,7 +66,7 @@ class BarangController extends Controller
                 class="btn btn-info btn-sm detailLandingPage">Detail</a>';
                 return $btn;
             })
-            ->rawColumns(['action', 'gambark'    ])
+            ->rawColumns(['action', 'gambark'])
             ->make(true);
     }
 
@@ -128,7 +122,7 @@ class BarangController extends Controller
                 'gambar' => $nama_file, 
                 'keterangan_barang' => $request->keterangan_code,
                 'kategori_barang' => $request->kategori_code, // Menambahkan kolom kategori_barang
-                'jumlah_barang' => 0, // Menambahkan kolom jumlah_barang dengan nilai default '0
+                'jumlah_barang' => null, // Menambahkan kolom jumlah_barang dengan nilai default '0
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);

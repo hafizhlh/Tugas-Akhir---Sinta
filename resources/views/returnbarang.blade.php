@@ -8,25 +8,82 @@
 
 <!-- BEGIN Page Level CSS-->
 <style>
-    /* width */
+    .datatable.datatable-default.datatable-head-custom > .datatable-table > .datatable-head .datatable-row > .datatable-cell > span, .datatable.datatable-default.datatable-head-custom > .datatable-table > .datatable-foot .datatable-row > .datatable-cell > span{
+        color: #ffffff !important;
+    }
+    
     ::-webkit-scrollbar {
         width: 5px;
     }
-
-    /* Track */
-    ::-webkit-scrollbar-track {
+    
+    ::-webkit-scrollbar {
         background: #f1f1f1;
     }
-
-    /* Handle */
-    ::-webkit-scrollbar-thumb {
+    
+    ::-webkit-scrollbar-thumb:hover {
         background: #c8c8c8;
     }
-
-    /* Handle on hover */
-    ::-webkit-scrollbar-thumb:hover {
+    
+    ::-webkit-scrollbar-thumb {
         background: #555;
     }
+
+    
+    
+    #kt_datatable_menu td,
+    #kt_datatable_menu th {
+        padding: 1rem;
+        text-align: center;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    
+    th, td {
+        border: 1px solid #ddd;
+        padding: 1rem;
+        text-align: center;
+    }
+    
+    tbody tr:nth-child(odd) {
+        background-color: #f2f2f2; 
+    }
+    
+    tbody tr:nth-child(even) {
+        background-color: #ffffff; 
+    }
+    
+    thead {
+        background-color: #333;
+        color: #ffffff;
+    }
+    
+    
+    
+    #kt_datatable_menu td:first-child { 
+        width: 0.5rem; /* ID input */
+    }
+    
+    #kt_datatable_menu thead {
+        background-color: #28a745; 
+        color: white !important;
+    }
+    
+    #kt_datatable_menu td:first-child {
+        background-color: #d4edda; 
+        color: #155724; 
+    }
+    
+    #kt_datatable_menu th:first-child {
+        background-color: #28a745; 
+        color: #ffffff; 
+    }
+    
+    
+    
+    </style>
+
 </style>
 <!-- END Page Level CSS-->
 @endsection

@@ -7,27 +7,83 @@
     <!-- END VENDOR CSS-->
 
     <!-- BEGIN Page Level CSS-->
-    <style>
-        /* width */
-        ::-webkit-scrollbar {
-            width: 5px;
-        }
+   <style>
+    .datatable.datatable-default.datatable-head-custom > .datatable-table > .datatable-head .datatable-row > .datatable-cell > span, .datatable.datatable-default.datatable-head-custom > .datatable-table > .datatable-foot .datatable-row > .datatable-cell > span{
+        color: #ffffff !important;
+    }
+    
+    ::-webkit-scrollbar {
+        width: 5px;
+    }
+    
+    ::-webkit-scrollbar {
+        background: #f1f1f1;
+    }
+    
+    ::-webkit-scrollbar-thumb:hover {
+        background: #c8c8c8;
+    }
+    
+    ::-webkit-scrollbar-thumb {
+        background: #555;
+    }
 
-        /* Track */
-        ::-webkit-scrollbar-track {
-            background: #f1f1f1;
-        }
-
-        /* Handle */
-        ::-webkit-scrollbar-thumb {
-            background: #c8c8c8;
-        }
-
-        /* Handle on hover */
-        ::-webkit-scrollbar-thumb:hover {
-            background: #555;
-        }
+    
+    
+    #kt_datatable_menu td,
+    #kt_datatable_menu th {
+        padding: 1rem;
+        text-align: center;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    
+    th, td {
+        border: 1px solid #ddd;
+        padding: 1rem;
+        text-align: center;
+    }
+    
+    tbody tr:nth-child(odd) {
+        background-color: #f2f2f2; 
+    }
+    
+    tbody tr:nth-child(even) {
+        background-color: #ffffff; 
+    }
+    
+    thead {
+        background-color: #333;
+        color: #ffffff;
+    }
+    
+    
+    
+    #kt_datatable_menu td:first-child { 
+        width: 0.5rem; /* ID input */
+    }
+    
+    #kt_datatable_menu thead {
+        background-color: #28a745; 
+        color: white !important;
+    }
+    
+    #kt_datatable_menu td:first-child {
+        background-color: #d4edda; 
+        color: #155724; 
+    }
+    
+    #kt_datatable_menu th:first-child {
+        background-color: #28a745; 
+        color: #ffffff; 
+    }
+    
+    
+    
     </style>
+ 
     <!-- END Page Level CSS-->
 @endsection
 
@@ -100,7 +156,7 @@
                                             </div>
                                         </div>
                                         <div class="col-md-2">
-                                            <a href="#" class="btn btn-light-primary px-6 font-weight-bold">Search</a>
+                                            <a href="#" class="btn btn-light-primary px-6 font-weight-bold">Cari</a>
                                         </div>
                                     </div>
                                 </div>
@@ -155,14 +211,18 @@
                         <div class="col-lg-9">
                             <input type="text" class="form-control" id="kategori_name" name="kategori_name"
                                     placeholder="Contoh : Totolink N200RE Mini"/>
-                            <span class="form-text text-muted">Masukkan nama kategori</span>
+                            <span class="form-text text-muted">Masukkan Nama Kategori</span>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal"><i
-                            class="fa fa-times"></i>membatalkan
+<<<<<<< HEAD
+                            class="fa fa-times"></i>Batal
+=======
+                            class="fa fa-times"></i> Batal
+>>>>>>> 68b25150e54f9432b3428374ba6711b1c3e6620d
                 </button>
                 @can(['kategori-C', 'kategori-U'])
                 <button type="submit" id="saveMenu" data-id="" class="btn btn-primary font-weight-bold">

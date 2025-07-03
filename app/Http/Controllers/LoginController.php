@@ -8,6 +8,9 @@ use Validator;
 
 class LoginController extends Controller
 {
+    /**
+     * Display the login view if the user is not authenticated.
+/*******  9ed7ef8a-c45d-4cbd-88d0-ff0c11c7dbca  *******/
     //
     public function index(Request $request)
     {
@@ -19,28 +22,33 @@ class LoginController extends Controller
 
     public function store(Request $request)
     {
-        // dd($request->all());
+        // Validate required inputs
         $validated = $request->validate([
-            'username' => 'required',
-            'password' => 'required',
-            // Hide 'g-recaptcha-response' => 'recaptcha',
+            'username' => 'required|string',
+            'password' => 'required|string',
+            // 'g-recaptcha-response' => 'required|recaptcha', // Uncomment if reCAPTCHA is enabled
         ]);
-// dd($validated);
-        $credentials                  = $request->all('username', 'password');
-        $emailCredentials['email']    = $request['username'];
-        $emailCredentials['password'] = $request['password'];
-        if (Auth::attempt($credentials)) {
-            return redirect('/dashboard');
-        } elseif (Auth::attempt($emailCredentials)) {   
-            return redirect('/dashboard');
-        }else{
-            $response=[
-                'username' => [trans("messages.username_not_match")],
-                'password' => [trans("messages.password_not_match")],
-            ];
-            return redirect('/')->withErrors($response);
-            
+
+        $username = $request->input('username');
+        $password = $request->input('password');
+
+        // Try logging in using 'username'
+        if (Auth::attempt(['username' => $username, 'password' => $password])) {
+            return redirect()->intended('/dashboard');
         }
+
+        // Try logging in using 'email'
+        if (Auth::attempt(['email' => $username, 'password' => $password])) {
+            return redirect()->intended('/dashboard');
+        }
+
+        // Authentication failed
+        return redirect('/')
+            ->withErrors([
+                'username' => trans('messages.username_not_match'),
+                'password' => trans('messages.password_not_match'),
+            ])
+            ->withInput($request->only('username'));
     }
 
     public function destroy(Request $request)
